@@ -22,15 +22,30 @@ composer require gpslab/domain-event
 ```
 ## Usage
 
-Create a domain event:
+Create a domain event
+
 ```
 use GpsLab\Domain\Event\EventInterface;
 
 class PurchaseOrderCreated implements EventInterface
 {
-    public function __construct(Customer $customer, \DateTime $create_at)
+    private $customer;
+    private $create_at;
+
+    public function __construct(Customer $customer, \DateTimeImmutable $create_at)
     {
-        // save data
+        $this->customer = $customer;
+        $this->create_at = $create_at;
+    }
+
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    public function getCreateAt()
+    {
+        return $this->create_at;
     }
 }
 ```
@@ -42,27 +57,14 @@ use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
 
 final class PurchaseOrder extends AbstractAggregateEvents
 {
-    /**
-     * @var Customer
-     */
-    private $customer;
-
-    /**
-     * @var \DateTime
-     */
-    private $create_at;
-
     public function __construct(Customer $customer)
     {
-        $this->customer = $customer;
-        $this->create_at = new \DateTime();
-
-        $this->raise(new PurchaseOrderCreated($customer, $this->create_at));
+        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
     }
 }
 ```
 
-Yoy can use trait for raise your event
+You can use [Traits](http://php.net/manual/en/language.oop5.traits.php) for raise your event
 
 ```php
 use GpsLab\Domain\Event\Aggregator\AggregateEventsTrait;
@@ -71,22 +73,10 @@ use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 final class PurchaseOrder implements AggregateEventsInterface
 {
     use AggregateEventsTrait;
-    /**
-     * @var Customer
-     */
-    private $customer;
-
-    /**
-     * @var \DateTime
-     */
-    private $create_at;
 
     public function __construct(Customer $customer)
     {
-        $this->customer = $customer;
-        $this->create_at = new \DateTime();
-
-        $this->raise(new PurchaseOrderCreated($customer, $this->create_at));
+        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
     }
 }
 ```
@@ -120,15 +110,16 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 
     public function handle(EventInterface $event)
     {
-        $this->mailer->send(
-            'to@you.com',
-            'Purchase order created for customer #' . $event->getCustomer()->getId()
-        );
+        $this->mailer->send('to@you.com', sprintf(
+            'Purchase order created at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
     }
 }
 ```
 
-Subscribe events and publish it
+Create event listener bus and publish events in it
 
 ```php
 use GpsLab\Domain\Event\Listener\Locator\EventClassLocator;
@@ -136,6 +127,7 @@ use GpsLab\Domain\Event\Bus\Bus;
 
 // first the locator
 $locator = new EventClassLocator();
+// you can use one listener for several events
 $locator->register(PurchaseOrderCreated::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
@@ -175,20 +167,22 @@ class SendEmailOnPurchaseOrderCreated implements VoterListenerInterface
 
     public function isSupportedEvent(EventInterface $event);
     {
+        // you can add more conditions
         return $event instanceof PurchaseOrderCreated;
     }
 
     public function handle(EventInterface $event)
     {
-        $this->mailer->send(
-            'to@you.com',
-            'Purchase order created for customer #' . $event->getCustomer()->getId()
-        );
+        $this->mailer->send('to@you.com', sprintf(
+            'Purchase order created at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
     }
 }
 ```
 
-Subscribe events and publish it
+Create event listener bus and publish events in it
 
 ```php
 use GpsLab\Domain\Event\Listener\Locator\VoterLocator;
