@@ -151,6 +151,9 @@ $events = $purchase_order->pullEvents();
 foreach($events as $event) {
     $bus->publish($event);
 }
+
+// You can use one method
+//$bus->pullAndPublish($purchase_order);
 ```
 
 ## Use VoterLocator
@@ -208,6 +211,9 @@ $events = $purchase_order->pullEvents();
 foreach($events as $event) {
     $bus->publish($event);
 }
+
+// You can use one method
+//$bus->pullAndPublish($purchase_order);
 ```
 
 ## License

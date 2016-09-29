@@ -8,6 +8,7 @@
  */
 namespace GpsLab\Domain\Event\Bus;
 
+use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
@@ -36,6 +37,16 @@ class Bus implements BusInterface
     {
         foreach ($this->locator->getListenersForEvent($event) as $listener) {
             $listener->handle($event);
+        }
+    }
+
+    /**
+     * @param AggregateEventsInterface $aggregator
+     */
+    public function pullAndPublish(AggregateEventsInterface $aggregator)
+    {
+        foreach ($aggregator->pullEvents() as $event) {
+            $this->publish($event);
         }
     }
 

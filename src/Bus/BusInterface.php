@@ -8,6 +8,7 @@
  */
 namespace GpsLab\Domain\Event\Bus;
 
+use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 
@@ -17,6 +18,11 @@ interface BusInterface
      * @param EventInterface $event
      */
     public function publish(EventInterface $event);
+
+    /**
+     * @param AggregateEventsInterface $aggregator
+     */
+    public function pullAndPublish(AggregateEventsInterface $aggregator);
 
     /**
      * Get the list of every EventListener defined in the EventBus.
