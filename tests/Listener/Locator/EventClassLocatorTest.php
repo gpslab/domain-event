@@ -60,4 +60,21 @@ class EventClassLocatorTest extends \PHPUnit_Framework_TestCase
             $this->locator->getListenersForEvent($event)
         );
     }
+
+    public function testNoListenersForEvent()
+    {
+        /* @var $event EventInterface */
+        $event = $this->getMock(EventInterface::class);
+
+        /* @var $listener1 ListenerInterface */
+        $listener1 = $this->getMock(ListenerInterface::class);
+        $this->locator->register(\stdClass::class, $listener1);
+
+        /* @var $listener2 ListenerInterface */
+        $listener2 = $this->getMock(ListenerInterface::class);
+        $this->locator->register(\stdClass::class, $listener2);
+
+        $this->assertInstanceOf(ListenerCollection::class, $this->locator->getListenersForEvent($event));
+        $this->assertEquals(new ListenerCollection(), $this->locator->getListenersForEvent($event));
+    }
 }
