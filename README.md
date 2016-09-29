@@ -120,7 +120,10 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 
     public function handle(EventInterface $event)
     {
-        $this->mailer->send('to@you.com', 'Purchase order created for customer #' . $event->getCustomer()->getId());
+        $this->mailer->send(
+            'to@you.com',
+            'Purchase order created for customer #' . $event->getCustomer()->getId()
+        );
     }
 }
 ```
@@ -174,7 +177,10 @@ class SendEmailOnPurchaseOrderCreated implements VoterListenerInterface
 
     public function handle(EventInterface $event)
     {
-        $this->mailer->send('to@you.com', 'Purchase order created for customer #' . $event->getCustomer()->getId());
+        $this->mailer->send(
+            'to@you.com',
+            'Purchase order created for customer #' . $event->getCustomer()->getId()
+        );
     }
 }
 ```
