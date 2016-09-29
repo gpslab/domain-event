@@ -55,7 +55,7 @@ class EventClassLocator implements LocatorInterface
     {
         $listeners = [];
         foreach ($this->listeners as $listener_collection) {
-            $listeners = array_merge($listeners, $listener_collection);
+            $listeners = array_merge($listeners, (array)$listener_collection->getIterator());
         }
 
         return new ListenerCollection($listeners);
