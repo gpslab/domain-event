@@ -67,7 +67,7 @@ class ListenerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->collection = new ListenerCollection([
             $listener1,
-            $listener2
+            $listener2,
         ]);
 
         $this->assertEquals(2, count($this->collection));
