@@ -48,7 +48,8 @@ class ListenerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection->add($listener1);
 
         $this->assertEquals(1, count($this->collection));
-        $this->assertEquals($listener1, reset($this->collection->getIterator()));
+        $collection = $this->collection->getIterator();
+        $this->assertEquals($listener1, reset($collection));
 
         /* @var $listener2 ListenerInterface */
         $listener2 = $this->getMock(ListenerInterface::class);
