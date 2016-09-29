@@ -26,11 +26,16 @@ class ListenerCollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \PHPUnit_Framework_Error
      */
-    public function testTryAddBadListenerInConstruct()
+    public function testTryAddBadListenersInConstruct()
     {
-        new ListenerCollection([
-            new \stdClass(),
-        ]);
+        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+            $this->markTestSkipped('Impossible test in PHP >= 7.0');
+
+        } else {
+            new ListenerCollection([
+                new \stdClass(),
+            ]);
+        }
     }
 
     public function testAddToCollection()
