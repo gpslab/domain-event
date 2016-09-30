@@ -11,7 +11,7 @@
 Domain event
 ============
 
-Library to create the domain layer of your DDD application
+Library to create the domain layer of your **DDD** application
 
 ## Documentation
 
