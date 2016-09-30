@@ -19,10 +19,15 @@ class EventClassLastPartResolver implements EventNameResolverInterface
      */
     public function getEventName(EventInterface $event)
     {
-        $name = get_class($event);
-        $name = str_replace('_', '\\', $name);
-        $name = explode('\\', $name);
+        $class = get_class($event);
 
-        return end($name);
+        if ('Event' === substr($class, -5)) {
+            $class = substr($class, 0, -5);
+        }
+
+        $class = str_replace('_', '\\', $class); // convert names for classes not in namespace
+        $parts = explode('\\', $class);
+
+        return end($parts);
     }
 }
