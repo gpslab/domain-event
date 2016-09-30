@@ -6,7 +6,7 @@ NamedEventLocator
 Create a domain event
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\NamedEventInterface;
 
 class PurchaseOrderCreatedEvent implements NamedEventInterface
 {
@@ -82,7 +82,8 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 Create event listener bus and publish events in it
 
 ```php
-use GpsLab\Domain\Event\Listener\Locator\EventClassLocator;
+use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
+use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
 use GpsLab\Domain\Event\Bus\Bus;
 
 // use named event

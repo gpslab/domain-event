@@ -100,7 +100,7 @@ Conversion examples:
 You can change default event name resolver. Create a named domain event first
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\NamedEventInterface;
 
 class PurchaseOrderCreatedEvent implements NamedEventInterface
 {
@@ -130,6 +130,7 @@ Change default event name resolver
 
 ```php
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
+use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
 
 final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 {

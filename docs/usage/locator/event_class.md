@@ -74,7 +74,8 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 Create event listener bus and publish events in it
 
 ```php
-use GpsLab\Domain\Event\Listener\Locator\EventClassLocator;
+use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
+use GpsLab\Domain\Event\NameResolver\EventClassResolver;
 use GpsLab\Domain\Event\Bus\Bus;
 
 // use event class as event name
