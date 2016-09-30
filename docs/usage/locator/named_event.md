@@ -10,6 +10,8 @@ use GpsLab\Domain\Event\NamedEventInterface;
 
 class PurchaseOrderCreatedEvent implements NamedEventInterface
 {
+    const NAME = 'PurchaseOrder:Created';
+
     private $customer;
     private $create_at;
 
@@ -34,7 +36,7 @@ class PurchaseOrderCreatedEvent implements NamedEventInterface
      */
     public function getName()
     {
-        return 'PurchaseOrder:Created';
+        return self::NAME;
     }
 }
 ```
@@ -92,7 +94,7 @@ $resolver = new NamedEventResolver();
 // first the locator
 $locator = new NamedEventLocator($resolver);
 // you can use several listeners for one event and one listener for several events
-$locator->register('PurchaseOrder:Created', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+$locator->register(PurchaseOrderCreatedEvent::NAME, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
 $bus = new Bus($locator);
