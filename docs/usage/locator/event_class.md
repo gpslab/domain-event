@@ -8,7 +8,7 @@ Create a domain event
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreated implements EventInterface
+class PurchaseOrderCreatedEvent implements EventInterface
 {
     private $customer;
     private $create_at;
@@ -40,7 +40,7 @@ final class PurchaseOrder extends AbstractAggregateEvents
 {
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 }
 ```
@@ -83,7 +83,7 @@ $resolver = new EventClassResolver();
 // first the locator
 $locator = new NamedEventLocator($resolver);
 // you can use several listeners for one event and one listener for several events
-$locator->register(PurchaseOrderCreated::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+$locator->register(PurchaseOrderCreatedEvent::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
 $bus = new Bus($locator);

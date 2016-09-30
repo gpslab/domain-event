@@ -59,7 +59,7 @@ Create listener
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 
-class SendEmailOnPurchaseOrderCreatedEvent implements ListenerInterface
+class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 {
     private $mailer;
 
@@ -91,7 +91,7 @@ $resolver = new NamedEventResolver();
 // first the locator
 $locator = new NamedEventLocator($resolver);
 // you can use several listeners for one event and one listener for several events
-$locator->register('PurchaseOrder:Created', new SendEmailOnPurchaseOrderCreatedEvent(/* $mailer */));
+$locator->register('PurchaseOrder:Created', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
 $bus = new Bus($locator);

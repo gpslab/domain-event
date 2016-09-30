@@ -6,7 +6,7 @@ Create a domain event
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreated implements EventInterface
+class PurchaseOrderCreatedEvent implements EventInterface
 {
     private $customer;
     private $create_at;
@@ -38,7 +38,7 @@ final class PurchaseOrder extends AbstractAggregateEvents
 {
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 }
 ```
@@ -61,7 +61,7 @@ class SendEmailOnPurchaseOrderCreated implements VoterListenerInterface
     public function isSupportedEvent(EventInterface $event);
     {
         // you can add more conditions
-        return $event instanceof PurchaseOrderCreated;
+        return $event instanceof PurchaseOrderCreatedEvent;
     }
 
     public function handle(EventInterface $event)

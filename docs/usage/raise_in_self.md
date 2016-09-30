@@ -6,7 +6,7 @@ Create a domain event
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreated implements EventInterface
+class PurchaseOrderCreatedEvent implements EventInterface
 {
     public function __construct(Customer $customer, \DateTimeImmutable $create_at)
     {
@@ -29,7 +29,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
     /**
@@ -39,7 +39,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      * You can not modify what happened. The only thing that you can do is create another event to compensate.
      * You do not obliged to listen this event and are not required to create this method.
      */
-    public function onPurchaseOrderCreated(PurchaseOrderCreated $event)
+    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
     }
@@ -75,10 +75,10 @@ final class PurchaseOrder implements AggregateEventsInterface
 
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
-    public function onPurchaseOrderCreated(PurchaseOrderCreated $event)
+    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
     }
@@ -102,7 +102,7 @@ You can change default event name resolver. Create a named domain event first
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreated implements NamedEventInterface
+class PurchaseOrderCreatedEvent implements NamedEventInterface
 {
     private $customer;
 
@@ -141,13 +141,13 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
     public function __construct(Customer $customer)
     {
         $this->changeEventNameResolver(new NamedEventResolver());
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
     /**
      * Method name used from NamedEventInterface::getName()
      */
-    public function onCreated(PurchaseOrderCreated $event)
+    public function onCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
     }

@@ -6,7 +6,7 @@ Create a domain event
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreated implements EventInterface
+class PurchaseOrderCreatedEvent implements EventInterface
 {
     public function __construct(Customer $customer, \DateTimeImmutable $create_at)
     {
@@ -24,7 +24,7 @@ final class PurchaseOrder extends AbstractAggregateEvents
 {
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 }
 ```
@@ -53,7 +53,7 @@ final class PurchaseOrder implements AggregateEventsInterface
 
     public function __construct(Customer $customer)
     {
-        $this->raise(new PurchaseOrderCreated($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 }
 ```
