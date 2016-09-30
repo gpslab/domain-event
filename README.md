@@ -92,64 +92,7 @@ $purchase_order = new PurchaseOrder(new Customer(1));
 $events = $purchase_order->pullEvents();
 ```
 
-## Use EventClassLocator
-
-Create listener
-
-```php
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-
-class SendEmailOnPurchaseOrderCreated implements ListenerInterface
-{
-    private $mailer;
-
-    public function __construct($mailer)
-    {
-        $this->mailer = $mailer;
-    }
-
-    public function handle(EventInterface $event)
-    {
-        $this->mailer->send('to@you.com', sprintf(
-            'Purchase order created at %s for customer #%s',
-            $event->getCreateAt()->format('Y-m-d'),
-            $event->getCustomer()->getId()
-        ));
-    }
-}
-```
-
-Create event listener bus and publish events in it
-
-```php
-use GpsLab\Domain\Event\Listener\Locator\EventClassLocator;
-use GpsLab\Domain\Event\Bus\Bus;
-
-// first the locator
-$locator = new EventClassLocator();
-// you can use one listener for several events
-$locator->register(PurchaseOrderCreated::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
-
-// then the event bus
-$bus = new Bus($locator);
-
-// do what you need to do on your Domain
-$purchase_order = new PurchaseOrder(new Customer(1));
-
-// this will clear the list of event in your AggregateEvents so an Event is trigger only once
-$events = $purchase_order->pullEvents();
-
-// You can have more than one event at a time.
-foreach($events as $event) {
-    $bus->publish($event);
-}
-
-// You can use one method
-//$bus->pullAndPublish($purchase_order);
-```
-
-## Use VoterLocator
+### Use VoterLocator
 
 Create listener
 
@@ -192,6 +135,67 @@ use GpsLab\Domain\Event\Bus\Bus;
 // first the locator
 $locator = new VoterLocator();
 $locator->register(new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+
+// then the event bus
+$bus = new Bus($locator);
+
+// do what you need to do on your Domain
+$purchase_order = new PurchaseOrder(new Customer(1));
+
+// this will clear the list of event in your AggregateEvents so an Event is trigger only once
+$events = $purchase_order->pullEvents();
+
+// You can have more than one event at a time.
+foreach($events as $event) {
+    $bus->publish($event);
+}
+
+// You can use one method
+//$bus->pullAndPublish($purchase_order);
+```
+
+### Use NamedEventLocator
+#### Use event class as event name
+
+Create listener
+
+```php
+use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
+
+class SendEmailOnPurchaseOrderCreated implements ListenerInterface
+{
+    private $mailer;
+
+    public function __construct($mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function handle(EventInterface $event)
+    {
+        $this->mailer->send('to@you.com', sprintf(
+            'Purchase order created at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
+    }
+}
+```
+
+Create event listener bus and publish events in it
+
+```php
+use GpsLab\Domain\Event\Listener\Locator\EventClassLocator;
+use GpsLab\Domain\Event\Bus\Bus;
+
+// use event class as event name
+$resolver = new EventClassResolver();
+
+// first the locator
+$locator = new NamedEventLocator($resolver);
+// you can use one listener for several events
+$locator->register(PurchaseOrderCreated::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
 $bus = new Bus($locator);

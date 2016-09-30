@@ -11,13 +11,27 @@ namespace GpsLab\Domain\Event\Listener\Locator;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
+use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
-class EventClassLocator implements LocatorInterface
+class NamedEventLocator implements LocatorInterface
 {
     /**
      * @var ListenerCollection[]
      */
     private $listeners = [];
+
+    /**
+     * @var EventNameResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @param EventNameResolverInterface $resolver
+     */
+    public function __construct(EventNameResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
 
     /**
      * @param EventInterface $event
@@ -26,26 +40,26 @@ class EventClassLocator implements LocatorInterface
      */
     public function getListenersForEvent(EventInterface $event)
     {
-        $event_class = get_class($event);
+        $event_name = $this->resolver->getEventName($event);
 
-        if (isset($this->listeners[$event_class])) {
-            return $this->listeners[$event_class];
+        if (isset($this->listeners[$event_name])) {
+            return $this->listeners[$event_name];
         } else {
             return new ListenerCollection();
         }
     }
 
     /**
-     * @param string $event_class
+     * @param string $event_name
      * @param ListenerInterface $listener
      */
-    public function register($event_class, ListenerInterface $listener)
+    public function register($event_name, ListenerInterface $listener)
     {
-        if (!isset($this->listeners[$event_class])) {
-            $this->listeners[$event_class] = new ListenerCollection();
+        if (!isset($this->listeners[$event_name])) {
+            $this->listeners[$event_name] = new ListenerCollection();
         }
 
-        $this->listeners[$event_class]->add($listener);
+        $this->listeners[$event_name]->add($listener);
     }
 
     /**
