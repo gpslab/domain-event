@@ -5,7 +5,7 @@ NamedEventLocator
 
 Create a domain event
 
-```
+```php
 use GpsLab\Domain\Event\EventInterface;
 
 class PurchaseOrderCreated implements EventInterface

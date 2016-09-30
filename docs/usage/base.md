@@ -3,7 +3,7 @@ Base usage
 
 Create a domain event
 
-```
+```php
 use GpsLab\Domain\Event\EventInterface;
 
 class PurchaseOrderCreated implements EventInterface
@@ -31,7 +31,7 @@ final class PurchaseOrder extends AbstractAggregateEvents
 
 Dispatch events
 
-```
+```php
 // do what you need to do on your Domain
 $purchase_order = new PurchaseOrder(new Customer(1));
 

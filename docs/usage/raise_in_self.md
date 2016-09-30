@@ -3,7 +3,7 @@ Raise events in self
 
 Create a domain event
 
-```
+```php
 use GpsLab\Domain\Event\EventInterface;
 
 class PurchaseOrderCreated implements EventInterface
@@ -48,7 +48,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 
 Dispatch events
 
-```
+```php
 // do what you need to do on your Domain
 $purchase_order = new PurchaseOrder(new Customer(1));
 
@@ -99,7 +99,7 @@ Conversion examples:
 
 You can change default event name resolver. Create a named domain event first
 
-```
+```php
 use GpsLab\Domain\Event\EventInterface;
 
 class PurchaseOrderCreated implements NamedEventInterface
