@@ -66,7 +66,7 @@ class SendEmailOnPurchaseOrderCreated implements VoterListenerInterface
 
     public function handle(EventInterface $event)
     {
-        $this->mailer->send('to@you.com', sprintf(
+        $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
             $event->getCreateAt()->format('Y-m-d'),
             $event->getCustomer()->getId()
