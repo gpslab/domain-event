@@ -18,6 +18,14 @@ trait AggregateEventsTrait
     private $events = [];
 
     /**
+     * @param EventInterface $event
+     */
+    protected function raise(EventInterface $event)
+    {
+        $this->events[] = $event;
+    }
+
+    /**
      * @return EventInterface[]
      */
     public function pullEvents()
@@ -26,13 +34,5 @@ trait AggregateEventsTrait
         $this->events = [];
 
         return $events;
-    }
-
-    /**
-     * @param EventInterface $event
-     */
-    protected function raise(EventInterface $event)
-    {
-        $this->events[] = $event;
     }
 }
