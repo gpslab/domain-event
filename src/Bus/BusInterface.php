@@ -11,6 +11,7 @@ namespace GpsLab\Domain\Event\Bus;
 use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
 
 interface BusInterface
 {
@@ -28,7 +29,7 @@ interface BusInterface
      * Get the list of every EventListener defined in the EventBus.
      * This might be useful for debug.
      *
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners();
 }

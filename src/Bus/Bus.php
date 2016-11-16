@@ -11,6 +11,7 @@ namespace GpsLab\Domain\Event\Bus;
 use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
 
 class Bus implements BusInterface
@@ -51,7 +52,7 @@ class Bus implements BusInterface
     }
 
     /**
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()
     {
