@@ -32,9 +32,9 @@ class ContainerAwareLocator extends NamedEventLocator
     private $listener_ids = [];
 
     /**
-     * @var array
+     * @var ListenerInterface[]
      */
-    private $listeners = [];
+    private $listener_loaded = [];
 
     /**
      * @param EventNameResolverInterface $resolver
@@ -91,11 +91,11 @@ class ContainerAwareLocator extends NamedEventLocator
                 $listener = $this->container->get($service_id);
 
                 if ($listener instanceof ListenerInterface) {
-                    if (!isset($this->listeners[$event_name][$service_id]) ||
-                        $listener !== $this->listeners[$event_name][$service_id]
+                    if (!isset($this->listener_loaded[$event_name][$service_id]) ||
+                        $listener !== $this->listener_loaded[$event_name][$service_id]
                     ) {
                         $this->register($event_name, $listener);
-                        $this->listeners[$event_name][$service_id] = $listener;
+                        $this->listener_loaded[$event_name][$service_id] = $listener;
                     }
                 }
             }
