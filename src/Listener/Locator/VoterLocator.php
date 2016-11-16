@@ -23,7 +23,7 @@ class VoterLocator implements LocatorInterface
     /**
      * @param EventInterface $event
      *
-     * @return ListenerInterface[]
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getListenersForEvent(EventInterface $event)
     {
@@ -47,7 +47,7 @@ class VoterLocator implements LocatorInterface
     }
 
     /**
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()
     {

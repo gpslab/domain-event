@@ -23,7 +23,7 @@ interface LocatorInterface
      *
      * @param EventInterface $event
      *
-     * @return ListenerInterface[]
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getListenersForEvent(EventInterface $event);
 
@@ -31,7 +31,7 @@ interface LocatorInterface
      * Get the list of every EventListener.
      * This might be useful for debug.
      *
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners();
 }

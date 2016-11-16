@@ -36,7 +36,7 @@ class NamedEventLocator implements LocatorInterface
     /**
      * @param EventInterface $event
      *
-     * @return ListenerInterface[]
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getListenersForEvent(EventInterface $event)
     {
@@ -63,7 +63,7 @@ class NamedEventLocator implements LocatorInterface
     }
 
     /**
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()
     {

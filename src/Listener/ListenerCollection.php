@@ -26,7 +26,7 @@ class ListenerCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return ListenerInterface[]
+     * @return ListenerInterface[]|\ArrayIterator
      */
     public function getIterator()
     {

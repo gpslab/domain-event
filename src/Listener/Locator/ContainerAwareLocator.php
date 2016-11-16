@@ -59,7 +59,7 @@ class ContainerAwareLocator extends NamedEventLocator
     /**
      * @param EventInterface $event
      *
-     * @return ListenerInterface[]
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getListenersForEvent(EventInterface $event)
     {
@@ -70,7 +70,7 @@ class ContainerAwareLocator extends NamedEventLocator
     }
 
     /**
-     * @return ListenerCollection
+     * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()
     {
