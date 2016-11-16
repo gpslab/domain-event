@@ -24,4 +24,5 @@ Library to create the domain layer of your **DDD** application
     * [Event class locator](docs/usage/locator/event_class.md)
     * [Event class last part locator](docs/usage/locator/event_class_last_part.md)
     * [Named event locator](docs/usage/locator/named_event.md)
+    * [Container aware locator](docs/usage/locator/container_aware.md)
 * [License](docs/license.md)
