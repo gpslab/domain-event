@@ -10,14 +10,11 @@
 namespace GpsLab\Domain\Event\Tests\Listener;
 
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\Listener\SwitchListenerTrait;
+use GpsLab\Domain\Event\Listener\AbstractSwitchListener;
 use GpsLab\Domain\Event\Tests\Event\PurchaseOrderCreatedEvent;
 
-class DemoSwitchListener implements ListenerInterface
+class DemoSwitchListener extends AbstractSwitchListener
 {
-    use SwitchListenerTrait;
-
     /**
      * @var EventInterface
      */
