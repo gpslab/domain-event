@@ -20,6 +20,12 @@ matrix:
     include:
         - php: 5.5
           env: COVERAGE=1
+        - php: 5.5
+          env: SYMFONY_VERSION=2.7.*
+        - php: 5.5
+          env: SYMFONY_VERSION=2.8.*
+        - php: 5.5
+          env: SYMFONY_VERSION=3.0.*
     allow_failures:
         - php: hhvm
 
@@ -30,6 +36,7 @@ before_install:
     - composer self-update
 
 before_script:
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
     - composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 script:
