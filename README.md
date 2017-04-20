@@ -13,6 +13,46 @@ Domain event
 
 Library to create the domain layer of your **DDD** application
 
+## Base usage
+
+Create a domain event
+
+```php
+use GpsLab\Domain\Event\EventInterface;
+
+class PurchaseOrderCreatedEvent implements EventInterface
+{
+    public function __construct(Customer $customer, \DateTimeImmutable $create_at)
+    {
+        // store data
+    }
+}
+```
+
+Raise your event
+
+```php
+use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
+
+final class PurchaseOrder extends AbstractAggregateEvents
+{
+    public function __construct(Customer $customer)
+    {
+        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+    }
+}
+```
+
+Dispatch events
+
+```php
+// do what you need to do on your Domain
+$purchase_order = new PurchaseOrder(new Customer(1));
+
+// this will clear the list of event in your AggregateEvents so an Event is trigger only once
+$events = $purchase_order->pullEvents();
+```
+
 ## Documentation
 
 * [Installation](docs/installation.md)
