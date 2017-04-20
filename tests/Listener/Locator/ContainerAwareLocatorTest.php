@@ -65,13 +65,14 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->at(0))
             ->method('get')
             ->with('domain.listener.3')
-            ->will($this->returnValue($listener3));
-
+            ->will($this->returnValue($listener3))
+        ;
         $this->container
             ->expects($this->at(1))
             ->method('get')
             ->with('domain.listener.4')
-            ->will($this->returnValue($listener4));
+            ->will($this->returnValue($listener4))
+        ;
 
         // test get list event listeners
         $listeners = $this->locator->getRegisteredEventListeners();
@@ -82,7 +83,8 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('getEventName')
             ->with($event)
-            ->will($this->returnValue('bar'));
+            ->will($this->returnValue('bar'))
+        ;
 
         // test get event listeners for event
         $listeners = $this->locator->getListenersForEvent($event);
@@ -114,5 +116,46 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
         $listeners = $this->locator->getListenersForEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection(), $listeners);
+    }
+
+    public function testOverrideListener()
+    {
+        /* @var $event EventInterface */
+        $event = $this->getMock(EventInterface::class);
+
+        /* @var $listener1 ListenerInterface */
+        $listener1 = $this->getMock(ListenerInterface::class);
+        $this->locator->registerService('foo', 'domain.listener');
+
+        $this->container
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('domain.listener')
+            ->will($this->returnValue($listener1))
+        ;
+
+        $this->resolver
+            ->expects($this->atLeastOnce())
+            ->method('getEventName')
+            ->with($event)
+            ->will($this->returnValue('foo'));
+
+        $listeners = $this->locator->getListenersForEvent($event);
+        $this->assertInstanceOf(ListenerCollection::class, $listeners);
+        $this->assertEquals(new ListenerCollection([$listener1]), $listeners);
+
+        /* @var $listener2 ListenerInterface */
+        $listener2 = $this->getMock(ListenerInterface::class);
+        $this->locator->registerService('foo', 'domain.listener');
+
+        $this->container
+            ->expects($this->at(1))
+            ->method('get')
+            ->with('domain.listener')
+            ->will($this->returnValue($listener2))
+        ;
+
+        $listeners = $this->locator->getListenersForEvent($event);
+        $this->assertEquals(new ListenerCollection([$listener2]), $listeners);
     }
 }

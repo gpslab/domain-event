@@ -15,7 +15,7 @@ use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ContainerAwareLocator extends NamedEventLocator
+class ContainerAwareLocator
 {
     /**
      * @var ContainerInterface
@@ -28,12 +28,17 @@ class ContainerAwareLocator extends NamedEventLocator
     private $resolver;
 
     /**
+     * @var ListenerCollection[]
+     */
+    private $listeners = [];
+
+    /**
      * @var array
      */
     private $listener_ids = [];
 
     /**
-     * @var ListenerInterface[]
+     * @var ListenerInterface[][]
      */
     private $listener_loaded = [];
 
@@ -43,7 +48,6 @@ class ContainerAwareLocator extends NamedEventLocator
      */
     public function __construct(EventNameResolverInterface $resolver, ContainerInterface $container)
     {
-        parent::__construct($resolver);
         $this->container = $container;
         $this->resolver = $resolver;
     }
@@ -67,7 +71,26 @@ class ContainerAwareLocator extends NamedEventLocator
         $event_name = $this->resolver->getEventName($event);
         $this->lazyLoad($event_name);
 
-        return parent::getListenersForEvent($event);
+        $event_name = $this->resolver->getEventName($event);
+
+        if (isset($this->listeners[$event_name])) {
+            return $this->listeners[$event_name];
+        } else {
+            return new ListenerCollection();
+        }
+    }
+
+    /**
+     * @param string $event_name
+     * @param ListenerInterface $listener
+     */
+    public function register($event_name, ListenerInterface $listener)
+    {
+        if (!isset($this->listeners[$event_name])) {
+            $this->listeners[$event_name] = new ListenerCollection();
+        }
+
+        $this->listeners[$event_name]->add($listener);
     }
 
     /**
@@ -79,7 +102,12 @@ class ContainerAwareLocator extends NamedEventLocator
             $this->lazyLoad($event_name);
         }
 
-        return parent::getRegisteredEventListeners();
+        $listeners = [];
+        foreach ($this->listeners as $listener_collection) {
+            $listeners = array_merge($listeners, (array) $listener_collection->getIterator());
+        }
+
+        return new ListenerCollection($listeners);
     }
 
     /**
@@ -95,8 +123,12 @@ class ContainerAwareLocator extends NamedEventLocator
                     if (!isset($this->listener_loaded[$event_name][$service_id]) ||
                         $listener !== $this->listener_loaded[$event_name][$service_id]
                     ) {
-                        $this->register($event_name, $listener);
                         $this->listener_loaded[$event_name][$service_id] = $listener;
+
+                        // rebuild listener collection
+                        $this->listeners[$event_name] = new ListenerCollection(array_values(
+                            $this->listener_loaded[$event_name]
+                        ));
                     }
                 }
             }
