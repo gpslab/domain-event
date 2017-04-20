@@ -10,46 +10,30 @@
 namespace GpsLab\Domain\Event\Listener;
 
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
+use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
 
 trait SwitchListenerTrait
 {
-    /**
-     * @var EventNameResolverInterface
-     */
-    private $resolver;
-
-    /**
-     * @param EventNameResolverInterface $resolver
-     */
-    protected function changeEventNameResolver(EventNameResolverInterface $resolver)
-    {
-        $this->resolver = $resolver;
-    }
-
-    /**
-     * @return EventNameResolverInterface
-     */
-    private function getEventNameResolver()
-    {
-        if (!($this->resolver instanceof EventNameResolverInterface)) {
-            $this->resolver = new EventClassLastPartResolver(); // default name resolver
-        }
-
-        return $this->resolver;
-    }
-
     /**
      * @param EventInterface $event
      */
     public function handle(EventInterface $event)
     {
-        $event_name = $this->getEventNameResolver()->getEventName($event);
-        $method = 'handle'.$event_name;
+        $method = $this->getMethodNameFromEvent($event);
 
+        // if method is not exists is not a critical error
         if (method_exists($this, $method)) {
             call_user_func([$this, $method], $event);
         }
+    }
+
+    /**
+     * @param EventInterface $event
+     *
+     * @return string
+     */
+    protected function getMethodNameFromEvent(EventInterface $event)
+    {
+        return 'handle'.NameResolverContainer::getResolver()->getEventName($event);
     }
 }
