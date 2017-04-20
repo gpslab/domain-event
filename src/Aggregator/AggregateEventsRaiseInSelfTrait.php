@@ -51,7 +51,7 @@ trait AggregateEventsRaiseInSelfTrait
     private function raiseInSelf(EventInterface $event)
     {
         $event_name = $this->getEventNameResolver()->getEventName($event);
-        $method = 'on' . $event_name;
+        $method = 'on'.$event_name;
 
         // if method is not exists is not a critical error
         if (method_exists($this, $method)) {

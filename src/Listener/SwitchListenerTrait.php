@@ -46,7 +46,7 @@ trait SwitchListenerTrait
     public function handle(EventInterface $event)
     {
         $event_name = $this->getEventNameResolver()->getEventName($event);
-        $method = 'handle' . $event_name;
+        $method = 'handle'.$event_name;
 
         if (method_exists($this, $method)) {
             call_user_func([$this, $method], $event);
