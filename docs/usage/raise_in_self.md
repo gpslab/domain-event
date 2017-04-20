@@ -99,7 +99,14 @@ Conversion examples:
 
 ## Change default event name resolver
 
-You can change default event name resolver. Create a named domain event first
+You can change default event name resolver. You can use one of the predefined resolvers:
+
+* `EventClassResolver` - use [class name](http://php.net/manual/en/function.get-class.php) as event name;
+* `EventClassLastPartResolver` - use the last part of class name as event name. See [examples](#resolve-event-name);
+* `NamedEventResolver` - expects `NamedEventInterface` type event and use method `NamedEventInterface::getName()` for
+get event name.
+
+Create a named domain event first
 
 ```php
 use GpsLab\Domain\Event\NamedEventInterface;
