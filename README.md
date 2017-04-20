@@ -19,11 +19,26 @@ Create a domain event
 ```php
 use GpsLab\Domain\Event\EventInterface;
 
-class PurchaseOrderCreatedEvent implements EventInterface
+final class PurchaseOrderCreatedEvent implements EventInterface
 {
+    private $customer;
+
+    private $create_at;
+
     public function __construct(Customer $customer, \DateTimeImmutable $create_at)
     {
-        // store data
+        $this->customer = $customer;
+        $this->create_at = clone $create_at;
+    }
+
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    public function getCreateAt()
+    {
+        return clone $this->create_at;
     }
 }
 ```
@@ -33,11 +48,21 @@ Raise your event
 ```php
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
 
-final class PurchaseOrder extends AbstractAggregateEvents
+final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 {
+    private $customer;
+
+    private $create_at;
+
     public function __construct(Customer $customer)
     {
         $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+    }
+
+    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    {
+        $this->customer = $event->getCustomer();
+        $this->create_at = $event->getCreateAt();
     }
 }
 ```
@@ -46,13 +71,10 @@ Create listener
 
 ```php
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\Listener\SwitchListenerTrait;
+use GpsLab\Domain\Event\Listener\AbstractSwitchListener;
 
-class SendEmailOnPurchaseOrderCreated implements ListenerInterface
+class SendEmailOnPurchaseOrderCreated extends AbstractSwitchListener
 {
-    use SwitchListenerTrait;
-
     private $mailer;
 
     public function __construct($mailer)
