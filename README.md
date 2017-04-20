@@ -59,7 +59,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
         $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
-    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer = $event->getCustomer();
         $this->create_at = $event->getCreateAt();
@@ -82,7 +82,7 @@ class SendEmailOnPurchaseOrderCreated extends AbstractSwitchListener
         $this->mailer = $mailer;
     }
 
-    public function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
