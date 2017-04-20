@@ -97,6 +97,8 @@ Conversion examples:
 * `\Acme_Demo_Domain_PurchaseOrder_Event_PurchaseOrderCreated` > `PurchaseOrderCreated`
 * `\Acme_Demo_Domain_PurchaseOrder_Event_PurchaseOrderCreatedEvent` > `PurchaseOrderCreated`
 
+## Change default event name resolver
+
 You can change default event name resolver. Create a named domain event first
 
 ```php
@@ -126,7 +128,16 @@ class PurchaseOrderCreatedEvent implements NamedEventInterface
 }
 ```
 
-Change default event name resolver
+You can change the global event name resolver. To do this, you need to redefine it in the container:
+
+```php
+use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
+use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
+
+NameResolverContainer::changeResolver(new NamedEventResolver());
+```
+
+Or you can override the method that generates the name of the handler method in entity:
 
 ```php
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
@@ -141,7 +152,6 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 
     public function __construct(Customer $customer)
     {
-        $this->changeEventNameResolver(new NamedEventResolver());
         $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
@@ -151,6 +161,11 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
     public function onCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
+    }
+
+    protected function getMethodNameFromEvent(EventInterface $event)
+    {
+        return 'on'.(new NamedEventResolver())->getEventName($event);
     }
 }
 ```
