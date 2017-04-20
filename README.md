@@ -43,14 +43,58 @@ final class PurchaseOrder extends AbstractAggregateEvents
 }
 ```
 
+Create listener
+
+```php
+use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
+use GpsLab\Domain\Event\Listener\SwitchListenerTrait;
+
+class SendEmailOnPurchaseOrderCreated implements ListenerInterface
+{
+    use SwitchListenerTrait;
+
+    private $mailer;
+
+    public function __construct($mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    {
+        $this->mailer->send('recipient@example.com', sprintf(
+            'Purchase order created at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
+    }
+}
+```
+
 Dispatch events
 
 ```php
+use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
+use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
+use GpsLab\Domain\Event\Bus\Bus;
+
+// use last part of event class as event name
+$resolver = new EventClassLastPartResolver();
+
+// first the locator
+$locator = new NamedEventLocator($resolver);
+// you can use several listeners for one event and one listener for several events
+$locator->register('PurchaseOrderCreated', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+
+// then the event bus
+$bus = new Bus($locator);
+
 // do what you need to do on your Domain
 $purchase_order = new PurchaseOrder(new Customer(1));
 
 // this will clear the list of event in your AggregateEvents so an Event is trigger only once
-$events = $purchase_order->pullEvents();
+$bus->pullAndPublish($purchase_order);
 ```
 
 ## Documentation

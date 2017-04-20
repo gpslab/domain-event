@@ -86,7 +86,7 @@ Create event listener bus and publish events in it
 ```php
 use Symfony\Component\DependencyInjection\Container;
 use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
-use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
+use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
 use GpsLab\Domain\Event\Bus\Bus;
 
 // use last part of event class as event name
