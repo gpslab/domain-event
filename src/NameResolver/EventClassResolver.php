@@ -6,6 +6,7 @@
  * @copyright Copyright (c) 2016, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT
  */
+
 namespace GpsLab\Domain\Event\NameResolver;
 
 use GpsLab\Domain\Event\EventInterface;
