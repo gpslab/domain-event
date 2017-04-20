@@ -28,6 +28,10 @@ trait SwitchListenerTrait
     }
 
     /**
+     * Get handler method name from event.
+     *
+     * Override this method if you want to change algorithm to generate the handler method name.
+     *
      * @param EventInterface $event
      *
      * @return string
