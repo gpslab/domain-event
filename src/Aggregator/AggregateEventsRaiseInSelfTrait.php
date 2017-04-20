@@ -30,7 +30,6 @@ trait AggregateEventsRaiseInSelfTrait
     /**
      * @deprecated It will be removed in 2.0. If you want change the event name resolver, you must override getMethodNameFromEvent() method.
      * @see AggregateEventsRaiseInSelfTrait::getMethodNameFromEvent()
-     * @codeCoverageIgnore
      *
      * @param EventNameResolverInterface $resolver
      */

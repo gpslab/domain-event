@@ -11,6 +11,7 @@ namespace GpsLab\Domain\Event\Tests\Aggregator;
 
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEventsRaiseInSelf;
 use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
 class DemoAggregatorRaiseInSelf extends AbstractAggregateEventsRaiseInSelf
 {
@@ -25,6 +26,14 @@ class DemoAggregatorRaiseInSelf extends AbstractAggregateEventsRaiseInSelf
     public function raiseEvent(EventInterface $event)
     {
         $this->raise($event);
+    }
+
+    /**
+     * @param EventNameResolverInterface $resolver
+     */
+    public function setEventNameResolver(EventNameResolverInterface $resolver)
+    {
+        $this->changeEventNameResolver($resolver);
     }
 
     /**
