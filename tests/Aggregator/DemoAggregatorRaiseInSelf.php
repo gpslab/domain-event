@@ -38,7 +38,7 @@ class DemoAggregatorRaiseInSelf extends AbstractAggregateEventsRaiseInSelf
     /**
      * @param EventInterface $event
      */
-    public function onPurchaseOrderCreated(EventInterface $event)
+    protected function onPurchaseOrderCreated(EventInterface $event)
     {
         $this->raise_in_self_event = $event;
     }
