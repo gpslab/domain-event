@@ -124,10 +124,12 @@ $bus->pullAndPublish($purchase_order);
 * Usage
   * [Base usage](docs/usage/base.md)
   * [Raise events in self](docs/usage/raise_in_self.md)
-  * Listeners
-    * [Voter locator](docs/usage/locator/voter.md)
-    * [Event class locator](docs/usage/locator/event_class.md)
-    * [Event class last part locator](docs/usage/locator/event_class_last_part.md)
-    * [Named event locator](docs/usage/locator/named_event.md)
-    * [Container aware locator](docs/usage/locator/container_aware.md)
+  * Listener
+    * [Switch listener](docs/usage/listener/switch.md)
+    * Locator
+      * [Voter locator](docs/usage/listener/locator/voter.md)
+      * [Event class locator](docs/usage/listener/locator/event_class.md)
+      * [Event class last part locator](docs/usage/listener/locator/event_class_last_part.md)
+      * [Named event locator](docs/usage/listener/locator/named_event.md)
+      * [Container aware locator](docs/usage/listener/locator/container_aware.md)
 * [License](docs/license.md)
