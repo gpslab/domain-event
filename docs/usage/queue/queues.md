@@ -5,15 +5,16 @@ You can use one of the existing queues:
 
 * `MemoryEventQueue` - storage of events in memory, in the current PHP process;
 * `MemoryUniqueEventQueue` - storage of unique events in memory, in the current process;
-* `PredisEventQueue` - storage of events in Redis using [predis/predis](https://packagist.org/packages/predis/predis);
-* `PredisUniqueEventQueue` - storage of unique events in Redis using
+* `PredisEventQueue` - storage of events in [Redis](https://redis.io/) using
+[predis/predis](https://packagist.org/packages/predis/predis);
+* `PredisUniqueEventQueue` - storage of unique events in [Redis](https://redis.io/) using
 [predis/predis](https://packagist.org/packages/predis/predis).
 
 You can create your own queue service by implementing the interface `EventQueueInterface`.
 
 ## Redis event queue
 
-`PredisEventQueue` using [predis/predis](https://packagist.org/packages/predis/predis) for access to Redis and
+`PredisEventQueue` and `PredisUniqueEventQueue` using [predis/predis](https://packagist.org/packages/predis/predis) for access to Redis and
 [Symfony Serializer](http://symfony.com/doc/current/components/serializer.html) for serialize events and store its in
 Redis.
 
