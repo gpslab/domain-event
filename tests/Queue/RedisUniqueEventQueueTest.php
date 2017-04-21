@@ -10,14 +10,14 @@
 namespace GpsLab\Domain\Event\Tests\Queue;
 
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Queue\RedisEventQueue;
+use GpsLab\Domain\Event\Queue\RedisUniqueEventQueue;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
-class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
+class RedisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 {
-    const SET_KEY = 'events';
+    const SET_KEY = 'unique_events';
     const FORMAT = 'redis';
 
     /**
@@ -36,7 +36,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
     private $logger;
 
     /**
-     * @var RedisEventQueue
+     * @var RedisUniqueEventQueue
      */
     private $queue;
 
@@ -46,7 +46,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
 
-        $this->queue = new RedisEventQueue($this->client, $this->serializer, $this->logger);
+        $this->queue = new RedisUniqueEventQueue($this->client, $this->serializer, $this->logger);
 
         parent::setUp();
     }
@@ -68,7 +68,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpush', [self::SET_KEY, [$normalize]])
+            ->with('sadd', [self::SET_KEY, [$normalize]])
             ->will($this->returnValue(1))
         ;
 
@@ -80,7 +80,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpop', [self::SET_KEY])
+            ->with('spop', [self::SET_KEY])
             ->will($this->returnValue(null))
         ;
 
@@ -107,7 +107,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpop', [self::SET_KEY])
+            ->with('spop', [self::SET_KEY])
             ->will($this->returnValue($normalize))
         ;
 
@@ -134,13 +134,13 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('lpop', [self::SET_KEY])
+            ->with('spop', [self::SET_KEY])
             ->will($this->returnValue($normalize))
         ;
         $this->client
             ->expects($this->at(1))
             ->method('__call')
-            ->with('rpush', [self::SET_KEY, [$normalize]])
+            ->with('sadd', [self::SET_KEY, [$normalize]])
         ;
 
         $this->serializer
