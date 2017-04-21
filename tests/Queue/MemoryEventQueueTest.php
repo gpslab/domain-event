@@ -9,8 +9,8 @@
 
 namespace GpsLab\Domain\Event\Tests\Queue;
 
-use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Queue\MemoryEventQueue;
+use GpsLab\Domain\Event\Tests\Event\PurchaseOrderCreatedEvent;
 
 class MemoryEventQueueTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,15 +27,13 @@ class MemoryEventQueueTest extends \PHPUnit_Framework_TestCase
 
     public function testQueue()
     {
-        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event1 = $this->getMock(EventInterface::class);
-        /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event2 = $this->getMock(EventInterface::class);
+        $event1 = new \Acme_Demo_PurchaseOrderCreated();
+        $event2 = new PurchaseOrderCreatedEvent();
 
         $this->assertTrue($this->queue->push($event1));
         $this->assertTrue($this->queue->push($event2));
-        $this->assertEquals($event1, $this->queue->pop());
         $this->assertEquals($event2, $this->queue->pop());
+        $this->assertEquals($event1, $this->queue->pop());
         $this->assertNull($this->queue->pop());
     }
 }
