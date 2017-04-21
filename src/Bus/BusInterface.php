@@ -9,28 +9,10 @@
 
 namespace GpsLab\Domain\Event\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-
-interface BusInterface
+/**
+ * @deprecated It will be removed in 2.0. Use EventBusInterface interface
+ * @see EventBusInterface
+ */
+interface BusInterface extends EventBusInterface
 {
-    /**
-     * @param EventInterface $event
-     */
-    public function publish(EventInterface $event);
-
-    /**
-     * @param AggregateEventsInterface $aggregator
-     */
-    public function pullAndPublish(AggregateEventsInterface $aggregator);
-
-    /**
-     * Get the list of every EventListener defined in the EventBus.
-     * This might be useful for debug.
-     *
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners();
 }

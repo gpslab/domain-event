@@ -5,7 +5,7 @@ You can publish events from base events bus and you can push events in queue and
 
 ```php
 // base events bus
-$publisher_bus = new Bus($locator);
+$publisher_bus = new EventBus($locator);
 
 // queue storing events in memory
 $queue = MemoryEventQueue();

@@ -10,12 +10,12 @@
 namespace GpsLab\Domain\Event\Tests\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\Bus\BusInterface;
-use GpsLab\Domain\Event\Bus\QueueBus;
+use GpsLab\Domain\Event\Bus\EventBusInterface;
+use GpsLab\Domain\Event\Bus\QueueEventBus;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Queue\EventQueueInterface;
 
-class QueueBusTest extends \PHPUnit_Framework_TestCase
+class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EventQueueInterface
@@ -23,21 +23,21 @@ class QueueBusTest extends \PHPUnit_Framework_TestCase
     private $queue;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|BusInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventBusInterface
      */
     private $publisher_bus;
 
     /**
-     * @var QueueBus
+     * @var QueueEventBus
      */
     private $bus;
 
     protected function setUp()
     {
         $this->queue = $this->getMock(EventQueueInterface::class);
-        $this->publisher_bus = $this->getMock(BusInterface::class);
+        $this->publisher_bus = $this->getMock(EventBusInterface::class);
 
-        $this->bus = new QueueBus($this->queue, $this->publisher_bus);
+        $this->bus = new QueueEventBus($this->queue, $this->publisher_bus);
 
         parent::setUp();
     }

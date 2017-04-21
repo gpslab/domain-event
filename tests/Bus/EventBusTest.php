@@ -10,12 +10,12 @@
 namespace GpsLab\Domain\Event\Tests\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\Bus\Bus;
+use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
 
-class BusTest extends \PHPUnit_Framework_TestCase
+class EventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|LocatorInterface
@@ -23,14 +23,14 @@ class BusTest extends \PHPUnit_Framework_TestCase
     private $locator;
 
     /**
-     * @var Bus
+     * @var EventBus
      */
     private $bus;
 
     protected function setUp()
     {
         $this->locator = $this->getMock(LocatorInterface::class);
-        $this->bus = new Bus($this->locator);
+        $this->bus = new EventBus($this->locator);
     }
 
     public function testPublish()

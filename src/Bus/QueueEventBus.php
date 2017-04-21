@@ -15,7 +15,7 @@ use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Queue\EventQueueInterface;
 
-class QueueBus implements BusInterface
+class QueueEventBus implements EventBusInterface
 {
     /**
      * @var EventQueueInterface
@@ -23,15 +23,15 @@ class QueueBus implements BusInterface
     private $queue;
 
     /**
-     * @var BusInterface
+     * @var EventBusInterface
      */
     private $publisher_bus;
 
     /**
      * @param EventQueueInterface $queue
-     * @param BusInterface $publisher_bus
+     * @param EventBusInterface $publisher_bus
      */
-    public function __construct(EventQueueInterface $queue, BusInterface $publisher_bus)
+    public function __construct(EventQueueInterface $queue, EventBusInterface $publisher_bus)
     {
         $this->queue = $queue;
         $this->publisher_bus = $publisher_bus;
