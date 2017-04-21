@@ -156,7 +156,7 @@ class PredisEventQueueTest extends \PHPUnit_Framework_TestCase
                 'Failed denormalize a event in the Redis queue',
                 [
                     $normalize,
-                    $message
+                    $message,
                 ]
             )
         ;

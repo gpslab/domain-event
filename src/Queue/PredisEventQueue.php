@@ -57,7 +57,7 @@ class PredisEventQueue implements EventQueueInterface
     {
         $value = $this->serializer->normalize($event, self::FORMAT);
 
-        return (bool)$this->client->lpush(self::SET_KEY, [$value]);
+        return (bool) $this->client->lpush(self::SET_KEY, [$value]);
     }
 
     /**
