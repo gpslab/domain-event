@@ -26,6 +26,10 @@ matrix:
           env: SYMFONY_VERSION=2.8.*
         - php: 5.5
           env: SYMFONY_VERSION=3.0.*
+        - php: 5.5
+          env: PREDIS_VERSION=1.0.*
+        - php: 5.5
+          env: PREDIS_VERSION=1.1.*
     allow_failures:
         - php: hhvm
 
@@ -37,6 +41,7 @@ before_install:
 
 before_script:
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
+    - if [ "PREDIS_VERSION" != "" ]; then composer require "predis/predis:${PREDIS_VERSION}" --dev --no-update; fi;
     - composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 script:
