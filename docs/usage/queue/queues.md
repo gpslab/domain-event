@@ -18,8 +18,8 @@ You can create your own queue service by implementing the interface `EventQueueI
 [Symfony Serializer](http://symfony.com/doc/current/components/serializer.html) for serialize events and store its in
 Redis.
 
-> **Important!** If the event failed to deserialize when it was received from the queue, it is placed at the end of the
-> queue and an error message is written to the log.
+> **Warning!**  If the event failed to deserialize, when it was received from the queue, it is placed at the end of
+> the queue and error message is written to the log.
 
 To store all events, used the [List](https://redis.io/topics/data-types-intro#redis-lists) data type.
 
