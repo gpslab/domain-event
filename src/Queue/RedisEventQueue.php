@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class RedisEventQueue implements EventQueueInterface
 {
-    const LIST_KEY = 'events';
+    const SET_KEY = 'events';
     const FORMAT = 'redis';
 
     /**
@@ -57,7 +57,7 @@ class RedisEventQueue implements EventQueueInterface
     {
         $value = $this->serializer->normalize($event, self::FORMAT);
 
-        return (bool)$this->client->lpush(self::LIST_KEY, [$value]);
+        return (bool)$this->client->lpush(self::SET_KEY, [$value]);
     }
 
     /**
@@ -67,7 +67,7 @@ class RedisEventQueue implements EventQueueInterface
      */
     public function pop()
     {
-        $value = $this->client->lpop(self::LIST_KEY);
+        $value = $this->client->lpop(self::SET_KEY);
 
         if (!$value) {
             return null;
@@ -81,7 +81,7 @@ class RedisEventQueue implements EventQueueInterface
             $this->logger->critical('Failed denormalize a event in the Redis queue', [$value, $e->getMessage()]);
 
             // try denormalize in later
-            $this->client->rpush(self::LIST_KEY, [$value]);
+            $this->client->rpush(self::SET_KEY, [$value]);
 
             return null;
         }
