@@ -102,7 +102,7 @@ class SendEmailOnPurchaseOrderEvents extends AbstractSwitchListener
         $this->mailer = $mailer;
     }
 
-    public function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
@@ -111,7 +111,7 @@ class SendEmailOnPurchaseOrderEvents extends AbstractSwitchListener
         ));
     }
 
-    public function handlePurchaseOrderApproved(PurchaseOrderApprovedEvent $event)
+    protected function handlePurchaseOrderApproved(PurchaseOrderApprovedEvent $event)
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order approved at %s for customer #%s',
@@ -138,7 +138,7 @@ class LogPurchaseOrderEvents extends AbstractSwitchListener
         $this->logger = $logger;
     }
 
-    public function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->logger->info(sprintf(
             'Purchase order created at %s for customer #%s',
@@ -147,7 +147,7 @@ class LogPurchaseOrderEvents extends AbstractSwitchListener
         ));
     }
 
-    public function handlePurchaseOrderApproved(PurchaseOrderApprovedEvent $event)
+    protected function handlePurchaseOrderApproved(PurchaseOrderApprovedEvent $event)
     {
         $this->logger->info(sprintf(
             'Purchase order approved at %s for customer #%s',
@@ -158,4 +158,4 @@ class LogPurchaseOrderEvents extends AbstractSwitchListener
 }
 ```
 
-This approach is simpler and more informative.
+This approach is simpler and more informative. Also, we can use `protected` access for event handlers in this case.
