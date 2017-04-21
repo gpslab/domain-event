@@ -115,22 +115,25 @@ class ContainerAwareLocator implements LocatorInterface
      */
     protected function lazyLoad($event_name)
     {
-        if (isset($this->listener_ids[$event_name])) {
-            foreach ($this->listener_ids[$event_name] as $service_id) {
-                $listener = $this->container->get($service_id);
+        if (!isset($this->listener_ids[$event_name])) {
+            return;
+        }
 
-                if ($listener instanceof ListenerInterface) {
-                    if (!isset($this->listener_loaded[$event_name][$service_id]) ||
-                        $listener !== $this->listener_loaded[$event_name][$service_id]
-                    ) {
-                        $this->listener_loaded[$event_name][$service_id] = $listener;
+        foreach ($this->listener_ids[$event_name] as $service_id) {
+            $listener = $this->container->get($service_id);
 
-                        // rebuild listener collection
-                        $this->listeners[$event_name] = new ListenerCollection(array_values(
-                            $this->listener_loaded[$event_name]
-                        ));
-                    }
-                }
+            if ($listener instanceof ListenerInterface &&
+                (
+                    !isset($this->listener_loaded[$event_name][$service_id]) ||
+                    $listener !== $this->listener_loaded[$event_name][$service_id]
+                )
+            ) {
+                $this->listener_loaded[$event_name][$service_id] = $listener;
+
+                // rebuild listener collection
+                $this->listeners[$event_name] = new ListenerCollection(array_values(
+                    $this->listener_loaded[$event_name]
+                ));
             }
         }
     }
