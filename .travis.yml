@@ -41,7 +41,7 @@ before_install:
 
 before_script:
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
-    - if [ "PREDIS_VERSION" != "" ]; then composer require "predis/predis:${PREDIS_VERSION}" --dev --no-update; fi;
+    - if [ "$PREDIS_VERSION" != "" ]; then composer require "predis/predis:${PREDIS_VERSION}" --dev --no-update; fi;
     - composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 script:
