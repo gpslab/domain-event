@@ -134,4 +134,5 @@ $bus->pullAndPublish($purchase_order);
       * [Container aware locator](docs/usage/listener/locator/container_aware.md)
   * Queue
     * [Queue event bus](docs/usage/queue/bus.md)
+    * [Queues](docs/usage/queue/queues.md)
 * [License](docs/license.md)
