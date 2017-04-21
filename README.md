@@ -132,4 +132,6 @@ $bus->pullAndPublish($purchase_order);
       * [Event class last part locator](docs/usage/listener/locator/event_class_last_part.md)
       * [Named event locator](docs/usage/listener/locator/named_event.md)
       * [Container aware locator](docs/usage/listener/locator/container_aware.md)
+  * Queue
+    * [Queue event bus](docs/usage/queue/bus.md)
 * [License](docs/license.md)
