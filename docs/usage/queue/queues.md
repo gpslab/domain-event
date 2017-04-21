@@ -82,7 +82,7 @@ class PurchaseOrderCreatedEventSerializer implements NormalizerInterface, Denorm
             throw new UnexpectedValueException();
         }
 
-        return new PurchaseOrderCreated($customer, new \DateTime($match['create_at']));
+        return new PurchaseOrderCreatedEvent($customer, new \DateTime($match['create_at']));
     }
 
     public function supportsDenormalization($data, $type, $format = null)
