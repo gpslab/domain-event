@@ -57,7 +57,7 @@ class PredisUniqueEventQueue implements EventQueueInterface
     {
         $value = $this->serializer->normalize($event, self::FORMAT);
 
-        return (bool)$this->client->sadd(self::SET_KEY, [$value]);
+        return (bool) $this->client->sadd(self::SET_KEY, [$value]);
     }
 
     /**
