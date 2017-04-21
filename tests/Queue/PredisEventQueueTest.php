@@ -10,15 +10,15 @@
 namespace GpsLab\Domain\Event\Tests\Queue;
 
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Queue\RedisEventQueue;
+use GpsLab\Domain\Event\Queue\PredisEventQueue;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
-class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
+class PredisEventQueueTest extends \PHPUnit_Framework_TestCase
 {
     const SET_KEY = 'events';
-    const FORMAT = 'redis';
+    const FORMAT = 'predis';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Client
@@ -36,7 +36,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
     private $logger;
 
     /**
-     * @var RedisEventQueue
+     * @var PredisEventQueue
      */
     private $queue;
 
@@ -46,7 +46,7 @@ class RedisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
 
-        $this->queue = new RedisEventQueue($this->client, $this->serializer, $this->logger);
+        $this->queue = new PredisEventQueue($this->client, $this->serializer, $this->logger);
 
         parent::setUp();
     }

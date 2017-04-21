@@ -14,10 +14,10 @@ use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
-class RedisUniqueEventQueue implements EventQueueInterface
+class PredisEventQueue implements EventQueueInterface
 {
-    const SET_KEY = 'unique_events';
-    const FORMAT = 'redis';
+    const SET_KEY = 'events';
+    const FORMAT = 'predis';
 
     /**
      * @var Client
@@ -57,7 +57,7 @@ class RedisUniqueEventQueue implements EventQueueInterface
     {
         $value = $this->serializer->normalize($event, self::FORMAT);
 
-        return (bool)$this->client->sadd(self::SET_KEY, [$value]);
+        return (bool)$this->client->lpush(self::SET_KEY, [$value]);
     }
 
     /**
@@ -67,7 +67,7 @@ class RedisUniqueEventQueue implements EventQueueInterface
      */
     public function pop()
     {
-        $value = $this->client->spop(self::SET_KEY);
+        $value = $this->client->lpop(self::SET_KEY);
 
         if (!$value) {
             return null;
@@ -81,7 +81,7 @@ class RedisUniqueEventQueue implements EventQueueInterface
             $this->logger->critical('Failed denormalize a event in the Redis queue', [$value, $e->getMessage()]);
 
             // try denormalize in later
-            $this->client->sadd(self::SET_KEY, [$value]);
+            $this->client->rpush(self::SET_KEY, [$value]);
 
             return null;
         }
