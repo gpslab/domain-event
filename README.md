@@ -12,6 +12,14 @@ Domain event
 
 Library to create the domain layer of your **DDD** application
 
+## Installation
+
+Pretty simple with [Composer](http://packagist.org), run:
+
+```sh
+composer require gpslab/domain-event
+```
+
 ## Base usage
 
 Create a domain event
@@ -120,19 +128,20 @@ $bus->pullAndPublish($purchase_order);
 
 ## Documentation
 
-* [Installation](docs/installation.md)
-* Usage
-  * [Base usage](docs/usage/base.md)
-  * [Raise events in self](docs/usage/raise_in_self.md)
-  * Listener
-    * [Switch listener](docs/usage/listener/switch.md)
-    * Locator
-      * [Voter locator](docs/usage/listener/locator/voter.md)
-      * [Event class locator](docs/usage/listener/locator/event_class.md)
-      * [Event class last part locator](docs/usage/listener/locator/event_class_last_part.md)
-      * [Named event locator](docs/usage/listener/locator/named_event.md)
-      * [Container aware locator](docs/usage/listener/locator/container_aware.md)
-  * Queue
-    * [Queue event bus](docs/usage/queue/bus.md)
-    * [Queues](docs/usage/queue/queues.md)
-* [License](docs/license.md)
+* [Base usage](docs/base.md)
+* [Raise events in self](docs/raise_in_self.md)
+* Listener
+* [Switch listener](docs/listener/switch.md)
+* Locator
+  * [Voter locator](docs/listener/locator/voter.md)
+  * [Event class locator](docs/listener/locator/event_class.md)
+  * [Event class last part locator](docs/listener/locator/event_class_last_part.md)
+  * [Named event locator](docs/listener/locator/named_event.md)
+  * [Container aware locator](docs/listener/locator/container_aware.md)
+* Queue
+* [Queue event bus](docs/queue/bus.md)
+* [Queues](docs/queue/queues.md)
+
+## License
+
+This bundle is under the [MIT license](http://opensource.org/licenses/MIT). See the complete license in the file: LICENSE
