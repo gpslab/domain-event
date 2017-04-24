@@ -39,7 +39,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      * You can not modify what happened. The only thing that you can do is create another event to compensate.
      * You do not obliged to listen this event and are not required to create this method.
      */
-    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
     }
@@ -78,7 +78,7 @@ final class PurchaseOrder implements AggregateEventsInterface
         $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
     }
 
-    public function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->customer_id = $event->getCustomer()->getId();
     }

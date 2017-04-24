@@ -88,7 +88,6 @@ $locator->register('PurchaseOrderApproved', new LogPurchaseOrderEvents(/* $logge
 
 To get rid of unnecessary conditions in the handler, you can use the switch:
 
-
 ```php
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\AbstractSwitchListener;
@@ -159,3 +158,43 @@ class LogPurchaseOrderEvents extends AbstractSwitchListener
 ```
 
 This approach is simpler and more informative. Also, we can use `protected` access for event handlers in this case.
+
+## Traits
+
+You can use [Traits](http://php.net/manual/en/language.oop5.traits.php) for switch your event handle:
+
+```php
+use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
+use GpsLab\Domain\Event\Listener\SwitchListenerTrait;
+
+class SendEmailOnPurchaseOrderEvents implements ListenerInterface
+{
+    use SwitchListenerTrait;
+
+    private $mailer;
+
+    public function __construct($mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    protected function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    {
+        $this->mailer->send('recipient@example.com', sprintf(
+            'Purchase order created at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
+    }
+
+    protected function handlePurchaseOrderApproved(PurchaseOrderApprovedEvent $event)
+    {
+        $this->mailer->send('recipient@example.com', sprintf(
+            'Purchase order approved at %s for customer #%s',
+            $event->getCreateAt()->format('Y-m-d'),
+            $event->getCustomer()->getId()
+        ));
+    }
+}
+```
