@@ -19,12 +19,7 @@ trait SwitchListenerTrait
      */
     public function handle(EventInterface $event)
     {
-        $method = $this->getMethodNameFromEvent($event);
-
-        // if method is not exists is not a critical error
-        if (method_exists($this, $method)) {
-            call_user_func([$this, $method], $event);
-        }
+        call_user_func([$this, $this->getMethodNameFromEvent($event)], $event);
     }
 
     /**
