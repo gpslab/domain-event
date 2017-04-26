@@ -39,6 +39,6 @@ class MemoryEventQueue implements EventQueueInterface
      */
     public function pop()
     {
-        return array_pop($this->events);
+        return array_shift($this->events);
     }
 }
