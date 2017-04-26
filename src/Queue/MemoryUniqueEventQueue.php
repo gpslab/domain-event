@@ -27,11 +27,13 @@ class MemoryUniqueEventQueue implements EventQueueInterface
      */
     public function push(EventInterface $event)
     {
-        if (in_array($event, $this->events)) {
-            return false;
-        }
+        $index = array_search($event, $this->events);
 
-        $this->events[] = $event;
+        if ($index !== false) {
+            $this->events[$index] = $event; // override exists event
+        } else {
+            $this->events[] = $event;
+        }
 
         return true;
     }
