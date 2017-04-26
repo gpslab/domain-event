@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 {
-    const SET_KEY = 'unique_events';
+    const LIST_KEY = 'unique_events';
     const FORMAT = 'predis';
 
     /**
@@ -66,9 +66,14 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->client
-            ->expects($this->once())
+            ->expects($this->at(0))
             ->method('__call')
-            ->with('sadd', [self::SET_KEY, [$normalize]])
+            ->with('lrem', [self::LIST_KEY, 0, $normalize])
+        ;
+        $this->client
+            ->expects($this->at(1))
+            ->method('__call')
+            ->with('rpush', [self::LIST_KEY, [$normalize]])
             ->will($this->returnValue(1))
         ;
 
@@ -80,7 +85,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('spop', [self::SET_KEY])
+            ->with('lpop', [self::LIST_KEY])
             ->will($this->returnValue(null))
         ;
 
@@ -107,7 +112,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('spop', [self::SET_KEY])
+            ->with('lpop', [self::LIST_KEY])
             ->will($this->returnValue($normalize))
         ;
 
@@ -134,13 +139,13 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('spop', [self::SET_KEY])
+            ->with('lpop', [self::LIST_KEY])
             ->will($this->returnValue($normalize))
         ;
         $this->client
             ->expects($this->at(1))
             ->method('__call')
-            ->with('sadd', [self::SET_KEY, [$normalize]])
+            ->with('rpush', [self::LIST_KEY, [$normalize]])
         ;
 
         $this->serializer

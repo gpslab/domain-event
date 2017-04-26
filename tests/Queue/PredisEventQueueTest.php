@@ -68,7 +68,7 @@ class PredisEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpush', [self::SET_KEY, [$normalize]])
+            ->with('rpush', [self::SET_KEY, [$normalize]])
             ->will($this->returnValue(1))
         ;
 

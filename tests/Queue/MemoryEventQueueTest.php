@@ -32,8 +32,8 @@ class MemoryEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->queue->push($event1));
         $this->assertTrue($this->queue->push($event2));
-        $this->assertEquals($event2, $this->queue->pop());
         $this->assertEquals($event1, $this->queue->pop());
+        $this->assertEquals($event2, $this->queue->pop());
         $this->assertNull($this->queue->pop());
     }
 }
