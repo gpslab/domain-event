@@ -14,16 +14,16 @@ You can create your own queue service by implementing the interface `EventQueueI
 
 ## Redis event queue
 
-`PredisEventQueue` and `PredisUniqueEventQueue` using [predis/predis](https://packagist.org/packages/predis/predis) for access to Redis and
-[Symfony Serializer](http://symfony.com/doc/current/components/serializer.html) for serialize events and store its in
-Redis.
+`PredisEventQueue` and `PredisUniqueEventQueue` using [predis/predis](https://packagist.org/packages/predis/predis) for
+access to Redis and [Symfony Serializer](http://symfony.com/doc/current/components/serializer.html) for serialize
+events and store its in Redis.
 
-> **Warning!**  If the event failed to deserialize, when it was received from the queue, it is placed at the end of
-> the queue and error message is written to the log.
+> **Warning**
+>
+> If the event failed to deserialize, when it was received from the queue, it is placed at the end of the queue and
+> error message is written to the log.
 
-To store all events, used the [List](https://redis.io/topics/data-types-intro#redis-lists) data type.
-
-To store unique events, used the [Set](https://redis.io/topics/data-types-intro#redis-sets) data type.
+To store events, used the [List](https://redis.io/topics/data-types-intro#redis-lists) data type.
 
 ## Example event serializer
 
