@@ -4,6 +4,13 @@
     "type": "library",
     "homepage": "https://github.com/gpslab/domain-event",
     "description": "Tools to create the domain layer of your DDD application",
+    "keywords": [
+        "infrastructure",
+        "ddd",
+        "domain-event",
+        "predis",
+        "symfony"
+    ],
     "autoload": {
         "psr-4": {
             "GpsLab\\Domain\\Event\\": "src/"
