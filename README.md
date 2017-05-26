@@ -36,7 +36,7 @@ final class PurchaseOrderCreatedEvent implements EventInterface
     public function __construct(Customer $customer, \DateTimeImmutable $create_at)
     {
         $this->customer = $customer;
-        $this->create_at = clone $create_at;
+        $this->create_at = $create_at;
     }
 
     public function getCustomer()
@@ -143,6 +143,8 @@ $bus->pullAndPublish($purchase_order);
   * [Queues](docs/queue/queues.md)
 * Frameworks
   * [Symfony bundle](https://github.com/gpslab/domain-event-bundle)
+* [Middleware](https://github.com/gpslab/middleware)
+* [Payload](https://github.com/gpslab/payload)
 
 ## License
 
