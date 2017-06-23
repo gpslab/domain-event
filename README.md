@@ -5,7 +5,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/gpslab/domain-event.svg?maxAge=3600)](https://scrutinizer-ci.com/g/gpslab/domain-event/?branch=master)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/9c7460e6-51b0-4cc3-9e4c-47066634017b.svg?maxAge=3600&label=SLInsight)](https://insight.sensiolabs.com/projects/9c7460e6-51b0-4cc3-9e4c-47066634017b)
 [![StyleCI](https://styleci.io/repos/69552555/shield?branch=master)](https://styleci.io/repos/69552555)
-[![License](https://img.shields.io/github/license/gpslab/domain-event.svg?maxAge=3600)](https://github.com/gpslab/domain-event)
+[![License](https://img.shields.io/packagist/l/gpslab/domain-event.svg?maxAge=3600)](https://github.com/gpslab/domain-event)
 
 Domain event
 ============
