@@ -15,3 +15,5 @@ UPGRADE FROM 1.x to 2.0
 * The `GpsLab\Domain\Event\Bus\EventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
+* The `GpsLab\Domain\Event\NamedEventInterface` has been removed.
+* The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` has been removed.
