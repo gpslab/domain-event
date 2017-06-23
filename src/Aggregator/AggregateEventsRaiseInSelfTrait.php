@@ -10,7 +10,6 @@
 namespace GpsLab\Domain\Event\Aggregator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
 
 trait AggregateEventsRaiseInSelfTrait
 {
@@ -63,6 +62,15 @@ trait AggregateEventsRaiseInSelfTrait
      */
     protected function getMethodNameFromEvent(Event $event)
     {
-        return 'on'.NameResolverContainer::getResolver()->getEventName($event);
+        $class = get_class($event);
+
+        if ('Event' === substr($class, -5)) {
+            $class = substr($class, 0, -5);
+        }
+
+        $class = str_replace('_', '\\', $class); // convert names for classes not in namespace
+        $parts = explode('\\', $class);
+
+        return 'on'.end($parts);
     }
 }

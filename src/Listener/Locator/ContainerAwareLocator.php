@@ -71,8 +71,6 @@ class ContainerAwareLocator implements Locator
         $event_name = $this->resolver->getEventName($event);
         $this->lazyLoad($event_name);
 
-        $event_name = $this->resolver->getEventName($event);
-
         if (isset($this->listeners[$event_name])) {
             return $this->listeners[$event_name];
         } else {

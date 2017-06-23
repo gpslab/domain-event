@@ -1,6 +1,10 @@
 UPGRADE FROM 1.x to 2.0
 =======================
 
+## AggregateEventsRaiseInSelf
+
+Not use `NameResolver` for get the handle method name from event for handle it.
+
 ## Renamed
 
 * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus`.
