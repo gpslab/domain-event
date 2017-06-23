@@ -87,7 +87,7 @@ $locator = new NamedEventLocator($resolver);
 $locator->register('PurchaseOrderCreated', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // then the event bus
-$bus = new EventBus($locator);
+$bus = new HandlerLocatedEventBus($locator);
 
 // do what you need to do on your Domain
 $purchase_order = new PurchaseOrder(new Customer(1));
