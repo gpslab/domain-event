@@ -15,7 +15,7 @@ use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
 
-class HandlerLocatedEventBus implements EventBusInterface
+class HandlerLocatedEventBus implements EventBus
 {
     /**
      * @var LocatorInterface

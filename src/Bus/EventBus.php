@@ -14,7 +14,7 @@ use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 
-interface EventBusInterface
+interface EventBus
 {
     /**
      * @param EventInterface $event
