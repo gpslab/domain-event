@@ -84,29 +84,4 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->bus->pullAndPublish($aggregator);
     }
-
-    public function testPublishFromQueue()
-    {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
-        $event = $this->getMock(Event::class);
-
-        $this->queue
-            ->expects($this->at(0))
-            ->method('pop')
-            ->will($this->returnValue($event))
-        ;
-        $this->queue
-            ->expects($this->at(1))
-            ->method('pop')
-            ->will($this->returnValue(null))
-        ;
-
-        $this->publisher_bus
-            ->expects($this->once())
-            ->method('publish')
-            ->with($event)
-        ;
-
-        $this->bus->publishFromQueue();
-    }
 }

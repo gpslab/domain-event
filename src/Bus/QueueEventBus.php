@@ -54,20 +54,4 @@ class QueueEventBus implements EventBus
             $this->publish($event);
         }
     }
-
-    /**
-     * Publishes the events from event queue to the publisher bus.
-     */
-    public function publishFromQueue()
-    {
-        while (true) {
-            $event = $this->queue->pop();
-
-            if (!($event instanceof Event)) { // it's a end of queue
-                break;
-            }
-
-            $this->publisher_bus->publish($event);
-        }
-    }
 }

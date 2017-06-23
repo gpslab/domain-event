@@ -44,6 +44,7 @@ queue is changed.
 * The `GpsLab\Domain\Event\Bus\EventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
+* The `GpsLab\Domain\Event\Bus\QueueEventBus::publishFromQueue()` has been removed.
 
 ## Renamed constants
 
