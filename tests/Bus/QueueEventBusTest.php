@@ -109,17 +109,4 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->bus->publishFromQueue();
     }
-
-    public function testGetRegisteredEventListeners()
-    {
-        $expected = ['foo'];
-
-        $this->publisher_bus
-            ->expects($this->once())
-            ->method('getRegisteredEventListeners')
-            ->will($this->returnValue($expected))
-        ;
-
-        $this->assertEquals($expected, $this->bus->getRegisteredEventListeners());
-    }
 }

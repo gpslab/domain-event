@@ -98,18 +98,4 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->bus->pullAndPublish($aggregator);
     }
-
-    public function testGetRegisteredEventListeners()
-    {
-        $listeners = [
-            $this->getMock(ListenerInterface::class),
-        ];
-
-        $this->locator
-            ->expects($this->once())
-            ->method('getRegisteredEventListeners')
-            ->will($this->returnValue($listeners));
-
-        $this->assertEquals($listeners, $this->bus->getRegisteredEventListeners());
-    }
 }

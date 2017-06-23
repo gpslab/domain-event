@@ -11,8 +11,6 @@ namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Queue\EventQueueInterface;
 
 class QueueEventBus implements EventBus
@@ -71,13 +69,5 @@ class QueueEventBus implements EventBus
 
             $this->publisher_bus->publish($event);
         }
-    }
-
-    /**
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        return $this->publisher_bus->getRegisteredEventListeners();
     }
 }
