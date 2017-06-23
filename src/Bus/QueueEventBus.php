@@ -74,6 +74,8 @@ class QueueEventBus implements EventBusInterface
     }
 
     /**
+     * @deprecated It will be removed in 2.0.
+     *
      * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()

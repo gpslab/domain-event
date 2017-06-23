@@ -71,8 +71,6 @@ class ContainerAwareLocator implements LocatorInterface
         $event_name = $this->resolver->getEventName($event);
         $this->lazyLoad($event_name);
 
-        $event_name = $this->resolver->getEventName($event);
-
         if (isset($this->listeners[$event_name])) {
             return $this->listeners[$event_name];
         } else {
@@ -94,6 +92,8 @@ class ContainerAwareLocator implements LocatorInterface
     }
 
     /**
+     * @deprecated It will be removed in 2.0.
+     *
      * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners()

@@ -30,6 +30,8 @@ interface EventBusInterface
      * Get the list of every EventListener defined in the EventBus.
      * This might be useful for debug.
      *
+     * @deprecated It will be removed in 2.0.
+     *
      * @return ListenerInterface[]|ListenerCollection
      */
     public function getRegisteredEventListeners();
