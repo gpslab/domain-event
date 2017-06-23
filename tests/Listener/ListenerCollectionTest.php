@@ -24,19 +24,6 @@ class ListenerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->collection = new ListenerCollection();
     }
 
-    public function testTryAddBadListenersInConstruct()
-    {
-        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-            $this->markTestSkipped('Impossible test in PHP >= 7.0');
-        } else {
-            $this->setExpectedException(\PHPUnit_Framework_Error::class);
-
-            new ListenerCollection([
-                new \stdClass(),
-            ]);
-        }
-    }
-
     public function testAddToCollection()
     {
         $this->assertInstanceOf(\IteratorAggregate::class, $this->collection);
