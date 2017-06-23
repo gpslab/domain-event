@@ -58,15 +58,4 @@ class AggregateEventsRaiseInSelfTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([$event1, $event2], $this->aggregator->pullEvents());
         $this->assertEquals([], $this->aggregator->pullEvents());
     }
-
-    public function testChangeEventNameResolver()
-    {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
-
-        // hide deprecated error
-        @$this->aggregator->setEventNameResolver(new FixedNameResolver('PurchaseOrderCreated'));
-        $this->aggregator->raiseEvent($event);
-        $this->assertEquals($event, $this->aggregator->getRaiseInSelfEvent());
-    }
 }

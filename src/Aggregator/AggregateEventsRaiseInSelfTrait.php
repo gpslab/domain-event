@@ -10,7 +10,6 @@
 namespace GpsLab\Domain\Event\Aggregator;
 
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
 
 trait AggregateEventsRaiseInSelfTrait
@@ -19,26 +18,6 @@ trait AggregateEventsRaiseInSelfTrait
      * @var EventInterface[]
      */
     private $events = [];
-
-    /**
-     * @deprecated It will be removed in 2.0
-     *
-     * @var EventNameResolverInterface
-     */
-    private $resolver;
-
-    /**
-     * @deprecated It will be removed in 2.0. If you want change the event name resolver, you must override getMethodNameFromEvent() method.
-     * @see AggregateEventsRaiseInSelfTrait::getMethodNameFromEvent()
-     *
-     * @param EventNameResolverInterface $resolver
-     */
-    protected function changeEventNameResolver(EventNameResolverInterface $resolver)
-    {
-        trigger_error('It will be removed in 2.0. If you want change the event name resolver, you must override getMethodNameFromEvent() method.', E_USER_DEPRECATED);
-
-        $this->resolver = $resolver;
-    }
 
     /**
      * @param EventInterface $event
@@ -84,11 +63,6 @@ trait AggregateEventsRaiseInSelfTrait
      */
     protected function getMethodNameFromEvent(EventInterface $event)
     {
-        // BC: use custom event name resolver if exists
-        if ($this->resolver instanceof EventNameResolverInterface) {
-            return 'on'.$this->resolver->getEventName($event);
-        }
-
         return 'on'.NameResolverContainer::getResolver()->getEventName($event);
     }
 }
