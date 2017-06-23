@@ -49,7 +49,7 @@ trait AggregateEventsRaiseInSelfTrait
 
         // if method is not exists is not a critical error
         if (method_exists($this, $method)) {
-            call_user_func([$this, $method], $event);
+            $this->{$method}($event);
         }
     }
 
