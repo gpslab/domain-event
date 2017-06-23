@@ -10,33 +10,33 @@
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEventsRaiseInSelf;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 class DemoAggregatorRaiseInSelf extends AbstractAggregateEventsRaiseInSelf
 {
     /**
-     * @var EventInterface
+     * @var Event
      */
     private $raise_in_self_event;
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function raiseEvent(EventInterface $event)
+    public function raiseEvent(Event $event)
     {
         $this->raise($event);
     }
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    protected function onPurchaseOrderCreated(EventInterface $event)
+    protected function onPurchaseOrderCreated(Event $event)
     {
         $this->raise_in_self_event = $event;
     }
 
     /**
-     * @return EventInterface
+     * @return Event
      */
     public function getRaiseInSelfEvent()
     {

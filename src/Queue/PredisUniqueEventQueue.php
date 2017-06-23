@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Queue;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -49,11 +49,11 @@ class PredisUniqueEventQueue implements EventQueueInterface
     /**
      * Push event to queue.
      *
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return bool
      */
-    public function push(EventInterface $event)
+    public function push(Event $event)
     {
         $value = $this->serializer->normalize($event, self::FORMAT);
 
@@ -66,7 +66,7 @@ class PredisUniqueEventQueue implements EventQueueInterface
     /**
      * Pop event from queue. Return NULL if queue is empty.
      *
-     * @return EventInterface|null
+     * @return Event|null
      */
     public function pop()
     {
@@ -77,7 +77,7 @@ class PredisUniqueEventQueue implements EventQueueInterface
         }
 
         try {
-            return $this->serializer->denormalize($value, EventInterface::class, self::FORMAT);
+            return $this->serializer->denormalize($value, Event::class, self::FORMAT);
         } catch (\Exception $e) {
             // it's a critical error
             // it is necessary to react quickly to it

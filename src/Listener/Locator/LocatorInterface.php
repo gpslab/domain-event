@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Listener\Locator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 
@@ -22,11 +22,11 @@ interface LocatorInterface
     /**
      * Get the list of every event listeners that want to be warn when the event specified in argument is published.
      *
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return ListenerInterface[]|ListenerCollection
      */
-    public function getListenersForEvent(EventInterface $event);
+    public function getListenersForEvent(Event $event);
 
     /**
      * Get the list of every EventListener.

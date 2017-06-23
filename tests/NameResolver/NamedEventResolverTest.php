@@ -9,8 +9,8 @@
 
 namespace GpsLab\Domain\Event\Tests\NameResolver;
 
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\NamedEventInterface;
+use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\NamedEvent;
 use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
 
 class NamedEventResolverTest extends \PHPUnit_Framework_TestCase
@@ -30,8 +30,8 @@ class NamedEventResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEventNameForNotNamedEvent()
     {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event Event */
+        $event = $this->getMock(Event::class);
 
         $this->resolver->getEventName($event);
     }
@@ -40,8 +40,8 @@ class NamedEventResolverTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'foo';
 
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|NamedEventInterface */
-        $event = $this->getMock(NamedEventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|NamedEvent */
+        $event = $this->getMock(NamedEvent::class);
         $event
             ->expects($this->once())
             ->method('getName')

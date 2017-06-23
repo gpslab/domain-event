@@ -11,7 +11,7 @@ namespace GpsLab\Domain\Event\Tests\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
 
@@ -35,8 +35,8 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         /* @var $listeners \PHPUnit_Framework_MockObject_MockObject[] */
         $listeners = [
@@ -64,8 +64,8 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
     {
         /* @var $events \PHPUnit_Framework_MockObject_MockObject[] */
         $events = [
-            $this->getMock(EventInterface::class),
-            $this->getMock(EventInterface::class),
+            $this->getMock(Event::class),
+            $this->getMock(Event::class),
         ];
 
         foreach ($events as $i => $event) {

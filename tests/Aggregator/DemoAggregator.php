@@ -10,14 +10,14 @@
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 class DemoAggregator extends AbstractAggregateEvents
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function raiseEvent(EventInterface $event)
+    public function raiseEvent(Event $event)
     {
         $this->raise($event);
     }

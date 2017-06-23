@@ -9,24 +9,24 @@
 
 namespace GpsLab\Domain\Event\NameResolver;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Exception\InvalidEventException;
-use GpsLab\Domain\Event\NamedEventInterface;
+use GpsLab\Domain\Event\NamedEvent;
 
 class NamedEventResolver implements EventNameResolverInterface
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return string
      */
-    public function getEventName(EventInterface $event)
+    public function getEventName(Event $event)
     {
-        if (!($event instanceof NamedEventInterface)) {
+        if (!($event instanceof NamedEvent)) {
             throw new InvalidEventException(sprintf(
                 'Event "%s" must be instance of "%s".',
                 get_class($event),
-                NamedEventInterface::class
+                NamedEvent::class
             ));
         }
 

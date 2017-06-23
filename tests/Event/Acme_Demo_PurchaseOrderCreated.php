@@ -6,8 +6,8 @@
  * @copyright Copyright (c) 2016, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT
  */
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
-class Acme_Demo_PurchaseOrderCreated implements EventInterface
+class Acme_Demo_PurchaseOrderCreated implements Event
 {
 }

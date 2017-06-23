@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Listener;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 /**
  * An event listener do some actions when a specific event is published.
@@ -17,7 +17,7 @@ use GpsLab\Domain\Event\EventInterface;
 interface ListenerInterface
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function handle(EventInterface $event);
+    public function handle(Event $event);
 }

@@ -9,8 +9,8 @@
 
 namespace GpsLab\Domain\Event\Tests\Event;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
-class PurchaseOrderCreatedEvent implements EventInterface
+class PurchaseOrderCreatedEvent implements Event
 {
 }

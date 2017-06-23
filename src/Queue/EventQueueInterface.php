@@ -9,23 +9,23 @@
 
 namespace GpsLab\Domain\Event\Queue;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 interface EventQueueInterface
 {
     /**
      * Push event to queue.
      *
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return bool
      */
-    public function push(EventInterface $event);
+    public function push(Event $event);
 
     /**
      * Pop event from queue. Return NULL if queue is empty.
      *
-     * @return EventInterface|null
+     * @return Event|null
      */
     public function pop();
 }

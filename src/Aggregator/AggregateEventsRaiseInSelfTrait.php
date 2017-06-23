@@ -9,20 +9,20 @@
 
 namespace GpsLab\Domain\Event\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
 
 trait AggregateEventsRaiseInSelfTrait
 {
     /**
-     * @var EventInterface[]
+     * @var Event[]
      */
     private $events = [];
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    private function raiseInSelf(EventInterface $event)
+    private function raiseInSelf(Event $event)
     {
         $method = $this->getMethodNameFromEvent($event);
 
@@ -33,16 +33,16 @@ trait AggregateEventsRaiseInSelfTrait
     }
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    protected function raise(EventInterface $event)
+    protected function raise(Event $event)
     {
         $this->events[] = $event;
         $this->raiseInSelf($event);
     }
 
     /**
-     * @return EventInterface[]
+     * @return Event[]
      */
     public function pullEvents()
     {
@@ -57,11 +57,11 @@ trait AggregateEventsRaiseInSelfTrait
      *
      * Override this method if you want to change algorithm to generate the handler method name.
      *
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return string
      */
-    protected function getMethodNameFromEvent(EventInterface $event)
+    protected function getMethodNameFromEvent(Event $event)
     {
         return 'on'.NameResolverContainer::getResolver()->getEventName($event);
     }

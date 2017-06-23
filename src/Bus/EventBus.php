@@ -10,14 +10,14 @@
 namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 interface EventBus
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function publish(EventInterface $event);
+    public function publish(Event $event);
 
     /**
      * @param AggregateEvents $aggregator

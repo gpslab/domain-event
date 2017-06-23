@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
@@ -42,8 +42,8 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testRegister()
     {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event Event */
+        $event = $this->getMock(Event::class);
 
         /* @var $listener1 ListenerInterface */
         $listener1 = $this->getMock(ListenerInterface::class);
@@ -94,8 +94,8 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testNoListenersForEvent()
     {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event Event */
+        $event = $this->getMock(Event::class);
 
         /* @var $listener1 ListenerInterface */
         $listener1 = $this->getMock(ListenerInterface::class);
@@ -120,8 +120,8 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testOverrideListener()
     {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event Event */
+        $event = $this->getMock(Event::class);
 
         /* @var $listener1 ListenerInterface */
         $listener1 = $this->getMock(ListenerInterface::class);

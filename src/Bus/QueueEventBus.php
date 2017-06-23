@@ -10,7 +10,7 @@
 namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\EventQueueInterface;
 
 class QueueEventBus implements EventBus
@@ -38,9 +38,9 @@ class QueueEventBus implements EventBus
     /**
      * Publishes the event $event to every EventListener that wants to.
      *
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function publish(EventInterface $event)
+    public function publish(Event $event)
     {
         $this->queue->push($event);
     }
@@ -63,7 +63,7 @@ class QueueEventBus implements EventBus
         while (true) {
             $event = $this->queue->pop();
 
-            if (!($event instanceof EventInterface)) { // it's a end of queue
+            if (!($event instanceof Event)) { // it's a end of queue
                 break;
             }
 

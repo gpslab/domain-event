@@ -15,6 +15,6 @@ namespace GpsLab\Domain\Event;
  * They are assumed be immutable objects that cannot change after instantiation.
  * Changing events can cause weird problems, so avoid this.
  */
-interface EventInterface
+interface Event
 {
 }

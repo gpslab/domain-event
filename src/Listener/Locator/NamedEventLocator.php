@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Listener\Locator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
@@ -35,11 +35,11 @@ class NamedEventLocator implements LocatorInterface
     }
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return ListenerInterface[]|ListenerCollection
      */
-    public function getListenersForEvent(EventInterface $event)
+    public function getListenersForEvent(Event $event)
     {
         $event_name = $this->resolver->getEventName($event);
 

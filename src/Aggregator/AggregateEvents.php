@@ -9,12 +9,12 @@
 
 namespace GpsLab\Domain\Event\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 interface AggregateEvents
 {
     /**
-     * @return EventInterface[]
+     * @return Event[]
      */
     public function pullEvents();
 }

@@ -12,7 +12,7 @@ namespace GpsLab\Domain\Event\Tests\Bus;
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Bus\QueueEventBus;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\EventQueueInterface;
 
 class QueueEventBusTest extends \PHPUnit_Framework_TestCase
@@ -44,8 +44,8 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $this->queue
             ->expects($this->once())
@@ -58,10 +58,10 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPullAndPublish()
     {
-        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event1 = $this->getMock(EventInterface::class);
-        /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event2 = $this->getMock(EventInterface::class);
+        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event1 = $this->getMock(Event::class);
+        /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event2 = $this->getMock(Event::class);
 
         /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
         $aggregator = $this->getMock(AggregateEvents::class);
@@ -87,8 +87,8 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPublishFromQueue()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $this->queue
             ->expects($this->at(0))

@@ -9,16 +9,16 @@
 
 namespace GpsLab\Domain\Event\NameResolver;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 class EventClassResolver implements EventNameResolverInterface
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return string
      */
-    public function getEventName(EventInterface $event)
+    public function getEventName(Event $event)
     {
         return get_class($event);
     }

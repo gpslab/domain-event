@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
 class FixedNameResolver implements EventNameResolverInterface
@@ -27,7 +27,7 @@ class FixedNameResolver implements EventNameResolverInterface
         $this->name = $name;
     }
 
-    public function getEventName(EventInterface $event)
+    public function getEventName(Event $event)
     {
         return $this->name;
     }

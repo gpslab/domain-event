@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Tests\Queue;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\PredisUniqueEventQueue;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
@@ -53,8 +53,8 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
     public function testPush()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $normalize = 'foo';
 
@@ -104,8 +104,8 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
     public function testPop()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $normalize = 'foo';
 
@@ -119,7 +119,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer
             ->expects($this->once())
             ->method('denormalize')
-            ->with($normalize, EventInterface::class, self::FORMAT)
+            ->with($normalize, Event::class, self::FORMAT)
             ->will($this->returnValue($event))
         ;
 

@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event;
 
-interface NamedEventInterface extends EventInterface
+interface NamedEvent extends Event
 {
     /**
      * @return string

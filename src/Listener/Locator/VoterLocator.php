@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Listener\Locator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\VoterListenerInterface;
@@ -22,11 +22,11 @@ class VoterLocator implements LocatorInterface
     private $listeners = [];
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return ListenerInterface[]|ListenerCollection
      */
-    public function getListenersForEvent(EventInterface $event)
+    public function getListenersForEvent(Event $event)
     {
         $listeners = new ListenerCollection();
 

@@ -9,25 +9,25 @@
 
 namespace GpsLab\Domain\Event\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 trait AggregateEventsTrait
 {
     /**
-     * @var EventInterface[]
+     * @var Event[]
      */
     private $events = [];
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    protected function raise(EventInterface $event)
+    protected function raise(Event $event)
     {
         $this->events[] = $event;
     }
 
     /**
-     * @return EventInterface[]
+     * @return Event[]
      */
     public function pullEvents()
     {

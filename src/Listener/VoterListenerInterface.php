@@ -9,14 +9,14 @@
 
 namespace GpsLab\Domain\Event\Listener;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
 interface VoterListenerInterface extends ListenerInterface
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return bool
      */
-    public function isSupportedEvent(EventInterface $event);
+    public function isSupportedEvent(Event $event);
 }
