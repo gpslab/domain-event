@@ -3,14 +3,14 @@ UPGRADE FROM 1.x to 2.0
 
 ## AggregateEventsRaiseInSelf
 
-Not use `NameResolver` for get the handle method name from event for handle it.
+* Not use `NameResolver` for get the handle method name from event for handle it.
 
 ## MemoryUniqueEventQueue
 
-Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
+* Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
 queue is changed.
 
-## Renamed
+## Renamed interfaces
 
 * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus`.
 * The `GpsLab\Domain\Event\Bus\EventBusInterface` renamed to `GpsLab\Domain\Event\Bus\EventBus`.
@@ -19,12 +19,20 @@ queue is changed.
 * The `GpsLab\Domain\Event\Listener\Locator\LocatorInterface` renamed to `GpsLab\Domain\Event\Listener\Locator\Locator`.
 * The `GpsLab\Domain\Event\Queue\EventQueueInterface` renamed to `GpsLab\Domain\Event\Queue\EventQueue`.
 
-## Removed
+## Renamed constants
+
+* The `GpsLab\Domain\Event\Queue\PredisEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisEventQueue::DEFAULT_FORMAT`.
+* The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::DEFAULT_FORMAT`.
+
+## Removed classes and interfaces
 
 * The `GpsLab\Domain\Event\Bus\Bus` has been removed. Use `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus` instead.
 * The `GpsLab\Domain\Event\Bus\BusInterface` has been removed. Use `GpsLab\Domain\Event\Bus\EventBus` instead.
+* The `GpsLab\Domain\Event\NamedEventInterface` has been removed.
+* The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` has been removed.
+
+## Removed methods
+
 * The `GpsLab\Domain\Event\Bus\EventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
-* The `GpsLab\Domain\Event\NamedEventInterface` has been removed.
-* The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` has been removed.

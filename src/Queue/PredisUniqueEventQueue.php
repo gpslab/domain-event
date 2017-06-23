@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Serializer;
 class PredisUniqueEventQueue implements EventQueue
 {
     const LIST_KEY = 'unique_events';
-    const FORMAT = 'predis';
+    const DEFAULT_FORMAT = 'predis';
 
     /**
      * @var Client
@@ -55,7 +55,7 @@ class PredisUniqueEventQueue implements EventQueue
      */
     public function push(Event $event)
     {
-        $value = $this->serializer->normalize($event, self::FORMAT);
+        $value = $this->serializer->normalize($event, self::DEFAULT_FORMAT);
 
         // remove already exists value to remove duplication
         $this->client->lrem(self::LIST_KEY, 0, $value);
@@ -77,7 +77,7 @@ class PredisUniqueEventQueue implements EventQueue
         }
 
         try {
-            return $this->serializer->denormalize($value, Event::class, self::FORMAT);
+            return $this->serializer->denormalize($value, Event::class, self::DEFAULT_FORMAT);
         } catch (\Exception $e) {
             // it's a critical error
             // it is necessary to react quickly to it
