@@ -14,7 +14,7 @@ use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\VoterListenerInterface;
 
-class VoterLocator implements LocatorInterface
+class VoterLocator implements Locator
 {
     /**
      * @var VoterListenerInterface[]

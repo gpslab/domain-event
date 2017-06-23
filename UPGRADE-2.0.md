@@ -7,6 +7,7 @@ UPGRADE FROM 1.x to 2.0
 * The `GpsLab\Domain\Event\Bus\EventBusInterface` renamed to `GpsLab\Domain\Event\Bus\EventBus`.
 * The `GpsLab\Domain\Event\Aggregator\AggregateEventsInterface` renamed to `GpsLab\Domain\Event\Aggregator\AggregateEvents`.
 * The `GpsLab\Domain\Event\EventInterface` renamed to `GpsLab\Domain\Event\Event`.
+* The `GpsLab\Domain\Event\Listener\Locator\LocatorInterface` renamed to `GpsLab\Domain\Event\Listener\Locator\Locator`.
 
 ## Removed
 

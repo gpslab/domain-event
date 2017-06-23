@@ -14,7 +14,7 @@ use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
-class NamedEventLocator implements LocatorInterface
+class NamedEventLocator implements Locator
 {
     /**
      * @var ListenerCollection[]
