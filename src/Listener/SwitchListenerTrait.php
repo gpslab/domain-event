@@ -12,6 +12,10 @@ namespace GpsLab\Domain\Event\Listener;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
 
+/**
+ * @deprecated It will be removed in 2.0. In 2.0 will use the type "callable" as listener.
+ * @see http://php.net/manual/en/language.types.callable.php
+ */
 trait SwitchListenerTrait
 {
     /**
