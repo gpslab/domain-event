@@ -12,7 +12,7 @@ namespace GpsLab\Domain\Event\Queue;
 use GpsLab\Domain\Event\Event;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisEventQueue implements EventQueue
 {
@@ -24,7 +24,7 @@ class PredisEventQueue implements EventQueue
     private $client;
 
     /**
-     * @var Serializer
+     * @var SerializerInterface
      */
     private $serializer;
 
@@ -44,15 +44,15 @@ class PredisEventQueue implements EventQueue
     private $format = '';
 
     /**
-     * @param Client $client
-     * @param Serializer $serializer
-     * @param LoggerInterface $logger
+     * @param Client              $client
+     * @param SerializerInterface $serializer
+     * @param LoggerInterface     $logger
      * @param string              $queue_name
      * @param string|null         $format
      */
     public function __construct(
         Client $client,
-        Serializer $serializer,
+        SerializerInterface $serializer,
         LoggerInterface $logger,
         $queue_name,
         $format = null
@@ -73,7 +73,7 @@ class PredisEventQueue implements EventQueue
      */
     public function push(Event $event)
     {
-        $value = $this->serializer->normalize($event, $this->format);
+        $value = $this->serializer->serialize($event, $this->format);
 
         return (bool) $this->client->rpush($this->queue_name, [$value]);
     }
@@ -92,11 +92,11 @@ class PredisEventQueue implements EventQueue
         }
 
         try {
-            return $this->serializer->denormalize($value, Event::class, $this->format);
+            return $this->serializer->deserialize($value, Event::class, $this->format);
         } catch (\Exception $e) {
             // it's a critical error
             // it is necessary to react quickly to it
-            $this->logger->critical('Failed denormalize a event in the Redis queue', [$value, $e->getMessage()]);
+            $this->logger->critical('Failed deserialize a event in the Redis queue', [$value, $e->getMessage()]);
 
             // try denormalize in later
             $this->client->rpush($this->queue_name, [$value]);

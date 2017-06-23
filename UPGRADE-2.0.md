@@ -9,11 +9,17 @@ UPGRADE FROM 1.x to 2.0
 
 * Available change queue name in Redis.
 * Available change serialize format.
+* Change used method of Serializer from `normalize()` to `serialize()`.
+* Change used method of Serializer from `denormalize()` to `deserialize()`.
+* Use interface `Symfony\Component\Serializer\SerializerInterface`. Not a `Symfony\Component\Serializer\Serializer`.
 
 ## MemoryUniqueEventQueue
 
 * Available change queue name in Redis.
 * Available change serialize format.
+* Change used method of Serializer from `normalize()` to `serialize()`.
+* Change used method of Serializer from `denormalize()` to `deserialize()`.
+* Use interface `Symfony\Component\Serializer\SerializerInterface`. Not a `Symfony\Component\Serializer\Serializer`.
 * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
 queue is changed.
 

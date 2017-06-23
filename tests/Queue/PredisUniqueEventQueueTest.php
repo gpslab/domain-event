@@ -13,7 +13,7 @@ use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\PredisUniqueEventQueue;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
     private $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Serializer
+     * @var \PHPUnit_Framework_MockObject_MockObject|SerializerInterface
      */
     private $serializer;
 
@@ -40,7 +40,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->client = $this->getMock(Client::class);
-        $this->serializer = $this->getMock(Serializer::class);
+        $this->serializer = $this->getMock(SerializerInterface::class);
         $this->logger = $this->getMock(LoggerInterface::class);
 
         parent::setUp();
@@ -82,7 +82,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer
             ->expects($this->once())
-            ->method('normalize')
+            ->method('serialize')
             ->with($event, $expected_format)
             ->will($this->returnValue($normalize))
         ;
@@ -118,7 +118,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer
             ->expects($this->never())
-            ->method('denormalize')
+            ->method('deserialize')
         ;
 
         $this->logger
@@ -151,7 +151,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer
             ->expects($this->once())
-            ->method('denormalize')
+            ->method('deserialize')
             ->with($normalize, Event::class, $expected_format)
             ->will($this->returnValue($event))
         ;
@@ -188,7 +188,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->serializer
             ->expects($this->once())
-            ->method('denormalize')
+            ->method('deserialize')
             ->will($this->throwException(new \Exception($message)))
         ;
 
@@ -196,7 +196,7 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('critical')
             ->with(
-                'Failed denormalize a event in the Redis queue',
+                'Failed deserialize a event in the Redis queue',
                 [
                     $normalize,
                     $message,
