@@ -13,12 +13,12 @@ use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Bus\QueueEventBus;
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Queue\EventQueueInterface;
+use GpsLab\Domain\Event\Queue\EventQueue;
 
 class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventQueueInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventQueue
      */
     private $queue;
 
@@ -34,7 +34,7 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock(EventQueueInterface::class);
+        $this->queue = $this->getMock(EventQueue::class);
         $this->publisher_bus = $this->getMock(EventBus::class);
 
         $this->bus = new QueueEventBus($this->queue, $this->publisher_bus);

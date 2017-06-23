@@ -11,7 +11,7 @@ namespace GpsLab\Domain\Event\Queue;
 
 use GpsLab\Domain\Event\Event;
 
-class MemoryUniqueEventQueue implements EventQueueInterface
+class MemoryUniqueEventQueue implements EventQueue
 {
     /**
      * @var Event[]

@@ -14,7 +14,7 @@ use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
-class PredisUniqueEventQueue implements EventQueueInterface
+class PredisUniqueEventQueue implements EventQueue
 {
     const LIST_KEY = 'unique_events';
     const FORMAT = 'predis';

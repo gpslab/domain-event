@@ -11,7 +11,7 @@ namespace GpsLab\Domain\Event\Queue;
 
 use GpsLab\Domain\Event\Event;
 
-interface EventQueueInterface
+interface EventQueue
 {
     /**
      * Push event to queue.

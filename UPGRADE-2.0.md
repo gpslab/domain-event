@@ -12,6 +12,7 @@ Not use `NameResolver` for get the handle method name from event for handle it.
 * The `GpsLab\Domain\Event\Aggregator\AggregateEventsInterface` renamed to `GpsLab\Domain\Event\Aggregator\AggregateEvents`.
 * The `GpsLab\Domain\Event\EventInterface` renamed to `GpsLab\Domain\Event\Event`.
 * The `GpsLab\Domain\Event\Listener\Locator\LocatorInterface` renamed to `GpsLab\Domain\Event\Listener\Locator\Locator`.
+* The `GpsLab\Domain\Event\Queue\EventQueueInterface` renamed to `GpsLab\Domain\Event\Queue\EventQueue`.
 
 ## Removed
 

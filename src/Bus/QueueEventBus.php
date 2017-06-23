@@ -11,12 +11,12 @@ namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Queue\EventQueueInterface;
+use GpsLab\Domain\Event\Queue\EventQueue;
 
 class QueueEventBus implements EventBus
 {
     /**
-     * @var EventQueueInterface
+     * @var EventQueue
      */
     private $queue;
 
@@ -26,10 +26,10 @@ class QueueEventBus implements EventBus
     private $publisher_bus;
 
     /**
-     * @param EventQueueInterface $queue
+     * @param EventQueue $queue
      * @param EventBus $publisher_bus
      */
-    public function __construct(EventQueueInterface $queue, EventBus $publisher_bus)
+    public function __construct(EventQueue $queue, EventBus $publisher_bus)
     {
         $this->queue = $queue;
         $this->publisher_bus = $publisher_bus;
