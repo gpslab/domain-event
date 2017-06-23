@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
 
@@ -41,9 +41,9 @@ class HandlerLocatedEventBus implements EventBus
     }
 
     /**
-     * @param AggregateEventsInterface $aggregator
+     * @param AggregateEvents $aggregator
      */
-    public function pullAndPublish(AggregateEventsInterface $aggregator)
+    public function pullAndPublish(AggregateEvents $aggregator)
     {
         foreach ($aggregator->pullEvents() as $event) {
             $this->publish($event);

@@ -11,7 +11,7 @@ namespace GpsLab\Domain\Event\Aggregator;
 
 use GpsLab\Domain\Event\EventInterface;
 
-interface AggregateEventsInterface
+interface AggregateEvents
 {
     /**
      * @return EventInterface[]

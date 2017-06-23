@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Tests\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
 use GpsLab\Domain\Event\EventInterface;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
@@ -89,8 +89,8 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($listeners));
         }
 
-        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEventsInterface */
-        $aggregator = $this->getMock(AggregateEventsInterface::class);
+        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
+        $aggregator = $this->getMock(AggregateEvents::class);
         $aggregator
             ->expects($this->once())
             ->method('pullEvents')

@@ -4,7 +4,8 @@ UPGRADE FROM 1.x to 2.0
 ## Renamed
 
 * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus`.
-* The `GpsLab\Domain\Event\Bus\EventBusInterface` has been removed. Use `GpsLab\Domain\Event\Bus\EventBus` instead.
+* The `GpsLab\Domain\Event\Bus\EventBusInterface` renamed to `GpsLab\Domain\Event\Bus\EventBus`.
+* The `GpsLab\Domain\Event\Aggregator\AggregateEventsInterface` renamed to `GpsLab\Domain\Event\Aggregator\AggregateEvents`.
 
 ## Removed
 

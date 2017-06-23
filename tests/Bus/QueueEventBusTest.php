@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Tests\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Bus\QueueEventBus;
 use GpsLab\Domain\Event\EventInterface;
@@ -63,8 +63,8 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
         /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
         $event2 = $this->getMock(EventInterface::class);
 
-        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEventsInterface */
-        $aggregator = $this->getMock(AggregateEventsInterface::class);
+        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
+        $aggregator = $this->getMock(AggregateEvents::class);
         $aggregator
             ->expects($this->atLeastOnce())
             ->method('pullEvents')

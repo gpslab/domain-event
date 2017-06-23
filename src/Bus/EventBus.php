@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\EventInterface;
 
 interface EventBus
@@ -20,7 +20,7 @@ interface EventBus
     public function publish(EventInterface $event);
 
     /**
-     * @param AggregateEventsInterface $aggregator
+     * @param AggregateEvents $aggregator
      */
-    public function pullAndPublish(AggregateEventsInterface $aggregator);
+    public function pullAndPublish(AggregateEvents $aggregator);
 }

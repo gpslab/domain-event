@@ -9,7 +9,7 @@
 
 namespace GpsLab\Domain\Event\Aggregator;
 
-abstract class AbstractAggregateEvents implements AggregateEventsInterface
+abstract class AbstractAggregateEvents implements AggregateEvents
 {
     use AggregateEventsTrait;
 }
