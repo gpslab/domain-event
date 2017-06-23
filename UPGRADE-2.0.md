@@ -5,6 +5,11 @@ UPGRADE FROM 1.x to 2.0
 
 Not use `NameResolver` for get the handle method name from event for handle it.
 
+## MemoryUniqueEventQueue
+
+Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
+queue is changed.
+
 ## Renamed
 
 * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus`.

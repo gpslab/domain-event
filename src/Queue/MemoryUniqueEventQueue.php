@@ -29,11 +29,12 @@ class MemoryUniqueEventQueue implements EventQueue
     {
         $index = array_search($event, $this->events);
 
+        // remove exists event and push it again
         if ($index !== false) {
-            $this->events[$index] = $event; // override exists event
-        } else {
-            $this->events[] = $event;
+            unset($this->events[$index]);
         }
+
+        $this->events[] = $event;
 
         return true;
     }
