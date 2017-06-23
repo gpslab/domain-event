@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Serializer;
 
 class PredisEventQueue implements EventQueue
 {
-    const SET_KEY = 'events';
     const DEFAULT_FORMAT = 'predis';
 
     /**
@@ -35,15 +34,34 @@ class PredisEventQueue implements EventQueue
     private $logger;
 
     /**
+     * @var string
+     */
+    private $queue_name = '';
+
+    /**
+     * @var string
+     */
+    private $format = '';
+
+    /**
      * @param Client $client
      * @param Serializer $serializer
      * @param LoggerInterface $logger
+     * @param string              $queue_name
+     * @param string|null         $format
      */
-    public function __construct(Client $client, Serializer $serializer, LoggerInterface $logger)
-    {
+    public function __construct(
+        Client $client,
+        Serializer $serializer,
+        LoggerInterface $logger,
+        $queue_name,
+        $format = null
+    ) {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->logger = $logger;
+        $this->queue_name = $queue_name;
+        $this->format = $format ?: self::DEFAULT_FORMAT;
     }
 
     /**
@@ -55,9 +73,9 @@ class PredisEventQueue implements EventQueue
      */
     public function push(Event $event)
     {
-        $value = $this->serializer->normalize($event, self::DEFAULT_FORMAT);
+        $value = $this->serializer->normalize($event, $this->format);
 
-        return (bool) $this->client->rpush(self::SET_KEY, [$value]);
+        return (bool) $this->client->rpush($this->queue_name, [$value]);
     }
 
     /**
@@ -67,21 +85,21 @@ class PredisEventQueue implements EventQueue
      */
     public function pop()
     {
-        $value = $this->client->lpop(self::SET_KEY);
+        $value = $this->client->lpop($this->queue_name);
 
         if (!$value) {
             return null;
         }
 
         try {
-            return $this->serializer->denormalize($value, Event::class, self::DEFAULT_FORMAT);
+            return $this->serializer->denormalize($value, Event::class, $this->format);
         } catch (\Exception $e) {
             // it's a critical error
             // it is necessary to react quickly to it
             $this->logger->critical('Failed denormalize a event in the Redis queue', [$value, $e->getMessage()]);
 
             // try denormalize in later
-            $this->client->rpush(self::SET_KEY, [$value]);
+            $this->client->rpush($this->queue_name, [$value]);
 
             return null;
         }

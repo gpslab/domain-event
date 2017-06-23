@@ -5,8 +5,15 @@ UPGRADE FROM 1.x to 2.0
 
 * Not use `NameResolver` for get the handle method name from event for handle it.
 
+## PredisEventQueue
+
+* Available change queue name in Redis.
+* Available change serialize format.
+
 ## MemoryUniqueEventQueue
 
+* Available change queue name in Redis.
+* Available change serialize format.
 * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
 queue is changed.
 
@@ -18,11 +25,6 @@ queue is changed.
 * The `GpsLab\Domain\Event\EventInterface` renamed to `GpsLab\Domain\Event\Event`.
 * The `GpsLab\Domain\Event\Listener\Locator\LocatorInterface` renamed to `GpsLab\Domain\Event\Listener\Locator\Locator`.
 * The `GpsLab\Domain\Event\Queue\EventQueueInterface` renamed to `GpsLab\Domain\Event\Queue\EventQueue`.
-
-## Renamed constants
-
-* The `GpsLab\Domain\Event\Queue\PredisEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisEventQueue::DEFAULT_FORMAT`.
-* The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::DEFAULT_FORMAT`.
 
 ## Removed classes and interfaces
 
@@ -36,3 +38,13 @@ queue is changed.
 * The `GpsLab\Domain\Event\Bus\EventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
 * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
+
+## Renamed constants
+
+* The `GpsLab\Domain\Event\Queue\PredisEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisEventQueue::DEFAULT_FORMAT`.
+* The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::FORMAT` renamed to `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::DEFAULT_FORMAT`.
+
+## Removed constants
+
+* The `GpsLab\Domain\Event\Queue\PredisEventQueue::LIST_KEY` has been removed.
+* The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::SET_KEY` has been removed.

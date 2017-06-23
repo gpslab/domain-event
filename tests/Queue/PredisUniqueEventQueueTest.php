@@ -17,9 +17,6 @@ use Symfony\Component\Serializer\Serializer;
 
 class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
 {
-    const LIST_KEY = 'unique_events';
-    const FORMAT = 'predis';
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Client
      */
@@ -36,9 +33,9 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
     private $logger;
 
     /**
-     * @var PredisUniqueEventQueue
+     * @var string
      */
-    private $queue;
+    private $queue_name = 'unique_events';
 
     protected function setUp()
     {
@@ -46,12 +43,37 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
 
-        $this->queue = new PredisUniqueEventQueue($this->client, $this->serializer, $this->logger);
-
         parent::setUp();
     }
 
-    public function testPush()
+    /**
+     * @param string $format
+     *
+     * @return PredisUniqueEventQueue
+     */
+    private function queue($format)
+    {
+        return new PredisUniqueEventQueue($this->client, $this->serializer, $this->logger, $this->queue_name, $format);
+    }
+
+    /**
+     * @return array
+     */
+    public function formats()
+    {
+        return [
+            [null, 'predis'],
+            ['json', 'json'],
+        ];
+    }
+
+    /**
+     * @dataProvider formats
+     *
+     * @param string $format
+     * @param string $expected_format
+     */
+    public function testPush($format, $expected_format)
     {
         /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
         $event = $this->getMock(Event::class);
@@ -61,31 +83,36 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer
             ->expects($this->once())
             ->method('normalize')
-            ->with($event, self::FORMAT)
+            ->with($event, $expected_format)
             ->will($this->returnValue($normalize))
         ;
 
         $this->client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('lrem', [self::LIST_KEY, 0, $normalize])
+            ->with('lrem', [$this->queue_name, 0, $normalize])
         ;
         $this->client
             ->expects($this->at(1))
             ->method('__call')
-            ->with('rpush', [self::LIST_KEY, [$normalize]])
+            ->with('rpush', [$this->queue_name, [$normalize]])
             ->will($this->returnValue(1))
         ;
 
-        $this->assertTrue($this->queue->push($event));
+        $this->assertTrue($this->queue($format)->push($event));
     }
 
-    public function testPopIsEmptyQueue()
+    /**
+     * @dataProvider formats
+     *
+     * @param string $format
+     */
+    public function testPopIsEmptyQueue($format)
     {
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpop', [self::LIST_KEY])
+            ->with('lpop', [$this->queue_name])
             ->will($this->returnValue(null))
         ;
 
@@ -99,10 +126,16 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
             ->method('critical')
         ;
 
-        $this->assertNull($this->queue->pop());
+        $this->assertNull($this->queue($format)->pop());
     }
 
-    public function testPop()
+    /**
+     * @dataProvider formats
+     *
+     * @param string $format
+     * @param string $expected_format
+     */
+    public function testPop($format, $expected_format)
     {
         /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
         $event = $this->getMock(Event::class);
@@ -112,14 +145,14 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('__call')
-            ->with('lpop', [self::LIST_KEY])
+            ->with('lpop', [$this->queue_name])
             ->will($this->returnValue($normalize))
         ;
 
         $this->serializer
             ->expects($this->once())
             ->method('denormalize')
-            ->with($normalize, Event::class, self::FORMAT)
+            ->with($normalize, Event::class, $expected_format)
             ->will($this->returnValue($event))
         ;
 
@@ -128,10 +161,15 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
             ->method('critical')
         ;
 
-        $this->assertEquals($event, $this->queue->pop());
+        $this->assertEquals($event, $this->queue($format)->pop());
     }
 
-    public function testPopFailedDenormalize()
+    /**
+     * @dataProvider formats
+     *
+     * @param string $format
+     */
+    public function testPopFailedDenormalize($format)
     {
         $normalize = 'foo';
         $message = 'bar';
@@ -139,13 +177,13 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('lpop', [self::LIST_KEY])
+            ->with('lpop', [$this->queue_name])
             ->will($this->returnValue($normalize))
         ;
         $this->client
             ->expects($this->at(1))
             ->method('__call')
-            ->with('rpush', [self::LIST_KEY, [$normalize]])
+            ->with('rpush', [$this->queue_name, [$normalize]])
         ;
 
         $this->serializer
@@ -166,6 +204,6 @@ class PredisUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
             )
         ;
 
-        $this->assertNull($this->queue->pop());
+        $this->assertNull($this->queue($format)->pop());
     }
 }
