@@ -27,7 +27,7 @@ class QueueEventBus implements EventBus
 
     /**
      * @param EventQueue $queue
-     * @param EventBus $publisher_bus
+     * @param EventBus   $publisher_bus
      */
     public function __construct(EventQueue $queue, EventBus $publisher_bus)
     {

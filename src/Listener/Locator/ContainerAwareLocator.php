@@ -44,7 +44,7 @@ class ContainerAwareLocator implements Locator
 
     /**
      * @param EventNameResolverInterface $resolver
-     * @param ContainerInterface $container
+     * @param ContainerInterface         $container
      */
     public function __construct(EventNameResolverInterface $resolver, ContainerInterface $container)
     {
@@ -79,7 +79,7 @@ class ContainerAwareLocator implements Locator
     }
 
     /**
-     * @param string $event_name
+     * @param string            $event_name
      * @param ListenerInterface $listener
      */
     public function register($event_name, ListenerInterface $listener)

@@ -51,7 +51,7 @@ class NamedEventLocator implements Locator
     }
 
     /**
-     * @param string $event_name
+     * @param string            $event_name
      * @param ListenerInterface $listener
      */
     public function register($event_name, ListenerInterface $listener)
