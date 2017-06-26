@@ -49,6 +49,8 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\NamedEventInterface` interface has been removed.
  * The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` class has been removed.
  * The `GpsLab\Domain\Event\Exception\InvalidEventException` class has been removed.
+ * The `GpsLab\Domain\Event\Listener\AbstractSwitchListener` class has been removed.
+ * The `GpsLab\Domain\Event\Listener\SwitchListenerTrait` trait has been removed.
 
 Renamed methods
 ------------------

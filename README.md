@@ -79,9 +79,9 @@ Create listener
 
 ```php
 use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\AbstractSwitchListener;
+use GpsLab\Domain\Event\Listener\ListenerInterface;
 
-class SendEmailOnPurchaseOrderCreated extends AbstractSwitchListener
+class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 {
     private $mailer;
 
@@ -90,13 +90,15 @@ class SendEmailOnPurchaseOrderCreated extends AbstractSwitchListener
         $this->mailer = $mailer;
     }
 
-    protected function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
+    public function handle(Event $event)
     {
-        $this->mailer->send('recipient@example.com', sprintf(
-            'Purchase order created at %s for customer #%s',
-            $event->getCreateAt()->format('Y-m-d'),
-            $event->getCustomer()->getId()
-        ));
+        if ($event instanceof PurchaseOrderCreatedEvent) {
+            $this->mailer->send('recipient@example.com', sprintf(
+                'Purchase order created at %s for customer #%s',
+                $event->getCreateAt()->format('Y-m-d'),
+                $event->getCustomer()->getId()
+            ));
+        }
     }
 }
 ```

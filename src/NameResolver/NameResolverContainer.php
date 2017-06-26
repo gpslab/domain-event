@@ -15,7 +15,6 @@ namespace GpsLab\Domain\Event\NameResolver;
  * It's need for not duplicate code
  *
  * @see AggregateEventsRaiseInSelfTrait::getMethodNameFromEvent()
- * @see SwitchListenerTrait::getMethodNameFromEvent()
  */
 class NameResolverContainer
 {
