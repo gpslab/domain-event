@@ -11,19 +11,19 @@ namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\Locator\Locator;
+use GpsLab\Domain\Event\Listener\Locator\EventListenerLocator;
 
 class HandlerLocatedEventBus implements EventBus
 {
     /**
-     * @var Locator
+     * @var EventListenerLocator
      */
     private $locator;
 
     /**
-     * @param Locator $locator
+     * @param EventListenerLocator $locator
      */
-    public function __construct(Locator $locator)
+    public function __construct(EventListenerLocator $locator)
     {
         $this->locator = $locator;
     }
