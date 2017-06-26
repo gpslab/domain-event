@@ -51,6 +51,8 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\Exception\InvalidEventException` class has been removed.
  * The `GpsLab\Domain\Event\Listener\AbstractSwitchListener` class has been removed.
  * The `GpsLab\Domain\Event\Listener\SwitchListenerTrait` trait has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\VoterLocator` class has been removed.
+ * The `GpsLab\Domain\Event\Listener\VoterListenerInterface` interface has been removed.
 
 Renamed methods
 ------------------
@@ -75,7 +77,6 @@ Removed methods
  * The `GpsLab\Domain\Event\Listener\Locator\Locator::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator::getRegisteredEventListeners()` has been removed.
- * The `GpsLab\Domain\Event\Listener\Locator\VoterLocator::getRegisteredEventListeners()` has been removed.
 
 Renamed constants
 -----------------
