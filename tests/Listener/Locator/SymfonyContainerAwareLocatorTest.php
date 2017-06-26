@@ -12,14 +12,14 @@ namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
+use GpsLab\Domain\Event\Listener\Locator\SymfonyContainerAwareLocator;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
+class SymfonyContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ContainerAwareLocator
+     * @var SymfonyContainerAwareLocator
      */
     private $locator;
 
@@ -37,7 +37,7 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver = $this->getMock(EventNameResolverInterface::class);
         $this->container = $this->getMock(ContainerInterface::class);
-        $this->locator = new ContainerAwareLocator($this->resolver, $this->container);
+        $this->locator = new SymfonyContainerAwareLocator($this->resolver, $this->container);
     }
 
     public function testRegister()

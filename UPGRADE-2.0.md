@@ -31,6 +31,12 @@ MemoryUniqueEventQueue
  * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
    queue is changed.
 
+Renamed classes
+------------------
+
+ * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator` renamed to
+   `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerAwareLocator`.
+
 Renamed interfaces
 ------------------
 
@@ -70,7 +76,6 @@ Renamed methods
    `GpsLab\Domain\Event\Queue\PredisEventQueue::publish()`.
  * The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::push()` renamed to
    `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::publish()`.
-
  * The `GpsLab\Domain\Event\Listener\Locator\EventListenerLocator::getListenersForEvent()` renamed to
    `GpsLab\Domain\Event\Listener\Locator\EventListenerLocator::listenersOfEvent()`.
  * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator::getListenersForEvent()` renamed to

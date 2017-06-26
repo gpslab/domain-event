@@ -97,7 +97,7 @@ $container = new Container();
 $container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // first the locator
-$locator = new ContainerAwareLocator($resolver, $container);
+$locator = new SymfonyContainerAwareLocator($resolver, $container);
 // you can use several listeners for one event and one listener for several events
 $locator->registerService(PurchaseOrderCreatedEvent::NAME, 'purchase_order.created.send_email');
 
@@ -110,7 +110,7 @@ $purchase_order = new PurchaseOrder(new Customer(1));
 // this will clear the list of event in your AggregateEvents so an Event is trigger only once
 $events = $purchase_order->pullEvents();
 
-// You can have more than one event at a time.
+// you can have more than one event at a time.
 foreach($events as $event) {
     $bus->publish($event);
 }

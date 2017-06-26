@@ -15,7 +15,7 @@ use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ContainerAwareLocator implements EventListenerLocator
+class SymfonyContainerAwareLocator implements EventListenerLocator
 {
     /**
      * @var ContainerInterface
