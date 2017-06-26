@@ -44,6 +44,15 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\NamedEventInterface` has been removed.
  * The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` has been removed.
 
+Renamed methods
+------------------
+
+ * The `GpsLab\Domain\Event\Queue\EventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\EventQueue::publish()`.
+ * The `GpsLab\Domain\Event\Queue\MemoryEventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\MemoryEventQueue::publish()`.
+ * The `GpsLab\Domain\Event\Queue\MemoryUniqueEventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\MemoryUniqueEventQueue::publish()`.
+ * The `GpsLab\Domain\Event\Queue\PredisEventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\PredisEventQueue::publish()`.
+ * The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue::publish()`.
+
 Removed methods
 ---------------
 

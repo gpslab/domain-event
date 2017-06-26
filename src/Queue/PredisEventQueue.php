@@ -65,13 +65,13 @@ class PredisEventQueue implements EventQueue
     }
 
     /**
-     * Push event to queue.
+     * Publish event to queue.
      *
      * @param Event $event
      *
      * @return bool
      */
-    public function push(Event $event)
+    public function publish(Event $event)
     {
         $value = $this->serializer->serialize($event, $this->format);
 

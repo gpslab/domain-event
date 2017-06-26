@@ -42,7 +42,7 @@ class QueueEventBus implements EventBus
      */
     public function publish(Event $event)
     {
-        $this->queue->push($event);
+        $this->queue->publish($event);
     }
 
     /**

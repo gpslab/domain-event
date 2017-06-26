@@ -14,13 +14,13 @@ use GpsLab\Domain\Event\Event;
 interface EventQueue
 {
     /**
-     * Push event to queue.
+     * Publish event to queue.
      *
      * @param Event $event
      *
      * @return bool
      */
-    public function push(Event $event);
+    public function publish(Event $event);
 
     /**
      * Pop event from queue. Return NULL if queue is empty.

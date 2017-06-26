@@ -94,7 +94,7 @@ class PredisEventQueueTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1))
         ;
 
-        $this->assertTrue($this->queue($format)->push($event));
+        $this->assertTrue($this->queue($format)->publish($event));
     }
 
     /**

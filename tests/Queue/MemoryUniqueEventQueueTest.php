@@ -30,10 +30,10 @@ class MemoryUniqueEventQueueTest extends \PHPUnit_Framework_TestCase
         $event1 = new \Acme_Demo_PurchaseOrderCreated();
         $event2 = new PurchaseOrderCreatedEvent();
 
-        $this->assertTrue($this->queue->push($event1));
-        $this->assertTrue($this->queue->push($event1));
-        $this->assertTrue($this->queue->push($event2));
-        $this->assertTrue($this->queue->push($event2));
+        $this->assertTrue($this->queue->publish($event1));
+        $this->assertTrue($this->queue->publish($event1));
+        $this->assertTrue($this->queue->publish($event2));
+        $this->assertTrue($this->queue->publish($event2));
         $this->assertEquals($event1, $this->queue->pop());
         $this->assertEquals($event2, $this->queue->pop());
         $this->assertNull($this->queue->pop());
