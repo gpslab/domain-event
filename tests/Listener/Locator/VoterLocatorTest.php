@@ -49,13 +49,6 @@ class VoterLocatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->locator->register($listener2);
 
-        // test get list event listeners
-        $this->assertInstanceOf(ListenerCollection::class, $this->locator->getRegisteredEventListeners());
-        $this->assertEquals(
-            new ListenerCollection([$listener1, $listener2]),
-            $this->locator->getRegisteredEventListeners()
-        );
-
         // test get event listeners for event
         $collection = $this->locator->getListenersForEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $collection);

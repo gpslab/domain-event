@@ -27,12 +27,4 @@ interface Locator
      * @return ListenerInterface[]|ListenerCollection
      */
     public function getListenersForEvent(Event $event);
-
-    /**
-     * Get the list of every EventListener.
-     * This might be useful for debug.
-     *
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners();
 }

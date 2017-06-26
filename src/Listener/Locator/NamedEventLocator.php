@@ -62,17 +62,4 @@ class NamedEventLocator implements Locator
 
         $this->listeners[$event_name]->add($listener);
     }
-
-    /**
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        $listeners = [];
-        foreach ($this->listeners as $listener_collection) {
-            $listeners = array_merge($listeners, (array) $listener_collection->getIterator());
-        }
-
-        return new ListenerCollection($listeners);
-    }
 }

@@ -54,11 +54,6 @@ class NamedEventLocatorTest extends \PHPUnit_Framework_TestCase
         $listener4 = $this->getMock(ListenerInterface::class);
         $this->locator->register('bar', $listener4);
 
-        // test get list event listeners
-        $listeners = $this->locator->getRegisteredEventListeners();
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection([$listener1, $listener2, $listener3, $listener4]), $listeners);
-
         $this->resolver
             ->expects($this->once())
             ->method('getEventName')

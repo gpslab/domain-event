@@ -92,23 +92,6 @@ class ContainerAwareLocator implements Locator
     }
 
     /**
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        foreach ($this->listener_ids as $event_name => $service) {
-            $this->lazyLoad($event_name);
-        }
-
-        $listeners = [];
-        foreach ($this->listeners as $listener_collection) {
-            $listeners = array_merge($listeners, (array) $listener_collection->getIterator());
-        }
-
-        return new ListenerCollection($listeners);
-    }
-
-    /**
      * @param string $event_name
      */
     protected function lazyLoad($event_name)

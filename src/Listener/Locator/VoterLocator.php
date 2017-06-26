@@ -46,12 +46,4 @@ class VoterLocator implements Locator
     {
         $this->listeners[] = $listener;
     }
-
-    /**
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        return new ListenerCollection($this->listeners);
-    }
 }

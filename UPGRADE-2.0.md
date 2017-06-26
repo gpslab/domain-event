@@ -51,6 +51,10 @@ Removed methods
  * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::publishFromQueue()` has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\Locator::getRegisteredEventListeners()` has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator::getRegisteredEventListeners()` has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator::getRegisteredEventListeners()` has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\VoterLocator::getRegisteredEventListeners()` has been removed.
 
 Renamed constants
 -----------------
