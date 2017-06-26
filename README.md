@@ -134,9 +134,8 @@ $bus->pullAndPublish($purchase_order);
 * [Raise events in self](docs/raise_in_self.md)
 * Listener
   * Locator
-    * [Event class locator](docs/listener/locator/event_class.md)
-    * [Event class last part locator](docs/listener/locator/event_class_last_part.md)
-    * [Container aware locator](docs/listener/locator/container_aware.md)
+    * [Direct binding locator](docs/listener/locator/direct_binding.md)
+    * [Symfony container locator](docs/listener/locator/symfony_container.md)
 * Queue
   * [Queue event bus](docs/queue/bus.md)
   * [Queues](docs/queue/queues.md)

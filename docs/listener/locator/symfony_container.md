@@ -1,5 +1,15 @@
-NamedEventLocator
-=================
+Symfony container aware event listener locator
+==============================================
+
+`SymfonyContainerAwareLocator` uses the `NamedEventLocator` as a base class. See how to use it:
+
+ * [Event class locator](event_class.md)
+ * [Event class last part locator](event_class_last_part.md)
+ * [Named event locator](named_event.md)
+
+## Require
+
+Require Symfony [DependencyInjection](https://symfony.com/doc/current/components/dependency_injection.html) component.
 
 ## Use last part of event class as event name
 
@@ -74,17 +84,23 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
 Create event listener bus and publish events in it
 
 ```php
-use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
+use Symfony\Component\DependencyInjection\Container;
+use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
 use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
 use GpsLab\Domain\Event\Bus\Bus;
 
 // use last part of event class as event name
 $resolver = new EventClassLastPartResolver();
 
+// registr listener service in container
+$container = new Container();
+$container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+
 // first the locator
-$locator = new NamedEventLocator($resolver);
+$locator = new SymfonyContainerAwareLocator($resolver);
+$locator->setContainer($container);
 // you can use several listeners for one event and one listener for several events
-$locator->register('PurchaseOrderCreated', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+$locator->registerService(PurchaseOrderCreatedEvent::NAME, 'purchase_order.created.send_email');
 
 // then the event bus
 $bus = new HandlerLocatedEventBus($locator);
@@ -95,7 +111,7 @@ $purchase_order = new PurchaseOrder(new Customer(1));
 // this will clear the list of event in your AggregateEvents so an Event is trigger only once
 $events = $purchase_order->pullEvents();
 
-// You can have more than one event at a time.
+// you can have more than one event at a time.
 foreach($events as $event) {
     $bus->publish($event);
 }

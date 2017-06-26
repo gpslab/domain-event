@@ -12,13 +12,13 @@ namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
+use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
-class NamedEventLocatorTest extends \PHPUnit_Framework_TestCase
+class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var NamedEventLocator
+     * @var DirectBindingEventListenerLocator
      */
     private $locator;
 
@@ -30,7 +30,7 @@ class NamedEventLocatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->resolver = $this->getMock(EventNameResolverInterface::class);
-        $this->locator = new NamedEventLocator($this->resolver);
+        $this->locator = new DirectBindingEventListenerLocator($this->resolver);
     }
 
     public function testRegister()
