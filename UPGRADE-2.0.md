@@ -16,7 +16,7 @@ PredisEventQueue
  * Use interface `Symfony\Component\Serializer\SerializerInterface`.
    Not a `Symfony\Component\Serializer\Serializer`.
 
-MemoryUniqueEventQueue
+PredisUniqueEventQueue
 ----------------------
 
  * Available change queue name in Redis.
@@ -24,6 +24,10 @@ MemoryUniqueEventQueue
  * Change used method of Serializer from `normalize()` to `serialize()`.
  * Change used method of Serializer from `denormalize()` to `deserialize()`.
  * Use interface `Symfony\Component\Serializer\SerializerInterface`. Not a `Symfony\Component\Serializer\Serializer`.
+
+MemoryUniqueEventQueue
+----------------------
+
  * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
    queue is changed.
 
