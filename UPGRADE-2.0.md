@@ -43,11 +43,12 @@ Removed classes and interfaces
 ------------------------------
 
  * The `GpsLab\Domain\Event\Bus\Bus` has been removed.
-   Use `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus` class instead.
- * The `GpsLab\Domain\Event\Bus\BusInterface` has been removed.
-   Use `GpsLab\Domain\Event\Bus\EventBus` interface instead.
- * The `GpsLab\Domain\Event\NamedEventInterface` has been removed.
- * The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` has been removed.
+   Use the `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus` class instead.
+ * The `GpsLab\Domain\Event\Bus\BusInterface` interface has been removed.
+   Use the `GpsLab\Domain\Event\Bus\EventBus` interface instead.
+ * The `GpsLab\Domain\Event\NamedEventInterface` interface has been removed.
+ * The `GpsLab\Domain\Event\NameResolver\NamedEventResolver` class has been removed.
+ * The `GpsLab\Domain\Event\Exception\InvalidEventException` class has been removed.
 
 Renamed methods
 ------------------
