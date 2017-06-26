@@ -76,6 +76,10 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\Listener\SwitchListenerTrait` trait has been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\VoterLocator` class has been removed.
  * The `GpsLab\Domain\Event\Listener\VoterListenerInterface` interface has been removed.
+ * The `GpsLab\Domain\Event\NameResolver\EventNameResolverInterface` interface has been removed.
+ * The `GpsLab\Domain\Event\NameResolver\EventClassResolver` class has been removed.
+ * The `GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver` class has been removed.
+ * The `GpsLab\Domain\Event\NameResolver\NameResolverContainer` class has been removed.
 
 Renamed methods
 ------------------

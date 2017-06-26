@@ -1,17 +1,11 @@
 Symfony container aware event listener locator
 ==============================================
 
-`SymfonyContainerEventListenerLocator` uses the `NamedEventLocator` as a base class. See how to use it:
-
- * [Event class locator](event_class.md)
- * [Event class last part locator](event_class_last_part.md)
- * [Named event locator](named_event.md)
-
 ## Require
 
 Require Symfony [DependencyInjection](https://symfony.com/doc/current/components/dependency_injection.html) component.
 
-## Use last part of event class as event name
+## Usage
 
 Create a domain event
 

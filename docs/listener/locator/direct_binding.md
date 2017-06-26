@@ -1,8 +1,6 @@
 Direct binding event listener locator
 =====================================
 
-## Use event class as event name
-
 Create a domain event
 
 ```php
