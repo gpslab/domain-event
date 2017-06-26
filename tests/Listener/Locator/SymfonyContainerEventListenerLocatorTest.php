@@ -13,7 +13,6 @@ use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
@@ -24,20 +23,14 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
     private $locator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventNameResolverInterface
-     */
-    private $resolver;
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
      */
     private $container;
 
     protected function setUp()
     {
-        $this->resolver = $this->getMock(EventNameResolverInterface::class);
         $this->container = $this->getMock(ContainerInterface::class);
-        $this->locator = new SymfonyContainerEventListenerLocator($this->resolver);
+        $this->locator = new SymfonyContainerEventListenerLocator();
         $this->locator->setContainer($this->container);
     }
 
@@ -56,11 +49,11 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
 
         /* @var $listener3 ListenerInterface */
         $listener3 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService('bar', 'domain.listener.3');
+        $this->locator->registerService(get_class($event), 'domain.listener.3');
 
         /* @var $listener4 ListenerInterface */
         $listener4 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService('bar', 'domain.listener.4');
+        $this->locator->registerService(get_class($event), 'domain.listener.4');
 
         $this->container
             ->expects($this->at(0))
@@ -73,13 +66,6 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
             ->method('get')
             ->with('domain.listener.4')
             ->will($this->returnValue($listener4))
-        ;
-
-        $this->resolver
-            ->expects($this->atLeastOnce())
-            ->method('getEventName')
-            ->with($event)
-            ->will($this->returnValue('bar'))
         ;
 
         // test get event listeners for event
@@ -103,12 +89,6 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
             ->expects($this->never())
             ->method('get');
 
-        $this->resolver
-            ->expects($this->atLeastOnce())
-            ->method('getEventName')
-            ->with($event)
-            ->will($this->returnValue('bar'));
-
         $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection(), $listeners);
@@ -121,7 +101,7 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
 
         /* @var $listener1 ListenerInterface */
         $listener1 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService('foo', 'domain.listener');
+        $this->locator->registerService(get_class($event), 'domain.listener');
 
         $this->container
             ->expects($this->at(0))
@@ -130,19 +110,13 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
             ->will($this->returnValue($listener1))
         ;
 
-        $this->resolver
-            ->expects($this->atLeastOnce())
-            ->method('getEventName')
-            ->with($event)
-            ->will($this->returnValue('foo'));
-
         $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection([$listener1]), $listeners);
 
         /* @var $listener2 ListenerInterface */
         $listener2 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService('foo', 'domain.listener');
+        $this->locator->registerService(get_class($event), 'domain.listener');
 
         $this->container
             ->expects($this->at(1))

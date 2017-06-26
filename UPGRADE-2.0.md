@@ -40,6 +40,7 @@ SymfonyContainerEventListenerLocator
 ----------------------------
 
  * Implements interface `Symfony\Component\DependencyInjection\ContainerAwareInterface`.
+ * Not used the event name resolver for find listeners of event
 
 Renamed classes
 ------------------

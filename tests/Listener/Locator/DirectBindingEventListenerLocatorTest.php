@@ -13,7 +13,6 @@ use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 
 class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,15 +21,9 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
      */
     private $locator;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventNameResolverInterface
-     */
-    private $resolver;
-
     protected function setUp()
     {
-        $this->resolver = $this->getMock(EventNameResolverInterface::class);
-        $this->locator = new DirectBindingEventListenerLocator($this->resolver);
+        $this->locator = new DirectBindingEventListenerLocator();
     }
 
     public function testRegister()
@@ -48,17 +41,11 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 
         /* @var $listener3 ListenerInterface */
         $listener3 = $this->getMock(ListenerInterface::class);
-        $this->locator->register('bar', $listener3);
+        $this->locator->register(get_class($event), $listener3);
 
         /* @var $listener4 ListenerInterface */
         $listener4 = $this->getMock(ListenerInterface::class);
-        $this->locator->register('bar', $listener4);
-
-        $this->resolver
-            ->expects($this->once())
-            ->method('getEventName')
-            ->with($event)
-            ->will($this->returnValue('bar'));
+        $this->locator->register(get_class($event), $listener4);
 
         // test get event listeners for event
         $listeners = $this->locator->listenersOfEvent($event);
@@ -78,12 +65,6 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         /* @var $listener2 ListenerInterface */
         $listener2 = $this->getMock(ListenerInterface::class);
         $this->locator->register('foo', $listener2);
-
-        $this->resolver
-            ->expects($this->once())
-            ->method('getEventName')
-            ->with($event)
-            ->will($this->returnValue('bar'));
 
         $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);

@@ -12,7 +12,6 @@ namespace GpsLab\Domain\Event\Listener\Locator;
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,11 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, EventListenerLocator
 {
     use ContainerAwareTrait;
-
-    /**
-     * @var EventNameResolverInterface
-     */
-    private $resolver;
 
     /**
      * @var ListenerCollection[]
@@ -42,14 +36,6 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
     private $listener_loaded = [];
 
     /**
-     * @param EventNameResolverInterface $resolver
-     */
-    public function __construct(EventNameResolverInterface $resolver)
-    {
-        $this->resolver = $resolver;
-    }
-
-    /**
      * @param string $event_name
      * @param string $service
      */
@@ -65,7 +51,7 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
      */
     public function listenersOfEvent(Event $event)
     {
-        $event_name = $this->resolver->getEventName($event);
+        $event_name = get_class($event);
         $this->lazyLoad($event_name);
 
         if (isset($this->listeners[$event_name])) {

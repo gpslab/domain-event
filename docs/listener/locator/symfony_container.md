@@ -86,18 +86,14 @@ Create event listener bus and publish events in it
 ```php
 use Symfony\Component\DependencyInjection\Container;
 use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
-use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
 use GpsLab\Domain\Event\Bus\Bus;
-
-// use last part of event class as event name
-$resolver = new EventClassLastPartResolver();
 
 // registr listener service in container
 $container = new Container();
 $container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // first the locator
-$locator = new SymfonyContainerEventListenerLocator($resolver);
+$locator = new SymfonyContainerEventListenerLocator();
 $locator->setContainer($container);
 // you can use several listeners for one event and one listener for several events
 $locator->registerService(PurchaseOrderCreatedEvent::NAME, 'purchase_order.created.send_email');
