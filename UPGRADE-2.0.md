@@ -40,7 +40,7 @@ Renamed classes
 ------------------
 
  * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator` renamed to
-   `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerAwareLocator`.
+   `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator`.
  * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator` renamed to
    `GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator`.
 

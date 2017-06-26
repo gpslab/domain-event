@@ -1,7 +1,7 @@
 Symfony container aware event listener locator
 ==============================================
 
-`SymfonyContainerAwareLocator` uses the `NamedEventLocator` as a base class. See how to use it:
+`SymfonyContainerEventListenerLocator` uses the `NamedEventLocator` as a base class. See how to use it:
 
  * [Event class locator](event_class.md)
  * [Event class last part locator](event_class_last_part.md)
@@ -97,7 +97,7 @@ $container = new Container();
 $container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // first the locator
-$locator = new SymfonyContainerAwareLocator($resolver);
+$locator = new SymfonyContainerEventListenerLocator($resolver);
 $locator->setContainer($container);
 // you can use several listeners for one event and one listener for several events
 $locator->registerService(PurchaseOrderCreatedEvent::NAME, 'purchase_order.created.send_email');
