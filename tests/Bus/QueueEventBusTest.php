@@ -49,7 +49,7 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->queue
             ->expects($this->once())
-            ->method('push')
+            ->method('publish')
             ->with($event)
         ;
 
@@ -73,12 +73,12 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->queue
             ->expects($this->at(0))
-            ->method('push')
+            ->method('publish')
             ->with($event1)
         ;
         $this->queue
             ->expects($this->at(1))
-            ->method('push')
+            ->method('publish')
             ->with($event2)
         ;
 
