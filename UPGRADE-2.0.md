@@ -31,7 +31,12 @@ MemoryUniqueEventQueue
  * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
    queue is changed.
 
-SymfonyContainerAwareLocator
+DirectBindingEventListenerLocator
+----------------------------
+
+ * Not used the event name resolver for find listeners of event.
+
+SymfonyContainerEventListenerLocator
 ----------------------------
 
  * Implements interface `Symfony\Component\DependencyInjection\ContainerAwareInterface`.
