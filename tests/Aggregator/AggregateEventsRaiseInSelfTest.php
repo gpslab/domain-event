@@ -10,7 +10,7 @@
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Tests\Event\PurchaseOrderCreatedEvent;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 
 class AggregateEventsRaiseInSelfTest extends \PHPUnit_Framework_TestCase
 {

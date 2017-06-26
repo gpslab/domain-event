@@ -10,7 +10,7 @@
 namespace GpsLab\Domain\Event\Tests\Queue;
 
 use GpsLab\Domain\Event\Queue\MemoryEventQueue;
-use GpsLab\Domain\Event\Tests\Event\PurchaseOrderCreatedEvent;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 
 class MemoryEventQueueTest extends \PHPUnit_Framework_TestCase
 {

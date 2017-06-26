@@ -21,7 +21,7 @@
             "GpsLab\\Domain\\Event\\Tests\\": "tests/"
         },
         "classmap": [
-            "tests/Event/Acme_Demo_PurchaseOrderCreated.php"
+            "tests/Fixture/Acme_Demo_PurchaseOrderCreated.php"
         ]
     },
     "require": {
