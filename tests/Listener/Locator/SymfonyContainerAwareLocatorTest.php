@@ -37,7 +37,8 @@ class SymfonyContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->resolver = $this->getMock(EventNameResolverInterface::class);
         $this->container = $this->getMock(ContainerInterface::class);
-        $this->locator = new SymfonyContainerAwareLocator($this->resolver, $this->container);
+        $this->locator = new SymfonyContainerAwareLocator($this->resolver);
+        $this->locator->setContainer($this->container);
     }
 
     public function testRegister()
