@@ -13,14 +13,13 @@ use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\ListenerCollection;
 use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class SymfonyContainerAwareLocator implements EventListenerLocator
+class SymfonyContainerAwareLocator implements ContainerAwareInterface, EventListenerLocator
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    use ContainerAwareTrait;
 
     /**
      * @var EventNameResolverInterface
@@ -44,11 +43,9 @@ class SymfonyContainerAwareLocator implements EventListenerLocator
 
     /**
      * @param EventNameResolverInterface $resolver
-     * @param ContainerInterface         $container
      */
-    public function __construct(EventNameResolverInterface $resolver, ContainerInterface $container)
+    public function __construct(EventNameResolverInterface $resolver)
     {
-        $this->container = $container;
         $this->resolver = $resolver;
     }
 
@@ -96,7 +93,7 @@ class SymfonyContainerAwareLocator implements EventListenerLocator
      */
     protected function lazyLoad($event_name)
     {
-        if (!isset($this->listener_ids[$event_name])) {
+        if (!($this->container instanceof ContainerInterface) || !isset($this->listener_ids[$event_name])) {
             return;
         }
 

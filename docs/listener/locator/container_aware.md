@@ -97,7 +97,8 @@ $container = new Container();
 $container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
 
 // first the locator
-$locator = new SymfonyContainerAwareLocator($resolver, $container);
+$locator = new SymfonyContainerAwareLocator($resolver);
+$locator->setContainer($container);
 // you can use several listeners for one event and one listener for several events
 $locator->registerService(PurchaseOrderCreatedEvent::NAME, 'purchase_order.created.send_email');
 
