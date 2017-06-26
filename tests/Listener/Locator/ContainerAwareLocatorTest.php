@@ -82,7 +82,7 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
         ;
 
         // test get event listeners for event
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection([$listener3, $listener4]), $listeners);
     }
@@ -108,7 +108,7 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
             ->with($event)
             ->will($this->returnValue('bar'));
 
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection(), $listeners);
     }
@@ -135,7 +135,7 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
             ->with($event)
             ->will($this->returnValue('foo'));
 
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection([$listener1]), $listeners);
 
@@ -150,7 +150,7 @@ class ContainerAwareLocatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($listener2))
         ;
 
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertEquals(new ListenerCollection([$listener2]), $listeners);
     }
 }

@@ -35,7 +35,7 @@ class HandlerLocatedEventBus implements EventBus
      */
     public function publish(Event $event)
     {
-        foreach ($this->locator->getListenersForEvent($event) as $listener) {
+        foreach ($this->locator->listenersOfEvent($event) as $listener) {
             $listener->handle($event);
         }
     }

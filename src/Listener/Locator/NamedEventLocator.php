@@ -39,7 +39,7 @@ class NamedEventLocator implements EventListenerLocator
      *
      * @return ListenerInterface[]|ListenerCollection
      */
-    public function getListenersForEvent(Event $event)
+    public function listenersOfEvent(Event $event)
     {
         $event_name = $this->resolver->getEventName($event);
 

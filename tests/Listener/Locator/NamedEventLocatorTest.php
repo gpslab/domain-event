@@ -61,7 +61,7 @@ class NamedEventLocatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('bar'));
 
         // test get event listeners for event
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection([$listener3, $listener4]), $listeners);
     }
@@ -85,7 +85,7 @@ class NamedEventLocatorTest extends \PHPUnit_Framework_TestCase
             ->with($event)
             ->will($this->returnValue('bar'));
 
-        $listeners = $this->locator->getListenersForEvent($event);
+        $listeners = $this->locator->listenersOfEvent($event);
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
         $this->assertEquals(new ListenerCollection(), $listeners);
     }

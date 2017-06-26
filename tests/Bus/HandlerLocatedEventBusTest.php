@@ -53,7 +53,7 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->locator
             ->expects($this->once())
-            ->method('getListenersForEvent')
+            ->method('listenersOfEvent')
             ->with($event)
             ->will($this->returnValue($listeners));
 
@@ -84,7 +84,7 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
             $this->locator
                 ->expects($this->at($i))
-                ->method('getListenersForEvent')
+                ->method('listenersOfEvent')
                 ->with($event)
                 ->will($this->returnValue($listeners));
         }

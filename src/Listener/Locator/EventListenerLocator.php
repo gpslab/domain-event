@@ -26,5 +26,5 @@ interface EventListenerLocator
      *
      * @return ListenerInterface[]|ListenerCollection
      */
-    public function getListenersForEvent(Event $event);
+    public function listenersOfEvent(Event $event);
 }
