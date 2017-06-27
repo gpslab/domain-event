@@ -133,6 +133,7 @@ $bus->pullAndPublish($purchase_order);
 * [Base usage](docs/base.md)
 * [Raise events in self](docs/raise_in_self.md)
 * Listener
+  * [Create listener](docs/listener.md)
   * Locator
     * [Direct binding locator](docs/listener/locator/direct_binding.md)
     * [Symfony container locator](docs/listener/locator/symfony_container.md)
