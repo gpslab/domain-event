@@ -10,9 +10,9 @@
 namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListener;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
 
 class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,43 +31,33 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        /* @var $listener1 ListenerInterface */
-        $listener1 = $this->getMock(ListenerInterface::class);
+        $listener1 = function (Event $event) {};
         $this->locator->register('foo', $listener1);
 
-        /* @var $listener2 ListenerInterface */
-        $listener2 = $this->getMock(ListenerInterface::class);
+        $listener2 = new PurchaseOrderCreatedEventListener();
         $this->locator->register('foo', $listener2);
 
-        /* @var $listener3 ListenerInterface */
-        $listener3 = $this->getMock(ListenerInterface::class);
+        $listener3 = function (Event $event) {};
         $this->locator->register(get_class($event), $listener3);
 
-        /* @var $listener4 ListenerInterface */
-        $listener4 = $this->getMock(ListenerInterface::class);
+        $listener4 = [new PurchaseOrderCompletedEventListener(), 'handle'];
         $this->locator->register(get_class($event), $listener4);
 
         // test get event listeners for event
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection([$listener3, $listener4]), $listeners);
+        $this->assertEquals([$listener3, $listener4], $this->locator->listenersOfEvent($event));
     }
 
-    public function testNoListenersForEvent()
+    public function testRegisterNoListenersForEvent()
     {
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        /* @var $listener1 ListenerInterface */
-        $listener1 = $this->getMock(ListenerInterface::class);
+        $listener1 = function (Event $event) {};
         $this->locator->register('foo', $listener1);
 
-        /* @var $listener2 ListenerInterface */
-        $listener2 = $this->getMock(ListenerInterface::class);
+        $listener2 = new PurchaseOrderCreatedEventListener();
         $this->locator->register('foo', $listener2);
 
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection(), $listeners);
+        $this->assertEquals([], $this->locator->listenersOfEvent($event));
     }
 }

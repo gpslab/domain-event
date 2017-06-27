@@ -10,8 +10,6 @@
 namespace GpsLab\Domain\Event\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,7 +19,7 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
     use ContainerAwareTrait;
 
     /**
-     * @var ListenerCollection[]
+     * @var callable[][]
      */
     private $listeners = [];
 
@@ -31,74 +29,67 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
     private $listener_ids = [];
 
     /**
-     * @var ListenerInterface[][]
-     */
-    private $listener_loaded = [];
-
-    /**
-     * @param string $event_name
-     * @param string $service
-     */
-    public function registerService($event_name, $service)
-    {
-        $this->listener_ids[$event_name][] = $service;
-    }
-
-    /**
      * @param Event $event
      *
-     * @return ListenerInterface[]|ListenerCollection
+     * @return callable[]
      */
     public function listenersOfEvent(Event $event)
     {
         $event_name = get_class($event);
         $this->lazyLoad($event_name);
 
-        if (isset($this->listeners[$event_name])) {
-            return $this->listeners[$event_name];
-        } else {
-            return new ListenerCollection();
-        }
-    }
-
-    /**
-     * @param string            $event_name
-     * @param ListenerInterface $listener
-     */
-    public function register($event_name, ListenerInterface $listener)
-    {
-        if (!isset($this->listeners[$event_name])) {
-            $this->listeners[$event_name] = new ListenerCollection();
-        }
-
-        $this->listeners[$event_name]->add($listener);
+        return array_values($this->listeners[$event_name]);
     }
 
     /**
      * @param string $event_name
+     * @param string $service
+     * @param string $method
      */
-    protected function lazyLoad($event_name)
+    public function registerService($event_name, $service, $method = '__invoke')
     {
-        if (!($this->container instanceof ContainerInterface) || !isset($this->listener_ids[$event_name])) {
-            return;
+        $this->listener_ids[$event_name][] = [$service, $method];
+    }
+
+    /**
+     * @param string $event_name
+     *
+     * @return callable[]
+     */
+    private function lazyLoad($event_name)
+    {
+        if (!isset($this->listeners[$event_name])) {
+            $this->listeners[$event_name] = [];
         }
 
-        foreach ($this->listener_ids[$event_name] as $service_id) {
-            $listener = $this->container->get($service_id);
+        if ($this->container instanceof ContainerInterface && isset($this->listener_ids[$event_name])) {
+            foreach ($this->listener_ids[$event_name] as $args) {
+                list($service, $method) = $args;
+                $listener = $this->resolve($this->container->get($service), $method);
 
-            if ($listener instanceof ListenerInterface &&
-                (
-                    !isset($this->listener_loaded[$event_name][$service_id]) ||
-                    $listener !== $this->listener_loaded[$event_name][$service_id]
-                )
-            ) {
-                $this->listener_loaded[$event_name][$service_id] = $listener;
-
-                // rebuild listener collection
-                $this->listeners[$event_name] = new ListenerCollection(array_values(
-                    $this->listener_loaded[$event_name]
-                ));
+                if ($listener) {
+                    $this->listeners[$event_name][$service] = $listener;
+                }
             }
         }
+    }
+
+    /**
+     * @param mixed  $service
+     * @param string $method
+     *
+     * @return callable|null
+     */
+    private function resolve($service, $method)
+    {
+        if (is_callable($service)) {
+            return $service;
+        }
+
+        if (is_callable([$service, $method])) {
+            return [$service, $method];
+        }
+
+        return null;
     }
 }

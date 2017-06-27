@@ -10,9 +10,9 @@
 namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListener;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
@@ -31,76 +31,79 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
     {
         $this->container = $this->getMock(ContainerInterface::class);
         $this->locator = new SymfonyContainerEventListenerLocator();
+    }
+
+    private function setContainer()
+    {
         $this->locator->setContainer($this->container);
     }
 
-    public function testRegister()
+    public function testRegisterService()
     {
+        $this->setContainer();
+
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        /* @var $listener1 ListenerInterface */
-        $listener1 = $this->getMock(ListenerInterface::class);
-        $this->locator->register('foo', $listener1);
+        $this->locator->registerService('foo', 'domain.listener.1');
 
-        /* @var $listener2 ListenerInterface */
-        $listener2 = $this->getMock(ListenerInterface::class);
-        $this->locator->register('foo', $listener2);
-
-        /* @var $listener3 ListenerInterface */
-        $listener3 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService(get_class($event), 'domain.listener.3');
-
-        /* @var $listener4 ListenerInterface */
-        $listener4 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService(get_class($event), 'domain.listener.4');
+        $listener2 = new PurchaseOrderCreatedEventListener();
+        $this->locator->registerService(get_class($event), 'domain.listener.2');
 
         $this->container
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
-            ->with('domain.listener.3')
-            ->will($this->returnValue($listener3))
-        ;
-        $this->container
-            ->expects($this->at(1))
-            ->method('get')
-            ->with('domain.listener.4')
-            ->will($this->returnValue($listener4))
+            ->with('domain.listener.2')
+            ->will($this->returnValue($listener2))
         ;
 
         // test get event listeners for event
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection([$listener3, $listener4]), $listeners);
+        $this->assertEquals([$listener2], $this->locator->listenersOfEvent($event));
     }
 
-    public function testNoListenersForEvent()
+    public function testRegisterServiceNoListenersForEvent()
     {
+        $this->setContainer();
+
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        /* @var $listener1 ListenerInterface */
-        $listener1 = $this->getMock(ListenerInterface::class);
-        $this->locator->register('foo', $listener1);
-
-        $this->locator->registerService('foo', 'domain.listener.2');
+        $this->locator->registerService('foo', 'domain.listener');
 
         $this->container
             ->expects($this->never())
-            ->method('get');
+            ->method('get')
+        ;
 
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection(), $listeners);
+        $this->assertEquals([], $this->locator->listenersOfEvent($event));
+    }
+
+    public function testRegisterServiceIsNotAListener()
+    {
+        $this->setContainer();
+
+        /* @var $event Event */
+        $event = $this->getMock(Event::class);
+
+        $this->locator->registerService(get_class($event), 'domain.listener');
+
+        $this->container
+            ->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue('bar'))
+        ;
+
+        $this->assertEquals([], $this->locator->listenersOfEvent($event));
     }
 
     public function testOverrideListener()
     {
+        $this->setContainer();
+
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        /* @var $listener1 ListenerInterface */
-        $listener1 = $this->getMock(ListenerInterface::class);
+        $listener1 = function (Event $event) {};
         $this->locator->registerService(get_class($event), 'domain.listener');
 
         $this->container
@@ -111,12 +114,10 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
         ;
 
         $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEquals(new ListenerCollection([$listener1]), $listeners);
+        $this->assertEquals([$listener1], $listeners);
 
-        /* @var $listener2 ListenerInterface */
-        $listener2 = $this->getMock(ListenerInterface::class);
-        $this->locator->registerService(get_class($event), 'domain.listener');
+        $listener2 = new PurchaseOrderCompletedEventListener();
+        $this->locator->registerService(get_class($event), 'domain.listener', 'handle');
 
         $this->container
             ->expects($this->at(1))
@@ -125,7 +126,6 @@ class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCa
             ->will($this->returnValue($listener2))
         ;
 
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertEquals(new ListenerCollection([$listener2]), $listeners);
+        $this->assertEquals([[$listener2, 'handle']], $this->locator->listenersOfEvent($event));
     }
 }

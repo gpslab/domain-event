@@ -10,42 +10,36 @@
 namespace GpsLab\Domain\Event\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 
 class DirectBindingEventListenerLocator implements EventListenerLocator
 {
     /**
-     * @var ListenerCollection[]
+     * @var callable[][]
      */
     private $listeners = [];
 
     /**
      * @param Event $event
      *
-     * @return ListenerInterface[]|ListenerCollection
+     * @return callable[]
      */
     public function listenersOfEvent(Event $event)
     {
         $event_name = get_class($event);
 
-        if (isset($this->listeners[$event_name])) {
-            return $this->listeners[$event_name];
-        } else {
-            return new ListenerCollection();
-        }
+        return isset($this->listeners[$event_name]) ? $this->listeners[$event_name] : [];
     }
 
     /**
-     * @param string            $event_name
-     * @param ListenerInterface $listener
+     * @param string   $event_name
+     * @param callable $listener
      */
-    public function register($event_name, ListenerInterface $listener)
+    public function register($event_name, callable $listener)
     {
         if (!isset($this->listeners[$event_name])) {
-            $this->listeners[$event_name] = new ListenerCollection();
+            $this->listeners[$event_name] = [];
         }
 
-        $this->listeners[$event_name]->add($listener);
+        $this->listeners[$event_name][] = $listener;
     }
 }

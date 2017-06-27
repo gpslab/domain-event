@@ -32,18 +32,20 @@ MemoryUniqueEventQueue
    queue is changed.
 
 DirectBindingEventListenerLocator
-----------------------------
+---------------------------------
 
  * Not used the event name resolver for find listeners of event.
+ * Use [callable type](http://php.net/manual/en/language.types.callable.php) as a event listener.
 
 SymfonyContainerEventListenerLocator
-----------------------------
+------------------------------------
 
  * Implements interface `Symfony\Component\DependencyInjection\ContainerAwareInterface`.
  * Not used the event name resolver for find listeners of event
+ * Use [callable type](http://php.net/manual/en/language.types.callable.php) as a event listener.
 
 Renamed classes
-------------------
+---------------
 
  * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator` renamed to
    `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator`.
@@ -80,9 +82,11 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\NameResolver\EventClassResolver` class has been removed.
  * The `GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver` class has been removed.
  * The `GpsLab\Domain\Event\NameResolver\NameResolverContainer` class has been removed.
+ * The `GpsLab\Domain\Event\Listener\ListenerCollection` class has been removed.
+ * The `GpsLab\Domain\Event\Listener\ListenerInterface` interface has been removed.
 
 Renamed methods
-------------------
+---------------
 
  * The `GpsLab\Domain\Event\Queue\EventQueue::push()` renamed to `GpsLab\Domain\Event\Queue\EventQueue::publish()`.
  * The `GpsLab\Domain\Event\Queue\MemoryEventQueue::push()` renamed to
@@ -108,8 +112,11 @@ Removed methods
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::publishFromQueue()` has been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\Locator::getRegisteredEventListeners()` has been removed.
- * The `GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator::getRegisteredEventListeners()` has been removed.
- * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator::getRegisteredEventListeners()` has been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator::getRegisteredEventListeners()` has been
+   removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator::getRegisteredEventListeners()` has
+   been removed.
+ * The `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator::register()` has been removed.
 
 Renamed constants
 -----------------

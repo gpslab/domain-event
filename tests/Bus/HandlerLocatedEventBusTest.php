@@ -11,9 +11,11 @@ namespace GpsLab\Domain\Event\Tests\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
-use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 use GpsLab\Domain\Event\Listener\Locator\EventListenerLocator;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListener;
+use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 
 class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,58 +37,54 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
-        $event = $this->getMock(Event::class);
+        $event = new PurchaseOrderCreatedEvent();
+        $listener = new PurchaseOrderCreatedEventListener();
+        $handled_event = null;
 
-        /* @var $listeners \PHPUnit_Framework_MockObject_MockObject[] */
         $listeners = [
-            $this->getMock(ListenerInterface::class),
-            $this->getMock(ListenerInterface::class),
+            function(PurchaseOrderCreatedEvent $event) use (&$handled_event) {
+                $handled_event = $event;
+            },
+            $listener,
         ];
-
-        foreach ($listeners as $listener) {
-            $listener
-                ->expects($this->once())
-                ->method('handle')
-                ->with($event);
-        }
 
         $this->locator
             ->expects($this->once())
             ->method('listenersOfEvent')
             ->with($event)
-            ->will($this->returnValue($listeners));
+            ->will($this->returnValue($listeners))
+        ;
 
         $this->bus->publish($event);
+
+        $this->assertEquals($event, $handled_event);
+        $this->assertEquals($event, $listener->handledEvent());
     }
 
     public function testPullAndPublish()
     {
         /* @var $events \PHPUnit_Framework_MockObject_MockObject[] */
         $events = [
-            $this->getMock(Event::class),
-            $this->getMock(Event::class),
+            $this->getMock(PurchaseOrderCompletedEvent::class),
+            new PurchaseOrderCompletedEvent(),
         ];
+        $handled_events = [];
+        $listener = new PurchaseOrderCompletedEventListener();
 
         foreach ($events as $i => $event) {
-            /* @var $listeners \PHPUnit_Framework_MockObject_MockObject[] */
             $listeners = [
-                $this->getMock(ListenerInterface::class),
-                $this->getMock(ListenerInterface::class),
+                function(PurchaseOrderCompletedEvent $event) use (&$handled_events) {
+                    $handled_events[] = $event;
+                },
+                [$listener, 'handle'],
             ];
-
-            foreach ($listeners as $listener) {
-                $listener
-                    ->expects($this->once())
-                    ->method('handle')
-                    ->with($event);
-            }
 
             $this->locator
                 ->expects($this->at($i))
                 ->method('listenersOfEvent')
                 ->with($event)
-                ->will($this->returnValue($listeners));
+                ->will($this->returnValue($listeners))
+            ;
         }
 
         /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
@@ -94,8 +92,12 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
         $aggregator
             ->expects($this->once())
             ->method('pullEvents')
-            ->will($this->returnValue($events));
+            ->will($this->returnValue($events))
+        ;
 
         $this->bus->pullAndPublish($aggregator);
+
+        $this->assertEquals($events, $handled_events);
+        $this->assertEquals(end($events), $listener->handledEvent());
     }
 }

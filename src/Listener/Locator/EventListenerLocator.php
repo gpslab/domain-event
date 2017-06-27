@@ -10,8 +10,6 @@
 namespace GpsLab\Domain\Event\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
 
 /**
  * The purpose of this interface is to connect EventListeners to their Event.
@@ -24,7 +22,7 @@ interface EventListenerLocator
      *
      * @param Event $event
      *
-     * @return ListenerInterface[]|ListenerCollection
+     * @return callable[]
      */
     public function listenersOfEvent(Event $event);
 }

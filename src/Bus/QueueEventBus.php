@@ -51,7 +51,7 @@ class QueueEventBus implements EventBus
     public function pullAndPublish(AggregateEvents $aggregator)
     {
         foreach ($aggregator->pullEvents() as $event) {
-            $this->publish($event);
+            $this->queue->publish($event);
         }
     }
 }
