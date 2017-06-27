@@ -64,7 +64,7 @@ class PurchaseOrderCreatedEventSerializer implements NormalizerInterface, Denorm
         return sprintf(
             self::PATTERN,
             $object->getCustomer()->getId(),
-            $object->getCreateAt()->format('Y-m-d H:i:s')
+            $object->createAt()->format('Y-m-d H:i:s')
         );
     }
 

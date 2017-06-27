@@ -17,12 +17,12 @@ class PurchaseOrderCreatedEvent implements Event
         $this->create_at = $create_at;
     }
 
-    public function getCustomerId()
+    public function customerId()
     {
         return $this->customer_id;
     }
 
-    public function getCreateAt()
+    public function createAt()
     {
         return $this->create_at;
     }
@@ -59,8 +59,8 @@ class SendEmailOnPurchaseOrderCreated
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
-            $event->getCreateAt()->format('Y-m-d'),
-            $event->getCustomerId()
+            $event->createAt()->format('Y-m-d'),
+            $event->customerId()
         ));
     }
 }```

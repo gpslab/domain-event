@@ -41,7 +41,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      */
     protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomerId();
+        $this->customer_id = $event->customerId();
     }
 }
 ```
@@ -80,7 +80,7 @@ final class PurchaseOrder implements AggregateEventsInterface
 
     protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomerId();
+        $this->customer_id = $event->customerId();
     }
 }
 ```
@@ -102,7 +102,7 @@ class PurchaseOrderCreatedEvent implements Event
         $this->customer_id = $customer_id;
     }
 
-    public function getCustomerId()
+    public function customerId()
     {
         return $this->customer_id;
     }
@@ -141,7 +141,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 
     protected function onCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomerId();
+        $this->customer_id = $event->customerId();
     }
 }
 ```
