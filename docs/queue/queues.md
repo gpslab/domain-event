@@ -30,7 +30,7 @@ To store events, used the [List](https://redis.io/topics/data-types-intro#redis-
 Example serializer of `PurchaseOrderCreatedEvent` event:
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\PredisEventQueue;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -89,7 +89,7 @@ class PurchaseOrderCreatedEventSerializer implements NormalizerInterface, Denorm
     {
         return (
             $format === PredisEventQueue::FORMAT &&
-            $type === EventInterface::class &&
+            $type === Event::class &&
             preg_match(self::REGEXP, $data)
         );
     }

@@ -4,11 +4,11 @@ Raise events in self
 Create a domain event
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
-class PurchaseOrderCreatedEvent implements EventInterface
+class PurchaseOrderCreatedEvent implements Event
 {
-    public function __construct(Customer $customer, \DateTimeImmutable $create_at)
+    public function __construct(CustomerId $customer_id, \DateTimeImmutable $create_at)
     {
         // store data
     }
@@ -27,9 +27,9 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      */
     private $customer_id;
 
-    public function __construct(Customer $customer)
+    public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 
     /**
@@ -41,7 +41,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      */
     protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomer()->getId();
+        $this->customer_id = $event->getCustomerId();
     }
 }
 ```
@@ -50,7 +50,7 @@ Dispatch events
 
 ```php
 // do what you need to do on your Domain
-$purchase_order = new PurchaseOrder(new Customer(1));
+$purchase_order = new PurchaseOrder(new CustomerId(1));
 
 // this will clear the list of event in your AggregateEvents so an Event is trigger only once
 $events = $purchase_order->pullEvents();
@@ -73,60 +73,42 @@ final class PurchaseOrder implements AggregateEventsInterface
      */
     private $customer_id;
 
-    public function __construct(Customer $customer)
+    public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 
     protected function onPurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomer()->getId();
+        $this->customer_id = $event->getCustomerId();
     }
 }
 ```
 
-## Resolve event name
+## Change default event handler method name
 
-As a default used `EventClassLastPartResolver` event name resolver.
-Conversion examples:
-
-* `\PurchaseOrderCreated` > `PurchaseOrderCreated`
-* `\PurchaseOrderCreatedEvent` > `PurchaseOrderCreated`
-* `\Acme\Demo\Domain\PurchaseOrder\Event\PurchaseOrderCreated` > `PurchaseOrderCreated`
-* `\Acme\Demo\Domain\PurchaseOrder\Event\PurchaseOrderCreatedEvent` > `PurchaseOrderCreated`
-* `\Acme_Demo_Domain_PurchaseOrder_Event_PurchaseOrderCreated` > `PurchaseOrderCreated`
-* `\Acme_Demo_Domain_PurchaseOrder_Event_PurchaseOrderCreatedEvent` > `PurchaseOrderCreated`
-
-## Change default event name resolver
-
-You can change default event name resolver. You can use one of the predefined resolvers:
-
-* `EventClassResolver` - use [class name](http://php.net/manual/en/function.get-class.php) as event name;
-* `EventClassLastPartResolver` - use the last part of class name as event name. See [examples](#resolve-event-name);
-* `NamedEventResolver` - expects `NamedEventInterface` type event and use method `NamedEventInterface::getName()` for
-get event name.
 
 Create a named domain event first
 
 ```php
-use GpsLab\Domain\Event\NamedEventInterface;
+use GpsLab\Domain\Event\Event;
 
-class PurchaseOrderCreatedEvent implements NamedEventInterface
+class PurchaseOrderCreatedEvent implements Event
 {
-    private $customer;
+    private $customer_id;
 
-    public function __construct(Customer $customer, \DateTimeImmutable $create_at)
+    public function __construct(CustomerId $customer_id, \DateTimeImmutable $create_at)
     {
-        $this->customer = $customer;
+        $this->customer_id = $customer_id;
     }
 
-    public function getCustomer()
+    public function getCustomerId()
     {
-        return $this->customer;
+        return $this->customer_id;
     }
 
     /**
-     * Used this name for resolver the event name
+     * Used this name in handler event name resolver
      */
     public function getName()
     {
@@ -135,20 +117,10 @@ class PurchaseOrderCreatedEvent implements NamedEventInterface
 }
 ```
 
-You can change the global event name resolver. To do this, you need to redefine it in the container:
-
-```php
-use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
-use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
-
-NameResolverContainer::changeResolver(new NamedEventResolver());
-```
-
-Or you can override the method that generates the name of the handler method in entity:
+Then override the method that generates the name of the handler method in entity:
 
 ```php
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
-use GpsLab\Domain\Event\NameResolver\NamedEventResolver;
 
 final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 {
@@ -157,24 +129,19 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
      */
     private $customer_id;
 
-    public function __construct(Customer $customer)
+    public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 
-    /**
-     * Method name used from NamedEventInterface::getName()
-     */
-    public function onCreated(PurchaseOrderCreatedEvent $event)
+    protected function getMethodNameFromEvent(PurchaseOrderCreatedEvent $event)
     {
-        $this->customer_id = $event->getCustomer()->getId();
+        return 'on'.$event->getName();
     }
 
-    protected function getMethodNameFromEvent(EventInterface $event)
+    protected function onCreated(PurchaseOrderCreatedEvent $event)
     {
-        return 'on'.(new NamedEventResolver())->getEventName($event);
+        $this->customer_id = $event->getCustomerId();
     }
 }
 ```
-
-You can create a custom event name resolver. For this you need to implement `EventNameResolverInterface` interface.

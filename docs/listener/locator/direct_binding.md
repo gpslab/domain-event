@@ -4,22 +4,22 @@ Direct binding event listener locator
 Create a domain event
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
 
-class PurchaseOrderCreatedEvent implements EventInterface
+class PurchaseOrderCreatedEvent implements Event
 {
-    private $customer;
+    private $customer_id;
     private $create_at;
 
-    public function __construct(Customer $customer, \DateTimeImmutable $create_at)
+    public function __construct(CustomerId $customer_id, \DateTimeImmutable $create_at)
     {
-        $this->customer = $customer;
+        $this->customer_id = $customer_id;
         $this->create_at = $create_at;
     }
 
-    public function getCustomer()
+    public function getCustomerId()
     {
-        return $this->customer;
+        return $this->customer_id;
     }
 
     public function getCreateAt()
@@ -36,9 +36,9 @@ use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
 
 final class PurchaseOrder extends AbstractAggregateEvents
 {
-    public function __construct(Customer $customer)
+    public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer, new \DateTimeImmutable()));
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 }
 ```
@@ -46,10 +46,7 @@ final class PurchaseOrder extends AbstractAggregateEvents
 Create listener
 
 ```php
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-
-class SendEmailOnPurchaseOrderCreated implements ListenerInterface
+class SendEmailOnPurchaseOrderCreated
 {
     private $mailer;
 
@@ -58,16 +55,15 @@ class SendEmailOnPurchaseOrderCreated implements ListenerInterface
         $this->mailer = $mailer;
     }
 
-    public function handle(EventInterface $event)
+    public function handlePurchaseOrderCreated(PurchaseOrderCreatedEvent $event)
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
             $event->getCreateAt()->format('Y-m-d'),
-            $event->getCustomer()->getId()
+            $event->getCustomerId()
         ));
     }
-}
-```
+}```
 
 Create event listener bus and publish events in it
 
@@ -78,13 +74,16 @@ use GpsLab\Domain\Event\Bus\Bus;
 // first the locator
 $locator = new DirectBindingEventListenerLocator();
 // you can use several listeners for one event and one listener for several events
-$locator->register(PurchaseOrderCreatedEvent::class, new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+$locator->register(
+    PurchaseOrderCreatedEvent::class,
+    [new SendEmailOnPurchaseOrderCreated(/* $mailer */), 'handlePurchaseOrderCreated']
+);
 
 // then the event bus
 $bus = new HandlerLocatedEventBus($locator);
 
 // do what you need to do on your Domain
-$purchase_order = new PurchaseOrder(new Customer(1));
+$purchase_order = new PurchaseOrder(new CustomerId(1));
 
 // this will clear the list of event in your AggregateEvents so an Event is trigger only once
 $events = $purchase_order->pullEvents();
