@@ -7,7 +7,7 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Domain\Event\Tests\Aggregator;
+namespace GpsLab\Domain\Event\Tests\Fixture;
 
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
 use GpsLab\Domain\Event\Event;
