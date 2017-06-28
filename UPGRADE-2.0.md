@@ -37,6 +37,12 @@ DirectBindingEventListenerLocator
  * Not used the event name resolver for find listeners of event.
  * Use [callable type](http://php.net/manual/en/language.types.callable.php) as a event listener.
 
+ContainerEventListenerLocator
+-----------------------------
+
+ * Created event listener locator that use
+   [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) container.
+
 SymfonyContainerEventListenerLocator
 ------------------------------------
 

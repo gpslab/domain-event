@@ -1,18 +1,9 @@
-Symfony container aware event listener locator
-==============================================
+PSR-11 container aware event listener locator
+=============================================
 
 It's a implementation of locator `EventListenerLocator` for
-[Symfony container](https://github.com/symfony/dependency-injection).
+[PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) container.
 
-> **Note**
->
-> Symfony 3.3 [implements](http://symfony.com/blog/new-in-symfony-3-3-psr-11-containers) a
-> [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md). If you are using version
-> Symfony 3.3 or later, you must use a [PSR-11 Container locator](psr-11_container.md).
-
-## Require
-
-Require Symfony [DependencyInjection](https://symfony.com/doc/current/components/dependency_injection.html) component.
 
 ## Usage
 
@@ -88,12 +79,15 @@ use Symfony\Component\DependencyInjection\Container;
 use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
 use GpsLab\Domain\Event\Bus\Bus;
 
-// registr listener service in container
-$container = new Container();
-$container->set('purchase_order.created.send_email', new SendEmailOnPurchaseOrderCreated(/* $mailer */));
+$listener = new SendEmailOnPurchaseOrderCreated(/* $mailer */);
+
+// example of registr listener in PSR-11 container
+// container on request $container->get('purchase_order.created.send_email') must return $listener
+//$container = new Container();
+//$container->set('purchase_order.created.send_email', $listener);
 
 // first the locator
-$locator = new SymfonyContainerEventListenerLocator();
+$locator = new ContainerEventListenerLocator();
 $locator->setContainer($container);
 // you can use several listeners for one event and one listener for several events
 $locator->registerService(

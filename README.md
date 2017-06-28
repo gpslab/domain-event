@@ -135,7 +135,8 @@ $bus->pullAndPublish($purchase_order);
   * [Create listener](docs/listener.md)
   * Locator
     * [Direct binding locator](docs/listener/locator/direct_binding.md)
-    * [Symfony container locator](docs/listener/locator/symfony_container.md)
+    * [PSR-11 Container locator](docs/listener/locator/psr-11_container.md) *([PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*
+    * [Symfony container locator](docs/listener/locator/symfony_container.md) *(Symfony 3.3 [implements](http://symfony.com/blog/new-in-symfony-3-3-psr-11-containers) a [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*
 * Queue
   * [Queue event bus](docs/queue/bus.md)
   * [Queues](docs/queue/queues.md)
