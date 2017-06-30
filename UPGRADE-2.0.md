@@ -4,6 +4,7 @@ UPGRADE FROM 1.x to 2.0
 Queue
 -----
 
+ * Unique queue has been removed.
  * Pull queues moved to `GpsLab\Domain\Event\Queue\Pull` namespace.
  * Created separate interface `GpsLab\Domain\Event\Queue\Pull\PullEventQueue` for poll queue.
  * Created subscribe queues and interface for it.
@@ -23,21 +24,6 @@ PredisEventQueue
  * Change used method of Serializer from `denormalize()` to `deserialize()`.
  * Use interface `Symfony\Component\Serializer\SerializerInterface`.
    Not a `Symfony\Component\Serializer\Serializer`.
-
-PredisUniqueEventQueue
-----------------------
-
- * Available change queue name in Redis.
- * Available change serialize format.
- * Change used method of Serializer from `normalize()` to `serialize()`.
- * Change used method of Serializer from `denormalize()` to `deserialize()`.
- * Use interface `Symfony\Component\Serializer\SerializerInterface`. Not a `Symfony\Component\Serializer\Serializer`.
-
-MemoryUniqueEventQueue
-----------------------
-
- * Remove exists event from Memory queue and push it again (not override it). That is, the position of the event in the
-   queue is changed.
 
 DirectBindingEventListenerLocator
 ---------------------------------
@@ -73,12 +59,8 @@ Renamed classes
    `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator`.
  * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator` renamed to
    `GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator`.
- * The `GpsLab\Domain\Event\Queue\PredisEventQueue` renamed to `GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue`.
- * The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue` renamed to
-   `GpsLab\Domain\Event\Queue\Pull\PredisUniquePullEventQueue`.
  * The `GpsLab\Domain\Event\Queue\MemoryEventQueue` renamed to `GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue`.
- * The `GpsLab\Domain\Event\Queue\MemoryUniqueEventQueue` renamed to
-   `GpsLab\Domain\Event\Queue\Pull\MemoryUniquePullEventQueue`.
+ * The `GpsLab\Domain\Event\Queue\PredisEventQueue` renamed to `GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue`.
 
 Renamed interfaces
 ------------------
@@ -112,6 +94,8 @@ Removed classes and interfaces
  * The `GpsLab\Domain\Event\NameResolver\NameResolverContainer` class has been removed.
  * The `GpsLab\Domain\Event\Listener\ListenerCollection` class has been removed.
  * The `GpsLab\Domain\Event\Listener\ListenerInterface` interface has been removed.
+ * The `GpsLab\Domain\Event\Queue\MemoryUniqueEventQueue` class has been removed.
+ * The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue` class has been removed.
 
 Renamed methods
 ---------------
