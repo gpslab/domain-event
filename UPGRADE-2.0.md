@@ -1,6 +1,14 @@
 UPGRADE FROM 1.x to 2.0
 =======================
 
+Queue
+-----
+
+ * Pull queues moved to `GpsLab\Domain\Event\Queue\Pull` namespace.
+ * Created separate interface `GpsLab\Domain\Event\Queue\Pull\PullEventQueue` for poll queue.
+ * Created subscribe queues and interface for it.
+ * Created separate interface `GpsLab\Domain\Event\Queue\Subscribe\SubscribeEventQueue` for subscribe queue.
+
 AggregateEventsRaiseInSelf
 --------------------------
 
@@ -50,6 +58,14 @@ SymfonyContainerEventListenerLocator
  * Not used the event name resolver for find listeners of event
  * Use [callable type](http://php.net/manual/en/language.types.callable.php) as a event listener.
 
+Created classes and interfaces
+------------------------------
+
+* The `GpsLab\Domain\Event\Queue\Pull\PullEventQueue` interface has been created.
+* The `GpsLab\Domain\Event\Queue\Subscribe\SubscribeEventQueue` interface has been created.
+* The `GpsLab\Domain\Event\Queue\Subscribe\ExecutingSubscribeEventQueue` class has been created.
+* The `GpsLab\Domain\Event\Queue\Subscribe\PredisSubscribeEventQueue` class has been created.
+
 Renamed classes
 ---------------
 
@@ -57,6 +73,12 @@ Renamed classes
    `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator`.
  * The `GpsLab\Domain\Event\Listener\Locator\NamedEventLocator` renamed to
    `GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator`.
+ * The `GpsLab\Domain\Event\Queue\PredisEventQueue` renamed to `GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue`.
+ * The `GpsLab\Domain\Event\Queue\PredisUniqueEventQueue` renamed to
+   `GpsLab\Domain\Event\Queue\Pull\PredisUniquePullEventQueue`.
+ * The `GpsLab\Domain\Event\Queue\MemoryEventQueue` renamed to `GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue`.
+ * The `GpsLab\Domain\Event\Queue\MemoryUniqueEventQueue` renamed to
+   `GpsLab\Domain\Event\Queue\Pull\MemoryUniquePullEventQueue`.
 
 Renamed interfaces
 ------------------
@@ -123,6 +145,7 @@ Removed methods
  * The `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator::getRegisteredEventListeners()` has
    been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator::register()` has been removed.
+ * The `GpsLab\Domain\Event\Queue\EventQueue::pop()` has been removed.
 
 Renamed constants
 -----------------

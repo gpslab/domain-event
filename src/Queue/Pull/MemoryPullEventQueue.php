@@ -1,17 +1,18 @@
 <?php
+
 /**
  * GpsLab component.
  *
  * @author    Peter Gribanov <info@peter-gribanov.ru>
- * @copyright Copyright (c) 2016, Peter Gribanov
+ * @copyright Copyright (c) 2011, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Domain\Event\Queue;
+namespace GpsLab\Domain\Event\Queue\Pull;
 
 use GpsLab\Domain\Event\Event;
 
-class MemoryEventQueue implements EventQueue
+class MemoryPullEventQueue implements PullEventQueue
 {
     /**
      * @var Event[]
@@ -37,7 +38,7 @@ class MemoryEventQueue implements EventQueue
      *
      * @return Event|null
      */
-    public function pop()
+    public function pull()
     {
         return array_shift($this->events);
     }

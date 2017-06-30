@@ -1,17 +1,18 @@
 <?php
+
 /**
  * GpsLab component.
  *
  * @author    Peter Gribanov <info@peter-gribanov.ru>
- * @copyright Copyright (c) 2016, Peter Gribanov
+ * @copyright Copyright (c) 2011, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Domain\Event\Queue;
+namespace GpsLab\Domain\Event\Queue\Pull;
 
 use GpsLab\Domain\Event\Event;
 
-class MemoryUniqueEventQueue implements EventQueue
+class MemoryUniquePullEventQueue implements PullEventQueue
 {
     /**
      * @var Event[]
@@ -29,7 +30,7 @@ class MemoryUniqueEventQueue implements EventQueue
     {
         $index = array_search($event, $this->events);
 
-        // remove exists event and push it again
+        // remove exists event and publish it again
         if ($index !== false) {
             unset($this->events[$index]);
         }
@@ -44,7 +45,7 @@ class MemoryUniqueEventQueue implements EventQueue
      *
      * @return Event|null
      */
-    public function pop()
+    public function pull()
     {
         return array_shift($this->events);
     }

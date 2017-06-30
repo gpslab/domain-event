@@ -8,18 +8,17 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Domain\Event\Queue;
+namespace GpsLab\Domain\Event\Queue\Pull;
 
 use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Queue\EventQueue;
 
-interface EventQueue
+interface PullEventQueue extends EventQueue
 {
     /**
-     * Publish event to queue.
+     * Pull event from queue. Return NULL if queue is empty.
      *
-     * @param Event $event
-     *
-     * @return bool
+     * @return Event|null
      */
-    public function publish(Event $event);
+    public function pull();
 }
