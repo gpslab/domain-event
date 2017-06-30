@@ -21,18 +21,11 @@ class QueueEventBus implements EventBus
     private $queue;
 
     /**
-     * @var EventBus
-     */
-    private $publisher_bus;
-
-    /**
      * @param EventQueue $queue
-     * @param EventBus   $publisher_bus
      */
-    public function __construct(EventQueue $queue, EventBus $publisher_bus)
+    public function __construct(EventQueue $queue)
     {
         $this->queue = $queue;
-        $this->publisher_bus = $publisher_bus;
     }
 
     /**
