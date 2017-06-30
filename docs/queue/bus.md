@@ -4,23 +4,39 @@ Queue event bus
 You can publish events from base events bus and you can push events in queue and publish it in later.
 
 ```php
+use GpsLab\Domain\Event\Bus\QueueEventBus;
+use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
+use GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue;
+
+// event listener locator
+$locator = new DirectBindingEventListenerLocator();
+
 // base events bus
 $publisher_bus = new HandlerLocatedEventBus($locator);
 
 // queue storing events in memory
-$queue = MemoryEventQueue();
+$queue = MemoryPullEventQueue();
 
-$bus = new QueueBus($queue, $publisher_bus);
+$bus = new QueueBus($queue);
+```
 
+Do what you need to do on your Domain
 
-// do what you need to do on your Domain
+```php
 $purchase_order = new PurchaseOrder(new Customer(1));
 
 // push events to queue
 $bus->pullAndPublish($purchase_order);
-
-// in later ...
-
-// publish events from queue
-$bus->publishFromQueue();
 ```
+
+In later you can pull events from queue
+
+```php
+// publish events from queue
+while ($event = $queue->pull()) {
+    $publisher_bus->publish($event);
+}
+```
+
+You can use [Subscribe queue](subscribe/subscribe.md) for optimization.

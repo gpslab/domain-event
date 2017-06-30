@@ -137,9 +137,17 @@ $bus->pullAndPublish($purchase_order);
     * [Direct binding locator](docs/listener/locator/direct_binding.md)
     * [PSR-11 Container locator](docs/listener/locator/psr-11_container.md) *([PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*
     * [Symfony container locator](docs/listener/locator/symfony_container.md) *(Symfony 3.3 [implements](http://symfony.com/blog/new-in-symfony-3-3-psr-11-containers) a [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*
-* Queue
+* [Queue](docs/queue/queue.md)
   * [Queue event bus](docs/queue/bus.md)
-  * [Queues](docs/queue/queues.md)
+  * [Pull](docs/queue/pull/pull.md)
+    * [Memory queue](docs/queue/pull/memory.md)
+    * [Predis queue](docs/queue/pull/predis.md)
+  * [Subscribe](docs/queue/subscribe/subscribe.md)
+    * [Executing queue](docs/queue/subscribe/executing.md)
+    * [Predis queue](docs/queue/subscribe/predis.md)
+  * Serialize command
+    * [Optimized serializer](docs/queue/serialize/optimized.md)
+    * [Payload serializer](docs/queue/serialize/payload.md)
 * Frameworks
   * [Symfony bundle](https://github.com/gpslab/domain-event-bundle)
 * [Middleware](https://github.com/gpslab/middleware)
