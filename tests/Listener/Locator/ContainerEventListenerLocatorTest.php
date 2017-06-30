@@ -90,7 +90,8 @@ class ContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        $listener1 = function (Event $event) {};
+        $listener1 = function (Event $event) {
+        };
         $this->locator->registerService(get_class($event), 'domain.listener');
 
         $this->container

@@ -31,13 +31,15 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        $listener1 = function (Event $event) {};
+        $listener1 = function (Event $event) {
+        };
         $this->locator->register('foo', $listener1);
 
         $listener2 = new PurchaseOrderCreatedEventListener();
         $this->locator->register('foo', $listener2);
 
-        $listener3 = function (Event $event) {};
+        $listener3 = function (Event $event) {
+        };
         $this->locator->register(get_class($event), $listener3);
 
         $listener4 = [new PurchaseOrderCompletedEventListener(), 'handle'];
@@ -52,7 +54,8 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         /* @var $event Event */
         $event = $this->getMock(Event::class);
 
-        $listener1 = function (Event $event) {};
+        $listener1 = function (Event $event) {
+        };
         $this->locator->register('foo', $listener1);
 
         $listener2 = new PurchaseOrderCreatedEventListener();
