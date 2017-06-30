@@ -42,7 +42,7 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
         $handled_event = null;
 
         $listeners = [
-            function(PurchaseOrderCreatedEvent $event) use (&$handled_event) {
+            function (PurchaseOrderCreatedEvent $event) use (&$handled_event) {
                 $handled_event = $event;
             },
             $listener,
@@ -73,7 +73,7 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 
         foreach ($events as $i => $event) {
             $listeners = [
-                function(PurchaseOrderCompletedEvent $event) use (&$handled_events) {
+                function (PurchaseOrderCompletedEvent $event) use (&$handled_events) {
                     $handled_events[] = $event;
                 },
                 [$listener, 'handle'],
