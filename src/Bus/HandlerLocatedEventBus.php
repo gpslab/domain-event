@@ -29,7 +29,7 @@ class HandlerLocatedEventBus implements EventBus
     }
 
     /**
-     * Publishes the event $event to every EventListener that wants to.
+     * Publishes the event to every listener that wants to.
      *
      * @param Event $event
      */

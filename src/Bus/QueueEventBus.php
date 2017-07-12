@@ -29,7 +29,7 @@ class QueueEventBus implements EventBus
     }
 
     /**
-     * Publishes the event $event to every EventListener that wants to.
+     * Publishes the event into queue.
      *
      * @param Event $event
      */
