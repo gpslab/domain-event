@@ -98,3 +98,13 @@ $locator = new DirectBindingEventListenerLocator();
 $locator->register(PurchaseOrderCreatedEvent::class, [new PurchaseOrderListener(), 'handlePurchaseOrderCreated']);
 $locator->register(PurchaseOrderCompletedEvent::class, [new PurchaseOrderListener(), 'handlePurchaseOrderCompleted']);
 ```
+
+## Listener locator
+
+You can use exists locators of listener:
+
+ * [Direct binding locator](listener/locator/direct_binding.md)
+ * [PSR-11 container aware locator](listener/locator/psr-11_container.md)
+ * [Symfony container aware locator](listener/locator/symfony_container.md)
+
+Or you can create custom locator that implements `GpsLab\Domain\Event\Listener\Locator\EventListenerLocator` interface.

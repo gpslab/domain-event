@@ -63,7 +63,8 @@ class SendEmailOnPurchaseOrderCreated
             $event->customerId()
         ));
     }
-}```
+}
+```
 
 Create event listener bus and publish events in it
 
