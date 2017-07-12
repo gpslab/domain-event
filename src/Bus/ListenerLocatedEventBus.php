@@ -13,7 +13,7 @@ use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\Locator\EventListenerLocator;
 
-class HandlerLocatedEventBus implements EventBus
+class ListenerLocatedEventBus implements EventBus
 {
     /**
      * @var EventListenerLocator

@@ -102,7 +102,7 @@ $locator->registerService(
 );
 
 // then the event bus
-$bus = new HandlerLocatedEventBus($locator);
+$bus = new ListenerLocatedEventBus($locator);
 
 // do what you need to do on your Domain
 $purchase_order = new PurchaseOrder(new CustomerId(1));

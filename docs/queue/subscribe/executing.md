@@ -11,12 +11,12 @@ You can use any implementations of [callable type](http://php.net/manual/en/lang
 subscriber.
 
 ```php
-use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 use GpsLab\Domain\Event\Queue\PubSub\ExecutingEventQueue;
 
 $locator = new DirectBindingEventListenerLocator();
-$bus = new HandlerLocatedEventBus($locator);
+$bus = new ListenerLocatedEventBus($locator);
 $queue = new ExecutingEventQueue();
 ```
 

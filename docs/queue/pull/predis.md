@@ -47,11 +47,11 @@ $queue->publish($event);
 In latter pull events from queue:
 
 ```php
-use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 
 $locator = new DirectBindingEventListenerLocator();
-$bus = new HandlerLocatedEventBus($locator);
+$bus = new ListenerLocatedEventBus($locator);
 
 while ($event = $queue->pull()) {
     $bus->publish($event);

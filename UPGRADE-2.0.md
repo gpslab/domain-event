@@ -65,7 +65,7 @@ Renamed classes
 Renamed interfaces
 ------------------
 
- * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus`.
+ * The `GpsLab\Domain\Event\Bus\EventBus` renamed to `GpsLab\Domain\Event\Bus\ListenerLocatedEventBus`.
  * The `GpsLab\Domain\Event\Bus\EventBusInterface` renamed to `GpsLab\Domain\Event\Bus\EventBus`.
  * The `GpsLab\Domain\Event\Aggregator\AggregateEventsInterface` renamed to
    `GpsLab\Domain\Event\Aggregator\AggregateEvents`.
@@ -78,7 +78,7 @@ Removed classes and interfaces
 ------------------------------
 
  * The `GpsLab\Domain\Event\Bus\Bus` has been removed.
-   Use the `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus` class instead.
+   Use the `GpsLab\Domain\Event\Bus\ListenerLocatedEventBus` class instead.
  * The `GpsLab\Domain\Event\Bus\BusInterface` interface has been removed.
    Use the `GpsLab\Domain\Event\Bus\EventBus` interface instead.
  * The `GpsLab\Domain\Event\NamedEventInterface` interface has been removed.
@@ -120,7 +120,7 @@ Removed methods
 ---------------
 
  * The `GpsLab\Domain\Event\Bus\EventBus::getRegisteredEventListeners()` has been removed.
- * The `GpsLab\Domain\Event\Bus\HandlerLocatedEventBus::getRegisteredEventListeners()` has been removed.
+ * The `GpsLab\Domain\Event\Bus\ListenerLocatedEventBus::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::getRegisteredEventListeners()` has been removed.
  * The `GpsLab\Domain\Event\Bus\QueueEventBus::publishFromQueue()` has been removed.
  * The `GpsLab\Domain\Event\Listener\Locator\Locator::getRegisteredEventListeners()` has been removed.

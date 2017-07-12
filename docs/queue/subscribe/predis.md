@@ -42,11 +42,11 @@ $queue = new PredisEventQueue($predis, $serializer, $logger, $queue_name, $forma
 Subscribe to the queue:
 
 ```php
-use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 
 $locator = new DirectBindingEventListenerLocator();
-$bus = new HandlerLocatedEventBus($locator);
+$bus = new ListenerLocatedEventBus($locator);
 
 $queue->subscribe(function(ArticleRenamedEvent $event) use ($bus) {
     $bus->publish($event);

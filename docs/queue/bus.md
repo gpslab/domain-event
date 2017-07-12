@@ -5,7 +5,7 @@ You can publish events from base events bus and you can push events in queue and
 
 ```php
 use GpsLab\Domain\Event\Bus\QueueEventBus;
-use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 use GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue;
 
@@ -13,7 +13,7 @@ use GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue;
 $locator = new DirectBindingEventListenerLocator();
 
 // base events bus
-$publisher_bus = new HandlerLocatedEventBus($locator);
+$publisher_bus = new ListenerLocatedEventBus($locator);
 
 // queue storing events in memory
 $queue = MemoryPullEventQueue();

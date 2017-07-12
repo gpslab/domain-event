@@ -10,14 +10,14 @@
 namespace GpsLab\Domain\Event\Tests\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
-use GpsLab\Domain\Event\Bus\HandlerLocatedEventBus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\EventListenerLocator;
 use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListener;
 use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 
-class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
+class ListenerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EventListenerLocator
@@ -25,14 +25,14 @@ class HandlerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
     private $locator;
 
     /**
-     * @var HandlerLocatedEventBus
+     * @var ListenerLocatedEventBus
      */
     private $bus;
 
     protected function setUp()
     {
         $this->locator = $this->getMock(EventListenerLocator::class);
-        $this->bus = new HandlerLocatedEventBus($this->locator);
+        $this->bus = new ListenerLocatedEventBus($this->locator);
     }
 
     public function testPublish()
