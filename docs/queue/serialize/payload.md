@@ -28,7 +28,7 @@ class ArticleRenamedEventSerializer implements NormalizerInterface, Denormalizer
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if ($data['type'] !== 'ArticleRenamed' || $class !== ArticleRenamedEvent::class) {
+        if ($data['type'] !== 'ArticleRenamed') {
             throw new UnsupportedException();
         }
 
