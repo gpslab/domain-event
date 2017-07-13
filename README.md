@@ -146,8 +146,8 @@ $bus->pullAndPublish($purchase_order);
     * [Executing queue](docs/queue/subscribe/executing.md)
     * [Predis queue](docs/queue/subscribe/predis.md)
   * Serialize command
-    * [Optimized serializer](docs/queue/serialize/optimized.md)
-    * [Payload serializer](docs/queue/serialize/payload.md)
+    * [Optimized Symfony serializer](docs/queue/serialize/optimized.md)
+    * [Payload Symfony serializer](docs/queue/serialize/payload.md)
 * Frameworks
   * [Symfony bundle](https://github.com/gpslab/domain-event-bundle)
 * [Middleware](https://github.com/gpslab/middleware)

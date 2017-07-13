@@ -1,5 +1,5 @@
-Optimized serializer
-====================
+Optimized Symfony serializer
+============================
 
 Example Serializer/Deserializer for event `ArticleRenamedEvent`:
 

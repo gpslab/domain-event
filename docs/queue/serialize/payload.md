@@ -1,5 +1,5 @@
-Payload serializer
-==================
+Payload Symfony serializer
+==========================
 
 If you use the [Payload package](https://github.com/gpslab/payload), you can simplify the serialization of your
 specific events.
