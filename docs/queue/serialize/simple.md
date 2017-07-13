@@ -33,7 +33,7 @@ class JsonPayloadSerializer implements Serializer
         $data = json_decode($data);
 
         if (empty($data['class']) || !class_exists($data['class'])) {
-            throw new UnsupportedException();
+            throw new \InvalidArgumentException();
         }
 
         $class_name = $data['class'];
