@@ -28,11 +28,13 @@ use Symfony\Component\Serializer\Serializer;
 use Predis\Client;
 
 //$predis = new Client('tcp://10.0.0.1:6379'); // Predis client
-//$serializer = new Serializer(); // Symfony serializer
+//$symfony_serializer = new Serializer(); // Symfony serializer
 //$logger = new Logger(); // PSR-3 logger
 $queue_name = 'article_queue';
 $format = 'json'; // default: predis
-$queue = new PredisPullEventQueue($predis, $serializer, $logger, $queue_name, $format);
+// you can create another implementation of serializer
+$serializer = new SymfonySerializer($symfony_serializer, $format);
+$queue = new PredisPullEventQueue($predis, $serializer, $logger, $queue_name);
 ```
 
 Make event and publish it into queue:
