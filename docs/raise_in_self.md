@@ -136,7 +136,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
         $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 
-    protected function getMethodNameFromEvent(Event $event)
+    protected function eventHandlerName(Event $event)
     {
         return 'on'.$event->getName();
     }

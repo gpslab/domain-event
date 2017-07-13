@@ -23,7 +23,7 @@ trait AggregateEventsRaiseInSelfTrait
      */
     private function raiseInSelf(Event $event)
     {
-        $method = $this->getMethodNameFromEvent($event);
+        $method = $this->eventHandlerName($event);
 
         // if method is not exists is not a critical error
         if (method_exists($this, $method)) {
@@ -60,7 +60,7 @@ trait AggregateEventsRaiseInSelfTrait
      *
      * @return string
      */
-    protected function getMethodNameFromEvent(Event $event)
+    protected function eventHandlerName(Event $event)
     {
         $class = get_class($event);
 
