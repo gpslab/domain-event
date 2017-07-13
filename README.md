@@ -145,6 +145,7 @@ $bus->pullAndPublish($purchase_order);
     * [Executing queue](docs/queue/subscribe/executing.md)
     * [Predis queue](docs/queue/subscribe/predis.md)
   * Serialize command
+    * [Simple payload serializer](docs/queue/serialize/simple.md)
     * [Optimized Symfony serializer](docs/queue/serialize/optimized.md)
     * [Payload Symfony serializer](docs/queue/serialize/payload.md)
 * Frameworks
