@@ -11,21 +11,19 @@
 namespace GpsLab\Domain\Event\Queue\Subscribe;
 
 use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use Psr\Log\LoggerInterface;
 use Superbalist\PubSub\Redis\RedisPubSubAdapter;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisSubscribeEventQueue implements SubscribeEventQueue
 {
-    const DEFAULT_FORMAT = 'predis';
-
     /**
      * @var RedisPubSubAdapter
      */
     private $client;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $serializer;
 
@@ -40,29 +38,21 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
     private $queue_name = '';
 
     /**
-     * @var string
-     */
-    private $format = '';
-
-    /**
-     * @param RedisPubSubAdapter  $client
-     * @param SerializerInterface $serializer
-     * @param LoggerInterface     $logger
-     * @param string              $queue_name
-     * @param string|null         $format
+     * @param RedisPubSubAdapter $client
+     * @param Serializer         $serializer
+     * @param LoggerInterface    $logger
+     * @param string             $queue_name
      */
     public function __construct(
         RedisPubSubAdapter $client,
-        SerializerInterface $serializer,
+        Serializer $serializer,
         LoggerInterface $logger,
-        $queue_name,
-        $format = null
+        $queue_name
     ) {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->logger = $logger;
         $this->queue_name = $queue_name;
-        $this->format = $format ?: self::DEFAULT_FORMAT;
     }
 
     /**
@@ -74,7 +64,7 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
      */
     public function publish(Event $event)
     {
-        $massage = $this->serializer->serialize($event, $this->format);
+        $massage = $this->serializer->serialize($event);
         $this->client->publish($this->queue_name, $massage);
 
         return true;
@@ -89,7 +79,7 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
     {
         $this->client->subscribe($this->queue_name, function ($message) use ($handler) {
             try {
-                $event = $this->serializer->deserialize($message, Event::class, $this->format);
+                $event = $this->serializer->deserialize($message);
             } catch (\Exception $e) { // catch only deserialize exception
                 // it's a critical error
                 // it is necessary to react quickly to it

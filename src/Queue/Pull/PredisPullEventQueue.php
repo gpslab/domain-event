@@ -11,21 +11,19 @@
 namespace GpsLab\Domain\Event\Queue\Pull;
 
 use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisPullEventQueue implements PullEventQueue
 {
-    const DEFAULT_FORMAT = 'predis';
-
     /**
      * @var Client
      */
     private $client;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $serializer;
 
@@ -40,29 +38,17 @@ class PredisPullEventQueue implements PullEventQueue
     private $queue_name = '';
 
     /**
-     * @var string
+     * @param Client          $client
+     * @param Serializer      $serializer
+     * @param LoggerInterface $logger
+     * @param string          $queue_name
      */
-    private $format = '';
-
-    /**
-     * @param Client              $client
-     * @param SerializerInterface $serializer
-     * @param LoggerInterface     $logger
-     * @param string              $queue_name
-     * @param string|null         $format
-     */
-    public function __construct(
-        Client $client,
-        SerializerInterface $serializer,
-        LoggerInterface $logger,
-        $queue_name,
-        $format = null
-    ) {
+    public function __construct(Client $client, Serializer $serializer, LoggerInterface $logger, $queue_name)
+    {
         $this->client = $client;
         $this->serializer = $serializer;
         $this->logger = $logger;
         $this->queue_name = $queue_name;
-        $this->format = $format ?: self::DEFAULT_FORMAT;
     }
 
     /**
@@ -74,7 +60,7 @@ class PredisPullEventQueue implements PullEventQueue
      */
     public function publish(Event $event)
     {
-        $value = $this->serializer->serialize($event, $this->format);
+        $value = $this->serializer->serialize($event);
 
         return (bool) $this->client->rpush($this->queue_name, [$value]);
     }
@@ -93,7 +79,7 @@ class PredisPullEventQueue implements PullEventQueue
         }
 
         try {
-            return $this->serializer->deserialize($value, Event::class, $this->format);
+            return $this->serializer->deserialize($value);
         } catch (\Exception $e) {
             // it's a critical error
             // it is necessary to react quickly to it

@@ -10,13 +10,12 @@
 
 namespace GpsLab\Domain\Event\Tests\Queue\Pull;
 
-use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue;
+use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +25,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
     private $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SerializerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|Serializer
      */
     private $serializer;
 
@@ -36,6 +35,11 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
     private $logger;
 
     /**
+     * @var PredisPullEventQueue
+     */
+    private $queue;
+
+    /**
      * @var string
      */
     private $queue_name = 'events';
@@ -43,38 +47,12 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->client = $this->getMock(Client::class);
-        $this->serializer = $this->getMock(SerializerInterface::class);
+        $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
+        $this->queue = new PredisPullEventQueue($this->client, $this->serializer, $this->logger, $this->queue_name);
     }
 
-    /**
-     * @param string $format
-     *
-     * @return PredisPullEventQueue
-     */
-    private function queue($format)
-    {
-        return new PredisPullEventQueue($this->client, $this->serializer, $this->logger, $this->queue_name, $format);
-    }
-
-    /**
-     * @return array
-     */
-    public function formats()
-    {
-        return [
-            [null, 'predis'],
-            ['json', 'json'],
-        ];
-    }
-
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testPushQueue($format, $expected_format)
+    public function testPushQueue()
     {
         $queue = [
             new PurchaseOrderCreatedEvent(),
@@ -89,7 +67,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
             $this->serializer
                 ->expects($this->at($i))
                 ->method('serialize')
-                ->with($event, $expected_format)
+                ->with($event)
                 ->will($this->returnValue($value))
             ;
 
@@ -103,17 +81,11 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($queue as $event) {
-            $this->assertTrue($this->queue($format)->publish($event));
+            $this->assertTrue($this->queue->publish($event));
         }
     }
 
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testPopQueue($format, $expected_format)
+    public function testPopQueue()
     {
         $queue = [
             new PurchaseOrderCreatedEvent(),
@@ -128,7 +100,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
             $this->serializer
                 ->expects($this->at($i))
                 ->method('deserialize')
-                ->with($value, Event::class, $expected_format)
+                ->with($value)
                 ->will($this->returnValue($event))
             ;
 
@@ -149,7 +121,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $expected = array_reverse($queue);
         $i = count($expected);
-        while ($event = $this->queue($format)->pull()) {
+        while ($event = $this->queue->pull()) {
             $this->assertEquals($expected[--$i], $event);
         }
 
@@ -157,13 +129,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($event, 'No events in queue');
     }
 
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testFailedDeserialize($format, $expected_format)
+    public function testFailedDeserialize()
     {
         $exception = new \Exception('foo');
         $event = new PurchaseOrderCreatedEvent();
@@ -185,7 +151,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->serializer
             ->expects($this->once())
             ->method('deserialize')
-            ->with($value, Event::class, $expected_format)
+            ->with($value)
             ->will($this->throwException($exception))
         ;
 
@@ -196,6 +162,6 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1))
         ;
 
-        $this->assertNull($this->queue($format)->pull());
+        $this->assertNull($this->queue->pull());
     }
 }

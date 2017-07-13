@@ -11,10 +11,10 @@
 namespace GpsLab\Domain\Event\Tests\Queue\Subscribe;
 
 use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use GpsLab\Domain\Event\Queue\Subscribe\PredisSubscribeEventQueue;
 use Psr\Log\LoggerInterface;
 use Superbalist\PubSub\Redis\RedisPubSubAdapter;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,7 +29,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
     private $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SerializerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|Serializer
      */
     private $serializer;
 
@@ -37,6 +37,11 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var PredisSubscribeEventQueue
+     */
+    private $queue;
 
     /**
      * @var string
@@ -50,50 +55,30 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->event = $this->getMock(Event::class);
-        $this->serializer = $this->getMock(SerializerInterface::class);
+        $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
         $this->client = $this
             ->getMockBuilder(RedisPubSubAdapter::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
+
+        $this->queue = new PredisSubscribeEventQueue(
+            $this->client,
+            $this->serializer,
+            $this->logger,
+            $this->queue_name
+        );
     }
 
-    /**
-     * @param string $format
-     *
-     * @return PredisSubscribeEventQueue
-     */
-    private function queue($format)
-    {
-        return new PredisSubscribeEventQueue($this->client, $this->serializer, $this->logger, $this->queue_name, $format);
-    }
-
-    /**
-     * @return array
-     */
-    public function formats()
-    {
-        return [
-            [null, 'predis'],
-            ['json', 'json'],
-        ];
-    }
-
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testPublish($format, $expected_format)
+    public function testPublish()
     {
         $massage = 'foo';
 
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
-            ->with($this->event, $expected_format)
+            ->with($this->event)
             ->will($this->returnValue($massage))
         ;
 
@@ -103,16 +88,10 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             ->with($this->queue_name, $massage)
         ;
 
-        $this->assertTrue($this->queue($format)->publish($this->event));
+        $this->assertTrue($this->queue->publish($this->event));
     }
 
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testSubscribe($format, $expected_format)
+    public function testSubscribe()
     {
         $subscriber_called = false;
         $handler = function ($event) use (&$subscriber_called) {
@@ -124,7 +103,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('subscribe')
-            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler, $expected_format) {
+            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler) {
                 $this->assertEquals($this->queue_name, $queue_name);
                 $this->assertTrue(is_callable($handler_wrapper));
 
@@ -132,7 +111,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
                 $this->serializer
                     ->expects($this->once())
                     ->method('deserialize')
-                    ->with($message, Event::class, $expected_format)
+                    ->with($message)
                     ->will($this->returnValue($this->event))
                 ;
 
@@ -140,18 +119,12 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
-        $this->queue($format)->subscribe($handler);
+        $this->queue->subscribe($handler);
 
         $this->assertTrue($subscriber_called);
     }
 
-    /**
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
-     */
-    public function testSubscribeFailure($format, $expected_format)
+    public function testSubscribeFailure()
     {
         $subscriber_called = false;
         $handler = function ($event) use (&$subscriber_called) {
@@ -163,7 +136,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('subscribe')
-            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler, $expected_format) {
+            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler) {
                 $this->assertEquals($this->queue_name, $queue_name);
                 $this->assertTrue(is_callable($handler_wrapper));
 
@@ -172,7 +145,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
                 $this->serializer
                     ->expects($this->once())
                     ->method('deserialize')
-                    ->with($message, Event::class, $expected_format)
+                    ->with($message)
                     ->will($this->throwException($exception))
                 ;
 
@@ -195,19 +168,15 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
-        $this->queue($format)->subscribe($handler);
+        $this->queue->subscribe($handler);
 
         $this->assertFalse($subscriber_called);
     }
 
     /**
      * @expectedException \Exception
-     * @dataProvider formats
-     *
-     * @param string $format
-     * @param string $expected_format
      */
-    public function testSubscribeHandlerFailure($format, $expected_format)
+    public function testSubscribeHandlerFailure()
     {
         $exception = new \Exception('bar');
         $handler = function ($event) use ($exception) {
@@ -219,7 +188,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
         $this->client
             ->expects($this->once())
             ->method('subscribe')
-            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler, $expected_format) {
+            ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler) {
                 $this->assertEquals($this->queue_name, $queue_name);
                 $this->assertTrue(is_callable($handler_wrapper));
 
@@ -227,7 +196,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
                 $this->serializer
                     ->expects($this->once())
                     ->method('deserialize')
-                    ->with($message, Event::class, $expected_format)
+                    ->with($message)
                     ->will($this->returnValue($this->event))
                 ;
 
@@ -235,6 +204,6 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
-        $this->queue($format)->subscribe($handler);
+        $this->queue->subscribe($handler);
     }
 }
