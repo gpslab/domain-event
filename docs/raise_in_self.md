@@ -56,15 +56,16 @@ $purchase_order = new PurchaseOrder(new CustomerId(1));
 $events = $purchase_order->pullEvents();
 ```
 
-## Traits
+Traits
+------
 
 You can use [Traits](http://php.net/manual/en/language.oop5.traits.php) for raise your event
 
 ```php
-use GpsLab\Domain\Event\Aggregator\AggregateEventsTrait;
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEventsRaiseInSelfTrait;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 
-final class PurchaseOrder implements AggregateEventsInterface
+final class PurchaseOrder implements AggregateEvents
 {
     use AggregateEventsRaiseInSelfTrait;
 
@@ -85,8 +86,8 @@ final class PurchaseOrder implements AggregateEventsInterface
 }
 ```
 
-## Change default event handler method name
-
+Change default event handler method name
+----------------------------------------
 
 Create a named domain event first
 
@@ -121,6 +122,7 @@ Then override the method that generates the name of the handler method in entity
 
 ```php
 use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
+use GpsLab\Domain\Event\Event;
 
 final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
 {
@@ -134,7 +136,7 @@ final class PurchaseOrder extends AbstractAggregateEventsRaiseInSelf
         $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
     }
 
-    protected function getMethodNameFromEvent(PurchaseOrderCreatedEvent $event)
+    protected function getMethodNameFromEvent(Event $event)
     {
         return 'on'.$event->getName();
     }
