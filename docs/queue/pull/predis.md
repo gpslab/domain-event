@@ -35,6 +35,7 @@ $queue_name = 'article_queue';
 $format = 'json'; // default: predis
 // you can create another implementation of serializer
 $serializer = new SymfonySerializer($symfony_serializer, $format);
+
 $queue = new PredisPullEventQueue($predis, $serializer, $logger, $queue_name);
 ```
 
