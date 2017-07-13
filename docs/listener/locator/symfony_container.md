@@ -85,8 +85,8 @@ Create event listener bus and publish events in it
 
 ```php
 use Symfony\Component\DependencyInjection\Container;
-use GpsLab\Domain\Event\Listener\Locator\ContainerAwareLocator;
-use GpsLab\Domain\Event\Bus\Bus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
+use GpsLab\Domain\Event\Listener\Locator\SymfonyContainerEventListenerLocator;
 
 // registr listener service in container
 $container = new Container();

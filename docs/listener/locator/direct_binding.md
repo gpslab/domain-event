@@ -69,8 +69,8 @@ class SendEmailOnPurchaseOrderCreated
 Create event listener bus and publish events in it
 
 ```php
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
-use GpsLab\Domain\Event\Bus\Bus;
 
 // first the locator
 $locator = new DirectBindingEventListenerLocator();
