@@ -5,15 +5,7 @@ You can publish events from base events bus and you can push events in queue and
 
 ```php
 use GpsLab\Domain\Event\Bus\QueueEventBus;
-use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
-use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 use GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue;
-
-// event listener locator
-$locator = new DirectBindingEventListenerLocator();
-
-// base events bus
-$publisher_bus = new ListenerLocatedEventBus($locator);
 
 // queue storing events in memory
 $queue = MemoryPullEventQueue();
@@ -33,6 +25,15 @@ $bus->pullAndPublish($purchase_order);
 In later you can pull events from queue
 
 ```php
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
+use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
+
+// event listener locator
+$locator = new DirectBindingEventListenerLocator();
+
+// base events bus
+$publisher_bus = new ListenerLocatedEventBus($locator);
+
 // publish events from queue
 while ($event = $queue->pull()) {
     $publisher_bus->publish($event);
