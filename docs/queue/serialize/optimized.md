@@ -6,6 +6,7 @@ Example Serializer/Deserializer for event `ArticleRenamedEvent`:
 ```php
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue;
+use GpsLab\Domain\Event\Queue\Serializer\SymfonySerializer;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,7 +23,7 @@ class ArticleRenamedEventSerializer implements NormalizerInterface, Denormalizer
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ArticleRenamedEvent && $format == PredisPullEventQueue::FORMAT;
+        return $data instanceof ArticleRenamedEvent && $format == SymfonySerializer::DEFAULT_FORMAT;
     }
 
     public function normalize($object, $format = null, array $context = [])
