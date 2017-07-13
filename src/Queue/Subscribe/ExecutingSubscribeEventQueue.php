@@ -15,9 +15,9 @@ use GpsLab\Domain\Event\Event;
 class ExecutingSubscribeEventQueue implements SubscribeEventQueue
 {
     /**
-     * @var callable|null
+     * @var callable[]
      */
-    private $handler;
+    private $handlers = [];
 
     /**
      * Publish event to queue.
@@ -28,9 +28,9 @@ class ExecutingSubscribeEventQueue implements SubscribeEventQueue
      */
     public function publish(Event $event)
     {
-        // absence of a handler is not a error
-        if (is_callable($this->handler)) {
-            call_user_func($this->handler, $event);
+        // absence of a handlers is not a error
+        foreach ($this->handlers as $handler) {
+            call_user_func($handler, $event);
         }
 
         return true;
@@ -43,6 +43,26 @@ class ExecutingSubscribeEventQueue implements SubscribeEventQueue
      */
     public function subscribe(callable $handler)
     {
-        $this->handler = $handler;
+        $this->handlers[] = $handler;
+    }
+
+    /**
+     * Unsubscribe on event queue.
+     *
+     * @param callable $handler
+     *
+     * @return bool
+     */
+    public function unsubscribe(callable $handler)
+    {
+        $index = array_search($handler, $this->handlers);
+
+        if ($index === false) {
+            return false;
+        }
+
+        unset($this->handlers[$index]);
+
+        return true;
     }
 }

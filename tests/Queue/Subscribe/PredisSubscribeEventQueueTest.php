@@ -206,4 +206,32 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->queue->subscribe($handler);
     }
+
+    public function testLazeSubscribe()
+    {
+        $handler1 = function ($event) {
+            $this->assertInstanceOf(Event::class, $event);
+            $this->assertEquals($this->event, $event);
+        };
+        $handler2 = function (Event $event) {
+        };
+
+        $this->client
+            ->expects($this->once())
+            ->method('subscribe')
+        ;
+
+        $this->assertFalse($this->queue->unsubscribe($handler1));
+        $this->assertFalse($this->queue->unsubscribe($handler2));
+
+        $this->queue->subscribe($handler1);
+
+        $this->assertTrue($this->queue->unsubscribe($handler1));
+        $this->assertFalse($this->queue->unsubscribe($handler1));
+
+        $this->queue->subscribe($handler2);
+
+        $this->assertTrue($this->queue->unsubscribe($handler2));
+        $this->assertFalse($this->queue->unsubscribe($handler2));
+    }
 }

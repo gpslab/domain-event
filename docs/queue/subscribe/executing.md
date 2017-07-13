@@ -23,9 +23,17 @@ $queue = new ExecutingEventQueue();
 Subscribe to the queue:
 
 ```php
-$queue->subscribe(function(ArticleRenamedEvent $event) use ($bus) {
+$handler = function(ArticleRenamedEvent $event) use ($bus) {
     $bus->publish($event);
-});
+};
+
+$queue->subscribe($handler);
+```
+
+You can unsubscribe of the queue:
+
+```php
+$queue->unsubscribe($handler);
 ```
 
 Make event and publish it into queue:

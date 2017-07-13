@@ -23,4 +23,11 @@ interface SubscribeEventQueue extends EventQueue
      * @param callable $handler
      */
     public function subscribe(callable $handler);
+
+    /**
+     * Unsubscribe on event queue.
+     *
+     * @param callable $handler
+     */
+    public function unsubscribe(callable $handler);
 }

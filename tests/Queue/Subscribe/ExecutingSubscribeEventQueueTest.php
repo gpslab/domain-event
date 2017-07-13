@@ -34,14 +34,19 @@ class ExecutingSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
     public function testPublish()
     {
         $subscriber_called = false;
-
-        $this->queue->subscribe(function ($event) use (&$subscriber_called) {
+        $handler = function ($event) use (&$subscriber_called) {
             $this->assertInstanceOf(Event::class, $event);
             $this->assertEquals($this->event, $event);
             $subscriber_called = true;
-        });
+        };
+
+        $this->assertFalse($this->queue->unsubscribe($handler));
+
+        $this->queue->subscribe($handler);
 
         $this->assertTrue($this->queue->publish($this->event));
         $this->assertTrue($subscriber_called);
+        $this->assertTrue($this->queue->unsubscribe($handler));
+        $this->assertFalse($this->queue->unsubscribe($handler));
     }
 }
