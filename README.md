@@ -94,7 +94,7 @@ class SendEmailOnPurchaseOrderCreated
         $this->mailer = $mailer;
     }
 
-    public function handle(PurchaseOrderCreatedEvent $event)
+    public function __invoke(PurchaseOrderCreatedEvent $event)
     {
         $this->mailer->send('recipient@example.com', sprintf(
             'Purchase order created at %s for customer #%s',
