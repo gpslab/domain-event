@@ -24,6 +24,7 @@ Configure queue:
 
 ```php
 use GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue;
+use GpsLab\Domain\Event\Queue\Serializer\SymfonySerializer;
 use Symfony\Component\Serializer\Serializer;
 use Predis\Client;
 

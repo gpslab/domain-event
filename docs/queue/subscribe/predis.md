@@ -27,6 +27,7 @@ Configure queue:
 
 ```php
 use GpsLab\Domain\Event\Queue\PubSub\PredisEventQueue;
+use GpsLab\Domain\Event\Queue\Serializer\SymfonySerializer;
 use Symfony\Component\Serializer\Serializer;
 use Superbalist\PubSub\Redis\RedisPubSubAdapter;
 use Predis\Client;
