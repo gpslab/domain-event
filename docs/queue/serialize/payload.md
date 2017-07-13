@@ -44,4 +44,4 @@ class ArticleRenamedEventSerializer implements NormalizerInterface, Denormalizer
 
 You can use [universal serializers](https://github.com/gpslab/payload#serialize) from Payload package and wrap it.
 Remember that the `$type` and `$class` for denormalization will always be equal to `GpsLab\Domain\Event\Event`
-in `PredisEventQueue` and `PredisUniqueEventQueue`.
+in `PredisPullEventQueue` and `PredisSubscribeEventQueue`.
