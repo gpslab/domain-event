@@ -93,10 +93,12 @@ class PurchaseOrderListener
     }
 }
 
+$listener = new PurchaseOrderListener();
+
 // register event listener in listener locator
 $locator = new DirectBindingEventListenerLocator();
-$locator->register(PurchaseOrderCreatedEvent::class, [new PurchaseOrderListener(), 'handlePurchaseOrderCreated']);
-$locator->register(PurchaseOrderCompletedEvent::class, [new PurchaseOrderListener(), 'handlePurchaseOrderCompleted']);
+$locator->register(PurchaseOrderCreatedEvent::class, [$listener, 'handlePurchaseOrderCreated']);
+$locator->register(PurchaseOrderCompletedEvent::class, [$listener, 'handlePurchaseOrderCompleted']);
 ```
 
 ## Listener locator
