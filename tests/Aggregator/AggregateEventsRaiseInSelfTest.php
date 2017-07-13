@@ -9,8 +9,9 @@
 
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Tests\Event\PurchaseOrderCreatedEvent;
+use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Tests\Fixture\DemoAggregatorRaiseInSelf;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 
 class AggregateEventsRaiseInSelfTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,8 +30,8 @@ class AggregateEventsRaiseInSelfTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->aggregator->pullEvents());
 
         $events = [
-            $this->getMock(EventInterface::class),
-            $this->getMock(EventInterface::class),
+            $this->getMock(Event::class),
+            $this->getMock(Event::class),
         ];
 
         foreach ($events as $event) {
@@ -57,16 +58,5 @@ class AggregateEventsRaiseInSelfTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([$event1, $event2], $this->aggregator->pullEvents());
         $this->assertEquals([], $this->aggregator->pullEvents());
-    }
-
-    public function testChangeEventNameResolver()
-    {
-        /* @var $event EventInterface */
-        $event = $this->getMock(EventInterface::class);
-
-        // hide deprecated error
-        @$this->aggregator->setEventNameResolver(new FixedNameResolver('PurchaseOrderCreated'));
-        $this->aggregator->raiseEvent($event);
-        $this->assertEquals($event, $this->aggregator->getRaiseInSelfEvent());
     }
 }

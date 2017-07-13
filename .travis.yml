@@ -2,12 +2,6 @@ language: php
 
 sudo: false
 
-php:
-    - 7.1
-    - 7.0
-    - 5.6
-    - 5.5
-
 notifications:
     email: deploy@peter-gribanov.ru
 
@@ -18,8 +12,10 @@ branches:
 matrix:
     fast_finish: true
     include:
+        - php: 7.1
+        - php: 7.0
+        - php: 5.6
         - php: 5.5
-          env: COVERAGE=1
         - php: 5.5
           env: SYMFONY_VERSION=2.7.*
         - php: 5.5
@@ -30,24 +26,26 @@ matrix:
           env: PREDIS_VERSION=1.0.*
         - php: 5.5
           env: PREDIS_VERSION=1.1.*
-    allow_failures:
+        - php: 5.6
+          env: PUBSUB_PREDIS_VERSION=2.0.*
         - php: hhvm
+          sudo: required
+          dist: trusty
+          group: edge
 
 before_install:
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$COVERAGE" != "1" ]; then phpenv config-rm xdebug.ini; fi;
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
+    - if [ "$TRAVIS_PHP_VERSION" = "hhvm" ]; then echo 'xdebug.enable = on' >> /etc/hhvm/php.ini; fi
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
-    - composer self-update
 
 before_script:
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
     - if [ "$PREDIS_VERSION" != "" ]; then composer require "predis/predis:${PREDIS_VERSION}" --dev --no-update; fi;
+    - if [ "$PUBSUB_PREDIS_VERSION" != "" ]; then composer require "superbalist/php-pubsub-redis:${PUBSUB_PREDIS_VERSION}" --dev --no-update; fi;
     - composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 script:
-    - if [ "$COVERAGE" != "1" ]; then vendor/bin/phpunit; fi;
-    - if [ "$COVERAGE" == "1" ]; then vendor/bin/phpunit --coverage-clover build/coverage-clover.xml; fi;
+    - vendor/bin/phpunit --coverage-clover build/coverage-clover.xml
 
 after_script:
-    - if [ "$COVERAGE" == "1" ]; then vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage-clover.xml; fi;
-    - if [ "$COVERAGE" == "1" ]; then vendor/bin/coveralls -v -c .coveralls.yml; fi;
+    - vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage-clover.xml
+    - vendor/bin/coveralls -v -c .coveralls.yml

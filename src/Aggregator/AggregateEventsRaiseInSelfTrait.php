@@ -9,43 +9,21 @@
 
 namespace GpsLab\Domain\Event\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\NameResolver\EventNameResolverInterface;
-use GpsLab\Domain\Event\NameResolver\NameResolverContainer;
+use GpsLab\Domain\Event\Event;
 
 trait AggregateEventsRaiseInSelfTrait
 {
     /**
-     * @var EventInterface[]
+     * @var Event[]
      */
     private $events = [];
 
     /**
-     * @deprecated It will be removed in 2.0
-     *
-     * @var EventNameResolverInterface
+     * @param Event $event
      */
-    private $resolver;
-
-    /**
-     * @deprecated It will be removed in 2.0. If you want change the event name resolver, you must override getMethodNameFromEvent() method.
-     * @see AggregateEventsRaiseInSelfTrait::getMethodNameFromEvent()
-     *
-     * @param EventNameResolverInterface $resolver
-     */
-    protected function changeEventNameResolver(EventNameResolverInterface $resolver)
+    private function raiseInSelf(Event $event)
     {
-        trigger_error('It will be removed in 2.0. If you want change the event name resolver, you must override getMethodNameFromEvent() method.', E_USER_DEPRECATED);
-
-        $this->resolver = $resolver;
-    }
-
-    /**
-     * @param EventInterface $event
-     */
-    private function raiseInSelf(EventInterface $event)
-    {
-        $method = $this->getMethodNameFromEvent($event);
+        $method = $this->eventHandlerName($event);
 
         // if method is not exists is not a critical error
         if (method_exists($this, $method)) {
@@ -54,16 +32,16 @@ trait AggregateEventsRaiseInSelfTrait
     }
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    protected function raise(EventInterface $event)
+    protected function raise(Event $event)
     {
         $this->events[] = $event;
         $this->raiseInSelf($event);
     }
 
     /**
-     * @return EventInterface[]
+     * @return Event[]
      */
     public function pullEvents()
     {
@@ -78,17 +56,21 @@ trait AggregateEventsRaiseInSelfTrait
      *
      * Override this method if you want to change algorithm to generate the handler method name.
      *
-     * @param EventInterface $event
+     * @param Event $event
      *
      * @return string
      */
-    protected function getMethodNameFromEvent(EventInterface $event)
+    protected function eventHandlerName(Event $event)
     {
-        // BC: use custom event name resolver if exists
-        if ($this->resolver instanceof EventNameResolverInterface) {
-            return 'on'.$this->resolver->getEventName($event);
+        $class = get_class($event);
+
+        if ('Event' === substr($class, -5)) {
+            $class = substr($class, 0, -5);
         }
 
-        return 'on'.NameResolverContainer::getResolver()->getEventName($event);
+        $class = str_replace('_', '\\', $class); // convert names for classes not in namespace
+        $parts = explode('\\', $class);
+
+        return 'on'.end($parts);
     }
 }

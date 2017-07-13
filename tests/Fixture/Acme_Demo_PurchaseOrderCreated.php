@@ -6,10 +6,8 @@
  * @copyright Copyright (c) 2016, Peter Gribanov
  * @license   http://opensource.org/licenses/MIT
  */
+use GpsLab\Domain\Event\Event;
 
-namespace GpsLab\Domain\Event\Aggregator;
-
-abstract class AbstractAggregateEvents implements AggregateEvents
+class Acme_Demo_PurchaseOrderCreated implements Event
 {
-    use AggregateEventsTrait;
 }

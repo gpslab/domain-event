@@ -9,7 +9,8 @@
 
 namespace GpsLab\Domain\Event\Tests\Aggregator;
 
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Tests\Fixture\DemoAggregator;
 
 class AggregateEventsTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,8 +29,8 @@ class AggregateEventsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->aggregator->pullEvents());
 
         $events = [
-            $this->getMock(EventInterface::class),
-            $this->getMock(EventInterface::class),
+            $this->getMock(Event::class),
+            $this->getMock(Event::class),
         ];
 
         foreach ($events as $event) {

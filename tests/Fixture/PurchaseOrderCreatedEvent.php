@@ -7,9 +7,10 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Domain\Event\Aggregator;
+namespace GpsLab\Domain\Event\Tests\Fixture;
 
-abstract class AbstractAggregateEvents implements AggregateEvents
+use GpsLab\Domain\Event\Event;
+
+class PurchaseOrderCreatedEvent implements Event
 {
-    use AggregateEventsTrait;
 }

@@ -9,21 +9,21 @@
 
 namespace GpsLab\Domain\Event\Tests\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\Bus\EventBusInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
+use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Bus\QueueEventBus;
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Queue\EventQueueInterface;
+use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Queue\EventQueue;
 
 class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventQueueInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventQueue
      */
     private $queue;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventBusInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventBus
      */
     private $publisher_bus;
 
@@ -34,8 +34,8 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock(EventQueueInterface::class);
-        $this->publisher_bus = $this->getMock(EventBusInterface::class);
+        $this->queue = $this->getMock(EventQueue::class);
+        $this->publisher_bus = $this->getMock(EventBus::class);
 
         $this->bus = new QueueEventBus($this->queue, $this->publisher_bus);
 
@@ -44,12 +44,12 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $this->queue
             ->expects($this->once())
-            ->method('push')
+            ->method('publish')
             ->with($event)
         ;
 
@@ -58,13 +58,13 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPullAndPublish()
     {
-        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event1 = $this->getMock(EventInterface::class);
-        /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event2 = $this->getMock(EventInterface::class);
+        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event1 = $this->getMock(Event::class);
+        /* @var $event2 \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event2 = $this->getMock(Event::class);
 
-        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEventsInterface */
-        $aggregator = $this->getMock(AggregateEventsInterface::class);
+        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
+        $aggregator = $this->getMock(AggregateEvents::class);
         $aggregator
             ->expects($this->atLeastOnce())
             ->method('pullEvents')
@@ -73,53 +73,15 @@ class QueueEventBusTest extends \PHPUnit_Framework_TestCase
 
         $this->queue
             ->expects($this->at(0))
-            ->method('push')
+            ->method('publish')
             ->with($event1)
         ;
         $this->queue
             ->expects($this->at(1))
-            ->method('push')
+            ->method('publish')
             ->with($event2)
         ;
 
         $this->bus->pullAndPublish($aggregator);
-    }
-
-    public function testPublishFromQueue()
-    {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
-
-        $this->queue
-            ->expects($this->at(0))
-            ->method('pop')
-            ->will($this->returnValue($event))
-        ;
-        $this->queue
-            ->expects($this->at(1))
-            ->method('pop')
-            ->will($this->returnValue(null))
-        ;
-
-        $this->publisher_bus
-            ->expects($this->once())
-            ->method('publish')
-            ->with($event)
-        ;
-
-        $this->bus->publishFromQueue();
-    }
-
-    public function testGetRegisteredEventListeners()
-    {
-        $expected = ['foo'];
-
-        $this->publisher_bus
-            ->expects($this->once())
-            ->method('getRegisteredEventListeners')
-            ->will($this->returnValue($expected))
-        ;
-
-        $this->assertEquals($expected, $this->bus->getRegisteredEventListeners());
     }
 }

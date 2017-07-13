@@ -11,31 +11,33 @@ namespace GpsLab\Domain\Event\Bus;
 
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
 use GpsLab\Domain\Event\Event;
-use GpsLab\Domain\Event\Queue\EventQueue;
+use GpsLab\Domain\Event\Listener\Locator\EventListenerLocator;
 
-class QueueEventBus implements EventBus
+class ListenerLocatedEventBus implements EventBus
 {
     /**
-     * @var EventQueue
+     * @var EventListenerLocator
      */
-    private $queue;
+    private $locator;
 
     /**
-     * @param EventQueue $queue
+     * @param EventListenerLocator $locator
      */
-    public function __construct(EventQueue $queue)
+    public function __construct(EventListenerLocator $locator)
     {
-        $this->queue = $queue;
+        $this->locator = $locator;
     }
 
     /**
-     * Publishes the event into queue.
+     * Publishes the event to every listener that wants to.
      *
      * @param Event $event
      */
     public function publish(Event $event)
     {
-        $this->queue->publish($event);
+        foreach ($this->locator->listenersOfEvent($event) as $listener) {
+            call_user_func($listener, $event);
+        }
     }
 
     /**
@@ -44,7 +46,7 @@ class QueueEventBus implements EventBus
     public function pullAndPublish(AggregateEvents $aggregator)
     {
         foreach ($aggregator->pullEvents() as $event) {
-            $this->queue->publish($event);
+            $this->publish($event);
         }
     }
 }

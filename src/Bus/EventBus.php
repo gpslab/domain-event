@@ -9,56 +9,18 @@
 
 namespace GpsLab\Domain\Event\Bus;
 
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
-use GpsLab\Domain\Event\Listener\Locator\LocatorInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
+use GpsLab\Domain\Event\Event;
 
-class EventBus implements EventBusInterface
+interface EventBus
 {
     /**
-     * @var LocatorInterface
+     * @param Event $event
      */
-    private $locator;
+    public function publish(Event $event);
 
     /**
-     * @param LocatorInterface $locator
+     * @param AggregateEvents $aggregator
      */
-    public function __construct(LocatorInterface $locator)
-    {
-        $this->locator = $locator;
-    }
-
-    /**
-     * Publishes the event $event to every EventListener that wants to.
-     *
-     * @param EventInterface $event
-     */
-    public function publish(EventInterface $event)
-    {
-        foreach ($this->locator->getListenersForEvent($event) as $listener) {
-            $listener->handle($event);
-        }
-    }
-
-    /**
-     * @param AggregateEventsInterface $aggregator
-     */
-    public function pullAndPublish(AggregateEventsInterface $aggregator)
-    {
-        foreach ($aggregator->pullEvents() as $event) {
-            $this->publish($event);
-        }
-    }
-
-    /**
-     * @deprecated It will be removed in 2.0.
-     *
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        return $this->locator->getRegisteredEventListeners();
-    }
+    public function pullAndPublish(AggregateEvents $aggregator);
 }
