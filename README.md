@@ -108,9 +108,8 @@ class SendEmailOnPurchaseOrderCreated
 Dispatch events
 
 ```php
-use GpsLab\Domain\Event\Listener\Locator\NamedEventLocator;
-use GpsLab\Domain\Event\NameResolver\EventClassLastPartResolver;
-use GpsLab\Domain\Event\Bus\Bus;
+use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
+use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
 
 // first the locator
 $locator = new DirectBindingEventListenerLocator();
