@@ -22,9 +22,16 @@ use GpsLab\Domain\Event\Aggregator\AbstractAggregateEvents;
 
 final class PurchaseOrder extends AbstractAggregateEvents
 {
+    private $customer_id;
+
+    private $create_at;
+
     public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
+        $this->customer_id = $customer_id;
+        $this->create_at = new \DateTimeImmutable();
+
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, $this->create_at));
     }
 }
 ```
@@ -39,7 +46,8 @@ $purchase_order = new PurchaseOrder(new CustomerId(1));
 $events = $purchase_order->pullEvents();
 ```
 
-## Traits
+Traits
+------
 
 You can use [Traits](http://php.net/manual/en/language.oop5.traits.php) for raise your event
 
@@ -51,9 +59,16 @@ final class PurchaseOrder implements AggregateEvents
 {
     use AggregateEventsTrait;
 
+    private $customer_id;
+
+    private $create_at;
+
     public function __construct(CustomerId $customer_id)
     {
-        $this->raise(new PurchaseOrderCreatedEvent($customer_id, new \DateTimeImmutable()));
+        $this->customer_id = $customer_id;
+        $this->create_at = new \DateTimeImmutable();
+
+        $this->raise(new PurchaseOrderCreatedEvent($customer_id, $this->create_at));
     }
 }
 ```
