@@ -12,13 +12,13 @@ namespace GpsLab\Domain\Event\Queue\Pull;
 
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Serializer\Serializer;
-use Predis\Client;
+use Predis\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 class PredisPullEventQueue implements PullEventQueue
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
@@ -38,12 +38,12 @@ class PredisPullEventQueue implements PullEventQueue
     private $queue_name = '';
 
     /**
-     * @param Client          $client
+     * @param ClientInterface $client
      * @param Serializer      $serializer
      * @param LoggerInterface $logger
      * @param string          $queue_name
      */
-    public function __construct(Client $client, Serializer $serializer, LoggerInterface $logger, $queue_name)
+    public function __construct(ClientInterface $client, Serializer $serializer, LoggerInterface $logger, $queue_name)
     {
         $this->client = $client;
         $this->serializer = $serializer;

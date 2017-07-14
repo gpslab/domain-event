@@ -14,13 +14,13 @@ use GpsLab\Domain\Event\Queue\Pull\PredisPullEventQueue;
 use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
-use Predis\Client;
+use Predis\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Client
+     * @var \PHPUnit_Framework_MockObject_MockObject|ClientInterface
      */
     private $client;
 
@@ -46,7 +46,7 @@ class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->client = $this->getMock(Client::class);
+        $this->client = $this->getMock(ClientInterface::class);
         $this->serializer = $this->getMock(Serializer::class);
         $this->logger = $this->getMock(LoggerInterface::class);
         $this->queue = new PredisPullEventQueue($this->client, $this->serializer, $this->logger, $this->queue_name);
