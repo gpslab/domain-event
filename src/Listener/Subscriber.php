@@ -21,5 +21,5 @@ interface Subscriber
      *
      * @return array
      */
-    public function subscribedEvents();
+    public static function subscribedEvents();
 }
