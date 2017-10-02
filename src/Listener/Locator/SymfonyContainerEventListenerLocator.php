@@ -43,12 +43,25 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
 
     /**
      * @param string $event_name
-     * @param string $service
+     * @param string $service_name
      * @param string $method
      */
-    public function registerService($event_name, $service, $method = '__invoke')
+    public function registerService($event_name, $service_name, $method = '__invoke')
     {
-        $this->listener_ids[$event_name][] = [$service, $method];
+        $this->listener_ids[$event_name][] = [$service_name, $method];
+    }
+
+    /**
+     * @param string $service_name
+     * @param string $class_name
+     */
+    public function registerSubscriberService($service_name, $class_name)
+    {
+        foreach ($class_name::subscribedEvents() as $event_name => $methods) {
+            foreach ($methods as $method) {
+                $this->registerService($event_name, $service_name, $method);
+            }
+        }
     }
 
     /**
@@ -66,7 +79,7 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
                 $listener = $this->resolve($this->container->get($service), $method);
 
                 if ($listener) {
-                    $this->listeners[$event_name][$service] = $listener;
+                    $this->listeners[$event_name][] = $listener;
                 }
             }
         }

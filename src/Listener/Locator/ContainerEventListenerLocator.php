@@ -61,6 +61,19 @@ class ContainerEventListenerLocator implements EventListenerLocator
     }
 
     /**
+     * @param string $service_name
+     * @param string $class_name
+     */
+    public function registerSubscriberService($service_name, $class_name)
+    {
+        foreach ($class_name::subscribedEvents() as $event_name => $methods) {
+            foreach ($methods as $method) {
+                $this->registerService($event_name, $service_name, $method);
+            }
+        }
+    }
+
+    /**
      * @param string $event_name
      */
     private function lazyLoad($event_name)
@@ -75,7 +88,7 @@ class ContainerEventListenerLocator implements EventListenerLocator
                 $listener = $this->resolve($this->container->get($service), $method);
 
                 if ($listener) {
-                    $this->listeners[$event_name][$service] = $listener;
+                    $this->listeners[$event_name][] = $listener;
                 }
             }
         }

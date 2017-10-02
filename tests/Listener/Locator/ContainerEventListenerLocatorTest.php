@@ -11,8 +11,10 @@ namespace GpsLab\Domain\Event\Tests\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Listener\Locator\ContainerEventListenerLocator;
-use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListener;
 use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
+use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
+use GpsLab\Domain\Event\Tests\Fixture\Subscriber\PurchaseOrderSubscriber;
 use Psr\Container\ContainerInterface;
 
 class ContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
@@ -85,35 +87,28 @@ class ContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $this->locator->listenersOfEvent($event));
     }
 
-    public function testOverrideListener()
+    public function testRegisterSubscriber()
     {
-        /* @var $event Event */
-        $event = $this->getMock(Event::class);
-
-        $listener1 = function (Event $event) {
-        };
-        $this->locator->registerService(get_class($event), 'domain.listener');
-
+        $subscriber = new PurchaseOrderSubscriber();
+        $this->locator->registerSubscriberService('domain.subscriber', PurchaseOrderSubscriber::class);
         $this->container
-            ->expects($this->at(0))
+            ->expects($this->atLeastOnce())
             ->method('get')
-            ->with('domain.listener')
-            ->will($this->returnValue($listener1))
+            ->with('domain.subscriber')
+            ->will($this->returnValue($subscriber))
         ;
 
-        $listeners = $this->locator->listenersOfEvent($event);
-        $this->assertEquals([$listener1], $listeners);
+        $listeners = $this->locator->listenersOfEvent(new PurchaseOrderCompletedEvent());
+        $expected = [
+            [$subscriber, 'onCompleted1'],
+            [$subscriber, 'onCompleted2'],
+        ];
+        $this->assertEquals($expected, $listeners);
 
-        $listener2 = new PurchaseOrderCompletedEventListener();
-        $this->locator->registerService(get_class($event), 'domain.listener', 'handle');
-
-        $this->container
-            ->expects($this->at(1))
-            ->method('get')
-            ->with('domain.listener')
-            ->will($this->returnValue($listener2))
-        ;
-
-        $this->assertEquals([[$listener2, 'handle']], $this->locator->listenersOfEvent($event));
+        $listeners = $this->locator->listenersOfEvent(new PurchaseOrderCreatedEvent());
+        $expected = [
+            [$subscriber, 'onCreated'],
+        ];
+        $this->assertEquals($expected, $listeners);
     }
 }
