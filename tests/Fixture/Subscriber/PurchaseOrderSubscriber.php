@@ -17,24 +17,9 @@ use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 class PurchaseOrderSubscriber implements Subscriber
 {
     /**
-     * @var PurchaseOrderCreatedEvent
-     */
-    private $created_event;
-
-    /**
-     * @var PurchaseOrderCompletedEvent
-     */
-    private $completed_event1;
-
-    /**
-     * @var PurchaseOrderCompletedEvent
-     */
-    private $completed_event2;
-
-    /**
      * @return array
      */
-    public function subscribedEvents()
+    public static function subscribedEvents()
     {
         return [
             PurchaseOrderCreatedEvent::class => ['onCreated'],
@@ -47,7 +32,6 @@ class PurchaseOrderSubscriber implements Subscriber
      */
     public function onCreated(PurchaseOrderCreatedEvent $event)
     {
-        $this->created_event = $event;
     }
 
     /**
@@ -55,7 +39,6 @@ class PurchaseOrderSubscriber implements Subscriber
      */
     public function onCompleted1(PurchaseOrderCompletedEvent $event)
     {
-        $this->completed_event1 = $event;
     }
 
     /**
@@ -63,30 +46,5 @@ class PurchaseOrderSubscriber implements Subscriber
      */
     public function onCompleted2(PurchaseOrderCompletedEvent $event)
     {
-        $this->completed_event2 = $event;
-    }
-
-    /**
-     * @return PurchaseOrderCreatedEvent
-     */
-    public function createdEvent()
-    {
-        return $this->created_event;
-    }
-
-    /**
-     * @return PurchaseOrderCompletedEvent
-     */
-    public function completedEvent1()
-    {
-        return $this->completed_event1;
-    }
-
-    /**
-     * @return PurchaseOrderCompletedEvent
-     */
-    public function completedEvent2()
-    {
-        return $this->completed_event2;
     }
 }
