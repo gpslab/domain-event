@@ -182,6 +182,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
         $handler = function ($event) use ($exception) {
             $this->assertInstanceOf(Event::class, $event);
             $this->assertEquals($this->event, $event);
+
             throw $exception;
         };
 
