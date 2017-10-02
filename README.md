@@ -131,7 +131,8 @@ $bus->pullAndPublish($purchase_order);
 * [Base usage](docs/base.md)
 * [Raise events in self](docs/raise_in_self.md)
 * Listener
-  * [Create listener](docs/listener.md)
+  * [Create listener](docs/listener/listener.md)
+  * [Create subscriber](docs/listener/subscriber.md)
   * Locator
     * [Direct binding locator](docs/listener/locator/direct_binding.md)
     * [PSR-11 Container locator](docs/listener/locator/psr-11_container.md) *([PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*

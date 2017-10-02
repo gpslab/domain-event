@@ -105,8 +105,8 @@ $locator->register(PurchaseOrderCompletedEvent::class, [$listener, 'handlePurcha
 
 You can use exists locators of listener:
 
- * [Direct binding locator](listener/locator/direct_binding.md)
- * [PSR-11 container aware locator](listener/locator/psr-11_container.md)
- * [Symfony container aware locator](listener/locator/symfony_container.md)
+ * [Direct binding locator](locator/direct_binding.md)
+ * [PSR-11 container aware locator](locator/psr-11_container.md)
+ * [Symfony container aware locator](locator/symfony_container.md)
 
 Or you can create custom locator that implements `GpsLab\Domain\Event\Listener\Locator\EventListenerLocator` interface.
