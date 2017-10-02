@@ -62,8 +62,6 @@ class ContainerEventListenerLocator implements EventListenerLocator
 
     /**
      * @param string $event_name
-     *
-     * @return callable[]
      */
     private function lazyLoad($event_name)
     {

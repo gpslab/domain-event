@@ -53,8 +53,6 @@ class SymfonyContainerEventListenerLocator implements ContainerAwareInterface, E
 
     /**
      * @param string $event_name
-     *
-     * @return callable[]
      */
     private function lazyLoad($event_name)
     {
