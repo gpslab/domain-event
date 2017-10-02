@@ -10,6 +10,7 @@
 namespace GpsLab\Domain\Event\Listener\Locator;
 
 use GpsLab\Domain\Event\Event;
+use GpsLab\Domain\Event\Listener\Subscriber;
 
 class DirectBindingEventListenerLocator implements EventListenerLocator
 {
@@ -41,5 +42,17 @@ class DirectBindingEventListenerLocator implements EventListenerLocator
         }
 
         $this->listeners[$event_name][] = $listener;
+    }
+
+    /**
+     * @param Subscriber $subscriber
+     */
+    public function registerSubscriber(Subscriber $subscriber)
+    {
+        foreach ($subscriber->subscribedEvents() as $event_name => $methods) {
+            foreach ($methods as $method) {
+                $this->register($event_name, [$subscriber, $method]);
+            }
+        }
     }
 }
