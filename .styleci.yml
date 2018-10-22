@@ -5,4 +5,5 @@ enabled:
 
 disabled:
   - phpdoc_align
+  - yoda_style
   - silenced_deprecation_error
