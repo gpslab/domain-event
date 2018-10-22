@@ -10,7 +10,7 @@
 Domain event
 ============
 
-Library to create the domain layer of your **DDD** application
+Library to create the domain layer of your [Domain-driven design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design) application
 
 ## Installation
 
