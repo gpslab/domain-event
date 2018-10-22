@@ -50,6 +50,8 @@ class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 
         // test get event listeners for event
         $this->assertEquals([$listener3, $listener4], $this->locator->listenersOfEvent($event));
+        // test double call
+        $this->assertEquals([$listener3, $listener4], $this->locator->listenersOfEvent($event));
     }
 
     public function testRegisterNoListenersForEvent()
