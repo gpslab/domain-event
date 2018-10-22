@@ -78,18 +78,22 @@ class ContainerEventListenerLocator implements EventListenerLocator
      */
     private function lazyLoad($event_name)
     {
-        if (!isset($this->listeners[$event_name])) {
-            $this->listeners[$event_name] = [];
+        if (isset($this->listeners[$event_name])) {
+            return;
         }
 
-        if (isset($this->listener_ids[$event_name])) {
-            foreach ($this->listener_ids[$event_name] as $args) {
-                list($service, $method) = $args;
-                $listener = $this->resolve($this->container->get($service), $method);
+        $this->listeners[$event_name] = [];
 
-                if ($listener) {
-                    $this->listeners[$event_name][] = $listener;
-                }
+        if (empty($this->listener_ids[$event_name])) {
+            return;
+        }
+
+        foreach ($this->listener_ids[$event_name] as $args) {
+            list($service, $method) = $args;
+            $listener = $this->resolve($this->container->get($service), $method);
+
+            if ($listener) {
+                $this->listeners[$event_name][] = $listener;
             }
         }
     }

@@ -54,6 +54,8 @@ class ContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
 
         // test get event listeners for event
         $this->assertEquals([$listener2], $this->locator->listenersOfEvent($event));
+        // test double call
+        $this->assertEquals([$listener2], $this->locator->listenersOfEvent($event));
     }
 
     public function testRegisterServiceNoListenersForEvent()
