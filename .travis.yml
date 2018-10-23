@@ -52,4 +52,4 @@ script:
 
 after_script:
     - vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage-clover.xml
-    - vendor/bin/coveralls -v -c .coveralls.yml
+    - vendor/bin/php-coveralls -v -c .coveralls.yml
