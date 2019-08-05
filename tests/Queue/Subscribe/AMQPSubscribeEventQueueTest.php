@@ -348,7 +348,24 @@ class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
     public function testFunctional()
     {
         try {
-            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+            $connection = new AMQPStreamConnection(
+                $host = 'localhost',
+                $port = 5672,
+                $user = 'guest',
+                $password = 'guest',
+                $vhost = '/',
+                $insist = false,
+                $login_method = 'AMQPLAIN',
+                $login_response = null,
+                $locale = 'en_US',
+                $connection_timeout = 3.0,
+                $read_write_timeout = 130.0,
+                $context = null,
+                $keepalive = false,
+                $heartbeat = 60,
+                $channel_rpc_timeout = 100, // change timeout
+                $ssl_protocol = null
+            );
         } catch (\Exception $e) {
             $this->markTestSkipped($e->getMessage());
             return;
