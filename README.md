@@ -144,6 +144,7 @@ $bus->pullAndPublish($purchase_order);
     * [Predis queue](docs/queue/pull/predis.md)
   * [Subscribe](docs/queue/subscribe/subscribe.md)
     * [Executing queue](docs/queue/subscribe/executing.md)
+    * [AMQP queue](docs/queue/subscribe/amqp.md)
     * [Predis queue](docs/queue/subscribe/predis.md)
   * Serialize command
     * [Simple payload serializer](docs/queue/serialize/simple.md)

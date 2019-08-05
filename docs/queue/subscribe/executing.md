@@ -13,11 +13,11 @@ subscriber.
 ```php
 use GpsLab\Domain\Event\Bus\ListenerLocatedEventBus;
 use GpsLab\Domain\Event\Listener\Locator\DirectBindingEventListenerLocator;
-use GpsLab\Domain\Event\Queue\PubSub\ExecutingEventQueue;
+use GpsLab\Domain\Event\Queue\Subscribe\ExecutingSubscribeEventQueue;
 
 $locator = new DirectBindingEventListenerLocator();
 $bus = new ListenerLocatedEventBus($locator);
-$queue = new ExecutingEventQueue();
+$queue = new ExecutingSubscribeEventQueue();
 ```
 
 Subscribe to the queue:

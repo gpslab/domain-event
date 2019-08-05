@@ -73,19 +73,19 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
 
     public function testPublish()
     {
-        $massage = 'foo';
+        $message = 'foo';
 
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
             ->with($this->event)
-            ->will($this->returnValue($massage))
+            ->will($this->returnValue($message))
         ;
 
         $this->client
             ->expects($this->once())
             ->method('publish')
-            ->with($this->queue_name, $massage)
+            ->with($this->queue_name, $message)
         ;
 
         $this->assertTrue($this->queue->publish($this->event));
@@ -105,7 +105,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             ->method('subscribe')
             ->will($this->returnCallback(function ($queue_name, $handler_wrapper) use ($handler) {
                 $this->assertEquals($this->queue_name, $queue_name);
-                $this->assertTrue(is_callable($handler_wrapper));
+                $this->assertTrue(is_callable($handler_wrapper), 'handler_wrapper must be callable');
 
                 $message = 'foo';
                 $this->serializer
@@ -121,7 +121,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->queue->subscribe($handler);
 
-        $this->assertTrue($subscriber_called);
+        $this->assertTrue($subscriber_called, 'handler must be called');
     }
 
     public function testSubscribeFailure()
@@ -152,10 +152,7 @@ class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
                 $this->logger
                     ->expects($this->once())
                     ->method('critical')
-                    ->with(
-                        'Failed denormalize a event in the Redis queue',
-                        [$message, $exception->getMessage()]
-                    )
+                    ->with('Failed denormalize a event in the Redis queue', [$message, $exception->getMessage()])
                 ;
 
                 $this->client
