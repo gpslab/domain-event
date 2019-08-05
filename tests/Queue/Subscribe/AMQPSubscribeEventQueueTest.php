@@ -348,24 +348,7 @@ class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
     public function testFunctional()
     {
         try {
-            $connection = new AMQPStreamConnection(
-                $host = 'localhost',
-                $port = 5672,
-                $user = 'guest',
-                $password = 'guest',
-                $vhost = '/',
-                $insist = false,
-                $login_method = 'AMQPLAIN',
-                $login_response = null,
-                $locale = 'en_US',
-                $connection_timeout = 3.0,
-                $read_write_timeout = 70.0, // change timeout
-                $context = null,
-                $keepalive = false,
-                $heartbeat = 30,
-                $channel_rpc_timeout = 10.0, // change timeout
-                $ssl_protocol = null
-            );
+            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
         } catch (\Exception $e) {
             $this->markTestSkipped($e->getMessage());
             return;
@@ -394,13 +377,14 @@ class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->event))
         ;
 
+        $queue->publish($this->event);
+
         $subscriber_called = false;
         $queue->subscribe(function ($event) use (&$subscriber_called) {
             $this->assertInstanceOf(Event::class, $event);
             $this->assertEquals($this->event, $event);
             $subscriber_called = true;
         });
-        $queue->publish($this->event);
 
         $this->assertTrue($subscriber_called);
     }
