@@ -2,7 +2,7 @@ language: php
 
 dist: trusty
 
-sudo: required
+sudo: FALSE
 
 notifications:
     email: deploy@peter-gribanov.ru
@@ -10,9 +10,6 @@ notifications:
 branches:
   except:
     - /^analysis-.*$/
-
-services:
-    - rabbitmq
 
 matrix:
     fast_finish: true

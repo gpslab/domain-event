@@ -14,7 +14,6 @@ use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use GpsLab\Domain\Event\Queue\Subscribe\AMQPSubscribeEventQueue;
 use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 
@@ -340,52 +339,5 @@ class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->queue->unsubscribe($handler2));
         $this->assertFalse($this->queue->unsubscribe($handler2));
-    }
-
-    /**
-     * @throws \ErrorException
-     */
-    public function testFunctional()
-    {
-        try {
-            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-        } catch (\Exception $e) {
-            $this->markTestSkipped($e->getMessage());
-            return;
-        }
-
-        $channel = $connection->channel();
-        $queue = new AMQPSubscribeEventQueue(
-            $channel,
-            $this->serializer,
-            $this->logger,
-            $this->queue_name
-        );
-
-        $message = 'foo';
-
-        $this->serializer
-            ->expects($this->once())
-            ->method('serialize')
-            ->with($this->event)
-            ->will($this->returnValue($message))
-        ;
-        $this->serializer
-            ->expects($this->once())
-            ->method('deserialize')
-            ->with($message)
-            ->will($this->returnValue($this->event))
-        ;
-
-        $queue->publish($this->event);
-
-        $subscriber_called = false;
-        $queue->subscribe(function ($event) use (&$subscriber_called) {
-            $this->assertInstanceOf(Event::class, $event);
-            $this->assertEquals($this->event, $event);
-            $subscriber_called = true;
-        });
-
-        $this->assertTrue($subscriber_called);
     }
 }
