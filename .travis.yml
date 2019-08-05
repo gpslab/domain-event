@@ -12,6 +12,11 @@ branches:
 services:
     - rabbitmq
 
+addons:
+    apt:
+        packages:
+            - rabbitmq-server
+
 matrix:
     fast_finish: true
     include:
