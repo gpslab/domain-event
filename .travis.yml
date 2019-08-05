@@ -2,7 +2,7 @@ language: php
 
 dist: trusty
 
-sudo: FALSE
+sudo: false
 
 notifications:
     email: deploy@peter-gribanov.ru
@@ -46,7 +46,7 @@ before_script:
     - composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 script:
-    - vendor/bin/phpunit --coverage-clover build/coverage-clover.xml --verbose
+    - vendor/bin/phpunit --coverage-clover build/coverage-clover.xml
 
 after_script:
     - vendor/bin/ocular code-coverage:upload --format=php-clover build/coverage-clover.xml
