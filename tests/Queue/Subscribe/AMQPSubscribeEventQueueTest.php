@@ -359,11 +359,11 @@ class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
                 $login_response = null,
                 $locale = 'en_US',
                 $connection_timeout = 3.0,
-                $read_write_timeout = 130.0,
+                $read_write_timeout = 10.0, // change timeout
                 $context = null,
                 $keepalive = false,
                 $heartbeat = 60,
-                $channel_rpc_timeout = 100, // change timeout
+                $channel_rpc_timeout = 10.0, // change timeout
                 $ssl_protocol = null
             );
         } catch (\Exception $e) {
