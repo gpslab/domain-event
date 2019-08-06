@@ -12,15 +12,16 @@ namespace GpsLab\Domain\Event\Queue\Subscribe;
 
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Serializer\Serializer;
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
-use Superbalist\PubSub\Redis\RedisPubSubAdapter;
 
-class PredisSubscribeEventQueue implements SubscribeEventQueue
+class AMQPSubscribeEventQueue implements SubscribeEventQueue
 {
     /**
-     * @var RedisPubSubAdapter
+     * @var AMQPChannel
      */
-    private $client;
+    private $channel;
 
     /**
      * @var Serializer
@@ -48,18 +49,19 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
     private $subscribed = false;
 
     /**
-     * @param RedisPubSubAdapter $client
-     * @param Serializer         $serializer
-     * @param LoggerInterface    $logger
-     * @param string             $queue_name
+     * @var bool
      */
-    public function __construct(
-        RedisPubSubAdapter $client,
-        Serializer $serializer,
-        LoggerInterface $logger,
-        $queue_name
-    ) {
-        $this->client = $client;
+    private $declared = false;
+
+    /**
+     * @param AMQPChannel     $channel
+     * @param Serializer      $serializer
+     * @param LoggerInterface $logger
+     * @param string          $queue_name
+     */
+    public function __construct(AMQPChannel $channel, Serializer $serializer, LoggerInterface $logger, $queue_name)
+    {
+        $this->channel = $channel;
         $this->serializer = $serializer;
         $this->logger = $logger;
         $this->queue_name = $queue_name;
@@ -75,13 +77,16 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
     public function publish(Event $event)
     {
         $message = $this->serializer->serialize($event);
-        $this->client->publish($this->queue_name, $message);
+        $this->declareQueue();
+        $this->channel->basic_publish(new AMQPMessage($message), '', $this->queue_name);
 
         return true;
     }
 
     /**
      * Subscribe on event queue.
+     *
+     * @throws \ErrorException
      *
      * @param callable $handler
      */
@@ -91,10 +96,24 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
 
         // laze subscribe
         if (!$this->subscribed) {
-            $this->client->subscribe($this->queue_name, function ($message) {
-                $this->handle($message);
-            });
+            $this->declareQueue();
+            $this->channel->basic_consume(
+                $this->queue_name,
+                '',
+                false,
+                true,
+                false,
+                false,
+                function (AMQPMessage $message) {
+                    $this->handle($message->body);
+                }
+            );
+
             $this->subscribed = true;
+        }
+
+        while ($this->channel->is_consuming()) {
+            $this->channel->wait();
         }
     }
 
@@ -118,8 +137,17 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
         return true;
     }
 
+    private function declareQueue()
+    {
+        // laze declare queue
+        if (!$this->declared) {
+            $this->channel->queue_declare($this->queue_name, false, false, false, false);
+            $this->declared = true;
+        }
+    }
+
     /**
-     * @param mixed $message
+     * @param string $message
      */
     private function handle($message)
     {
@@ -128,10 +156,11 @@ class PredisSubscribeEventQueue implements SubscribeEventQueue
         } catch (\Exception $e) { // catch only deserialize exception
             // it's a critical error
             // it is necessary to react quickly to it
-            $this->logger->critical('Failed denormalize a event in the Redis queue', [$message, $e->getMessage()]);
+            $this->logger->critical('Failed denormalize a event in the AMQP queue', [$message, $e->getMessage()]);
 
             // try denormalize in later
-            $this->client->publish($this->queue_name, $message);
+            $this->declareQueue();
+            $this->channel->basic_publish(new AMQPMessage($message), '', $this->queue_name);
 
             return; // no event for handle
         }

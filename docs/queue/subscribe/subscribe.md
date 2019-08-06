@@ -13,4 +13,5 @@ subscriber.
 You can use one of the existing queues:
 
 * [Executing queue](executing.md)
+* [AMQP queue](amqp.md)
 * [Predis queue](predis.md)
