@@ -14,8 +14,9 @@ use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Bus\QueueEventBus;
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\EventQueue;
+use PHPUnit\Framework\TestCase;
 
-class QueueEventBusTest extends \PHPUnit_Framework_TestCase
+class QueueEventBusTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EventQueue

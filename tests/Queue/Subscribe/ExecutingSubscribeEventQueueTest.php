@@ -12,8 +12,9 @@ namespace GpsLab\Domain\Event\Tests\Queue\Subscribe;
 
 use GpsLab\Domain\Event\Event;
 use GpsLab\Domain\Event\Queue\Subscribe\ExecutingSubscribeEventQueue;
+use PHPUnit\Framework\TestCase;
 
-class ExecutingSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
+class ExecutingSubscribeEventQueueTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Event
