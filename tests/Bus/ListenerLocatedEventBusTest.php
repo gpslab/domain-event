@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCompletedEventListen
 use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
+use PHPUnit\Framework\TestCase;
 
-class ListenerLocatedEventBusTest extends \PHPUnit_Framework_TestCase
+class ListenerLocatedEventBusTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EventListenerLocator

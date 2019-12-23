@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Tests\Fixture\Listener\PurchaseOrderCreatedEventListener
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\Subscriber\PurchaseOrderSubscriber;
+use PHPUnit\Framework\TestCase;
 
-class DirectBindingEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
+class DirectBindingEventListenerLocatorTest extends TestCase
 {
     /**
      * @var DirectBindingEventListenerLocator

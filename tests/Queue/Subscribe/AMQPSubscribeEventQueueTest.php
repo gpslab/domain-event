@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Queue\Subscribe\AMQPSubscribeEventQueue;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
+use PHPUnit\Framework\TestCase;
 
-class AMQPSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
+class AMQPSubscribeEventQueueTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Event

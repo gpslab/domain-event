@@ -13,8 +13,9 @@ namespace GpsLab\Domain\Event\Tests\Queue\Pull;
 use GpsLab\Domain\Event\Queue\Pull\MemoryPullEventQueue;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
+use PHPUnit\Framework\TestCase;
 
-class MemoryPullEventQueueTest extends \PHPUnit_Framework_TestCase
+class MemoryPullEventQueueTest extends TestCase
 {
     /**
      * @var MemoryPullEventQueue

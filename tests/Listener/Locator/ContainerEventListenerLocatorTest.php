@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\Subscriber\PurchaseOrderSubscriber;
 use Psr\Container\ContainerInterface;
+use PHPUnit\Framework\TestCase;
 
-class ContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
+class ContainerEventListenerLocatorTest extends TestCase
 {
     /**
      * @var ContainerEventListenerLocator

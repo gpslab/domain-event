@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\Subscriber\PurchaseOrderSubscriber;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use PHPUnit\Framework\TestCase;
 
-class SymfonyContainerEventListenerLocatorTest extends \PHPUnit_Framework_TestCase
+class SymfonyContainerEventListenerLocatorTest extends TestCase
 {
     /**
      * @var SymfonyContainerEventListenerLocator

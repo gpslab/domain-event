@@ -16,8 +16,9 @@ use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCompletedEvent;
 use GpsLab\Domain\Event\Tests\Fixture\PurchaseOrderCreatedEvent;
 use Predis\ClientInterface;
 use Psr\Log\LoggerInterface;
+use PHPUnit\Framework\TestCase;
 
-class PredisPullEventQueueTest extends \PHPUnit_Framework_TestCase
+class PredisPullEventQueueTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ClientInterface

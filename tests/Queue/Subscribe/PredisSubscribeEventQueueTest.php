@@ -15,8 +15,9 @@ use GpsLab\Domain\Event\Queue\Serializer\Serializer;
 use GpsLab\Domain\Event\Queue\Subscribe\PredisSubscribeEventQueue;
 use Psr\Log\LoggerInterface;
 use Superbalist\PubSub\Redis\RedisPubSubAdapter;
+use PHPUnit\Framework\TestCase;
 
-class PredisSubscribeEventQueueTest extends \PHPUnit_Framework_TestCase
+class PredisSubscribeEventQueueTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Event
